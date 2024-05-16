@@ -1,8 +1,36 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Josefin_Sans } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
+import Navbar from "@/components/Layout/Navbar";
+import Footer from "@/components/Layout/Footer";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const josefin_sans = Josefin_Sans({
+  subsets: ["latin"],
+  variable: "--font-josefin_sans",
+});
+
+const audrey = localFont({
+  src: [
+    {
+      path: "/fonts/Audrey/Audrey-Normal.otf",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "/fonts/Audrey/Audrey-Medium.otf",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "/fonts/Audrey/Audrey-Bold.otf",
+      weight: "700",
+      style: "normal",
+    },
+  ],
+  variable: "--font-audrey",
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,7 +44,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body
+        className={`${inter.className} ${audrey.variable} ${josefin_sans.className}`}
+      >
+        <Navbar />
+        {children}
+        <Footer />
+      </body>
     </html>
   );
 }
