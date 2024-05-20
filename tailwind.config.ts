@@ -17,6 +17,7 @@ const config: Config = {
         inter: ["var(--font-inter)"],
         audrey: ["var(--font-audrey)"],
         josefin_sans: ["var(--font-josefin_sans)"],
+        lato: ["var(--font-lato)"],
       },
       colors: {
         primary: "#E05824",

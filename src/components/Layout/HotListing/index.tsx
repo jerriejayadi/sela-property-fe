@@ -12,7 +12,7 @@ export default function HotListing() {
         >
           Hot Listing
         </div>
-        <div className={`font-light mt-4 text-secondary text-center`}>
+        <div className={`font-light mt-4 text-secondary text-center text-xl font-lato `}>
           Lorem ipsum dolor sit amet consectetur. Lacus aliquet viverra lectus
         </div>
       </div>
@@ -33,7 +33,7 @@ export default function HotListing() {
         ))}
       </div>
       <div className={`mt-10`}>
-        <button className={`w-full bg-primary text-white px-3 py-2 md:p-4`}>See More Listing</button>
+        <button className={`w-full  text-primary hover:underline active:underline px-3 py-2 md:p-4 font-lato active:bg-opacity-50 `}>See More Listing</button>
       </div>
     </div>
   );

@@ -1,5 +1,7 @@
+"use client";
 import Image from "next/image";
 import Carousel from "../Carousel";
+import { useState } from "react";
 
 interface ItemsCardProps {
   images?: string[];
@@ -22,15 +24,38 @@ export default function ItemsCard({
   bathRoom,
   bedRoom,
 }: ItemsCardProps) {
+  const [hovered, setHovered] = useState<boolean>(false);
   return (
     <div
       className={`flex flex-col border border-[#E9E9E9] shadow-md ${className} rounded-lg`}
     >
       {/* Image */}
-      <Carousel
-        className={`h-[250px] md:h-[300px] rounded-t-lg`}
-        slides={[`/images/bg-landing-page.png`, `/images/background-image.jpg`]}
-      />
+      <div
+        className={`relative cursor-pointer`}
+        onMouseEnter={() => {
+          setHovered(true);
+        }}
+        onMouseLeave={() => {
+          setHovered(false);
+        }}
+      >
+        <div className={`${hovered && "bg-black bg-opacity-80 z-50"}`}>
+          <Carousel
+            className={`h-[250px] md:h-[300px] rounded-t-lg`}
+            slides={[
+              `/images/bg-landing-page.png`,
+              `/images/background-image.jpg`,
+            ]}
+          />
+        </div>
+        <button
+          className={`bg-primary text-white p-3 w-fit h-fit absolute top-0 flex items-center justify-center my-auto mx-auto transition-all duration-300 ${
+            hovered ? "block" : "hidden"
+          }`}
+        >
+          See Details
+        </button>
+      </div>
       {/* description */}
       <div className={`flex flex-col md:flex-row justify-between p-3`}>
         {/* left desc */}

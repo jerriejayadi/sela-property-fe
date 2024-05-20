@@ -23,7 +23,7 @@ export default function ContactUs() {
         </div>
         <div>
           <button
-            className={`w-full md:w-fit px-3 py-2 md:p-4 gap-2 bg-primary flex items-center justify-center text-white active:bg-opacity-80`}
+            className={`w-full md:w-fit px-3 py-2 md:p-4 gap-2 bg-primary flex items-center justify-center text-white active:bg-opacity-80 font-lato`}
           >
             Contact Us <ArrowRight className={`w-4 h-4`} />
           </button>

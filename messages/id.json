@@ -1,0 +1,12 @@
+{
+  "navbar": {
+    "catalog": "Katalog",
+    "hot_listing": "Hot Listing",
+    "about_us": "Tentang Kami",
+    "faq": "F.A.Q"
+  },
+  "landing_page": {
+    "title": "Cara Terbaik untuk Menemukan Rumah Impian Masa Depan!",
+    "desc": "I'm Jerrie, Software Engineer from Indonesia, specialized in Front-End Development. Love to develop a user-friendly UI/UX"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "navbar": {
+    "catalog": "Catalog",
+    "hot_listing":"Hot Listing",
+    "about_us": "About Us",
+    "faq": "F.A.Q"
+  },
+  "landing_page": {
+    "title": "The Best Way to Find Your Perfect Home for Future!",
+    "desc": "I'm Jerrie, Software Engineer from Indonesia, specialized in Front-End Development. Love to develop a user-friendly UI/UX"
+  }
+}

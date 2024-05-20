@@ -1,14 +1,20 @@
 import type { Metadata } from "next";
-import { Inter, Josefin_Sans } from "next/font/google";
+import { Inter, Josefin_Sans, Lato } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/components/Layout/Navbar";
 import Footer from "@/components/Layout/Footer";
+import { NextIntlClientProvider, useMessages } from "next-intl";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const josefin_sans = Josefin_Sans({
   subsets: ["latin"],
   variable: "--font-josefin_sans",
+});
+const lato = Lato({
+  subsets: ["latin"],
+  variable: "--font-lato",
+  weight: ["100", "300", "400", "700", "900"],
 });
 
 const audrey = localFont({
@@ -39,18 +45,23 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  params: { locale },
 }: Readonly<{
   children: React.ReactNode;
+  params: { locale: string };
 }>) {
+  const message = useMessages();
   return (
-    <html lang="en">
-      <body
-        className={`${inter.className} ${audrey.variable} ${josefin_sans.className}`}
-      >
-        <Navbar />
-        {children}
-        <Footer />
-      </body>
+    <html lang={locale}>
+      <NextIntlClientProvider messages={message}>
+        <body
+          className={`${inter.className} ${audrey.variable} ${josefin_sans.variable} ${lato.className}`}
+        >
+          <Navbar />
+          {children}
+          <Footer />
+        </body>
+      </NextIntlClientProvider>
     </html>
   );
 }

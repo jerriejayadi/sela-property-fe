@@ -1,9 +1,12 @@
 "use client";
 
+import LanguageToggle from "@/components/Molecules/LanguageToggle";
 import { toTitleCase } from "@/utils/general";
 import { HambergerMenu } from "iconsax-react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export const navigation = [
   {
@@ -28,25 +31,54 @@ export const navigation = [
   },
   {
     name: "contact",
-    title: (
-      <div className={`flex items-center gap-2`}>
-        <div>
-          <Image width={20} height={20} alt={``} src={`/icons/ion_call.png`} />
-        </div>
-        <div>(0361) 555-222</div>
-      </div>
-    ),
+    title: <LanguageToggle />,
     url: "",
   },
 ];
 
 export default function Navbar() {
+  const t = useTranslations("navbar");
+  const [navbarBackground, setNavbarBackground] = useState<boolean>(false);
+  const [lastScrollY, setLastScrollY] = useState<number>(0);
+  const [show, setShow] = useState<boolean>(true);
+
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 75) {
+      setNavbarBackground(true);
+    } else {
+      setNavbarBackground(false);
+    }
+  });
+
+  const controlNavbar = () => {
+    if (window.scrollY > lastScrollY) {
+      // if scroll down hide the navbar
+      setShow(false);
+    } else {
+      // if scroll up show the navbar
+      setShow(true);
+    }
+
+    // remember current page location to use in the next move
+    setLastScrollY(window.scrollY);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", controlNavbar);
+
+    // cleanup function
+    return () => {
+      window.removeEventListener("scroll", controlNavbar);
+    };
+  }, [lastScrollY]);
   return (
     <div
       onClick={(e) => {
         e.stopPropagation();
       }}
-      className={`fixed top-0 py-5 px-8 md:px-20 md:py-10 flex items-center justify-between w-full z-50`}
+      className={`fixed top-0 py-5 px-8 md:px-20 md:py-8 flex items-center justify-between w-full z-50 transition-all duration-300 ${
+        navbarBackground && "bg-black bg-opacity-80 backdrop-blur-sm"
+      }`}
     >
       <Link href={`/`} className={`flex items-center gap-2 md:gap-4`}>
         <Image
@@ -67,7 +99,12 @@ export default function Navbar() {
             {rows.url.length === 0 ? (
               rows.title
             ) : (
-              <Link href={rows.url}>{rows.title}</Link>
+              <Link
+                className={`hover:text-primary active:text-primary`}
+                href={rows.url}
+              >
+                {t(rows.name)}
+              </Link>
             )}
           </div>
         ))}

@@ -24,7 +24,7 @@ export default function Newsletter() {
               className={`w-full md:p-6 px-3 py-2 text-sm text-black`}
               type={`email`}
             />
-            <button className={`bg-primary text-white px-3 md:px-6 md:py-5 text-sm active:bg-opacity-80`}>Send</button>
+            <button className={`bg-primary text-white px-3 md:px-6 md:py-5 text-sm active:bg-opacity-80 `}>Send</button>
           </div>
           <div>
             or Contact | Whatsapp 081242424543 | Email dandyhosea4@gmail.com
