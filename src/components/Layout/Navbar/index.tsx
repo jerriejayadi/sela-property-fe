@@ -42,14 +42,6 @@ export default function Navbar() {
   const [lastScrollY, setLastScrollY] = useState<number>(0);
   const [show, setShow] = useState<boolean>(true);
 
-  window.addEventListener("scroll", () => {
-    if (window.scrollY > 75) {
-      setNavbarBackground(true);
-    } else {
-      setNavbarBackground(false);
-    }
-  });
-
   const controlNavbar = () => {
     if (window.scrollY > lastScrollY) {
       // if scroll down hide the navbar
@@ -67,6 +59,14 @@ export default function Navbar() {
     window.addEventListener("scroll", controlNavbar);
 
     // cleanup function
+
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 75) {
+        setNavbarBackground(true);
+      } else {
+        setNavbarBackground(false);
+      }
+    });
     return () => {
       window.removeEventListener("scroll", controlNavbar);
     };
