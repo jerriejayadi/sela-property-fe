@@ -19,7 +19,7 @@ export default function LanguageToggle() {
           onChange("id");
         }}
         className={`${
-          locale === "id" && "font-bold underline "
+          locale === "id" && "font-bold underline text-primary "
         } cursor-pointer hover:underline`}
       >
         ID
@@ -30,7 +30,7 @@ export default function LanguageToggle() {
           onChange("en");
         }}
         className={`${
-          locale === "en" && "font-bold underline "
+          locale === "en" && "font-bold underline text-primary"
         } cursor-pointer hover:underline`}
       >
         EN
