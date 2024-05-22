@@ -8,6 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import NavbarMobile from "../NavbarMobile";
+import { usePathname } from "next/navigation";
 
 export const navigation = [
   {
@@ -38,6 +39,8 @@ export const navigation = [
 ];
 
 export default function Navbar() {
+  const path = usePathname();
+  const paths = path.split(`/`);
   const t = useTranslations("navbar");
   const [navbarBackground, setNavbarBackground] = useState<boolean>(false);
   const [isNavbarMobile, setIsNavbarMobile] = useState<boolean>(false);
@@ -52,16 +55,13 @@ export default function Navbar() {
       // if scroll up show the navbar
       setShow(true);
     }
-
     // remember current page location to use in the next move
     setLastScrollY(window.scrollY);
   };
 
   useEffect(() => {
     window.addEventListener("scroll", controlNavbar);
-
     // cleanup function
-
     window.addEventListener("scroll", () => {
       if (window.scrollY > 75) {
         setNavbarBackground(true);
@@ -73,6 +73,7 @@ export default function Navbar() {
       window.removeEventListener("scroll", controlNavbar);
     };
   }, [lastScrollY]);
+
   return (
     <div
       onClick={(e) => {
@@ -103,7 +104,11 @@ export default function Navbar() {
               rows.title
             ) : (
               <Link
-                className={`hover:text-primary active:text-primary`}
+                className={`${
+                  paths.some((rows2) => rows2 === rows.name)
+                    ? "text-primary underline"
+                    : "text-white"
+                } hover:text-primary active:text-primary`}
                 href={rows.url}
               >
                 {t(rows.name)}
