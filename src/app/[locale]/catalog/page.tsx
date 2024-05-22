@@ -2,26 +2,102 @@
 
 import ItemsCard from "@/components/Organism/ItemsCard";
 import { mockUpList } from "@/utils/mockUpData";
+import { Check } from "iconsax-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export interface FilterProps {
+  keyword: string;
+  sort: string;
   availability: string;
   propertyType: string[];
+  location: string[];
+  minPrice: number;
+  maxPrice: number;
 }
 
 export default function Catalog() {
   const [filter, setFilter] = useState<FilterProps>({
+    keyword: "",
+    sort: "",
     availability: "",
     propertyType: [],
+    location: [],
+    minPrice: 0,
+    maxPrice: 0,
   });
 
-  useEffect(() => {}, [filter]);
+  const propertyType = [
+    {
+      name: "Villa",
+      value: "villa",
+    },
+    {
+      name: "House",
+      value: "house",
+    },
+    {
+      name: "Apartment",
+      value: "apartment",
+    },
+  ];
+
+  const location = [
+    {
+      name: "Villa",
+      value: "villa",
+    },
+    {
+      name: "House",
+      value: "house",
+    },
+    {
+      name: "Apartment",
+      value: "apartment",
+    },
+  ];
+
+  const handlePropertyType = (value: string, action: string) => {
+    let propertyTypeTemp = filter.propertyType;
+    if (action === "add") {
+      propertyTypeTemp.push(value);
+    } else {
+      propertyTypeTemp.splice(propertyTypeTemp.indexOf(value), 1);
+    }
+    console.log(propertyTypeTemp);
+    setFilter({ ...filter, propertyType: propertyTypeTemp });
+  };
+
+  const handleLocation = (value: string, action: string) => {
+    let locationTemp = filter.location;
+    if (action === "add") {
+      locationTemp.push(value);
+    } else {
+      locationTemp.splice(locationTemp.indexOf(value), 1);
+    }
+    setFilter({ ...filter, location: locationTemp });
+  };
+
+  const resetFilter = () => {
+    setFilter({
+      keyword: "",
+      sort: "",
+      availability: "",
+      propertyType: [],
+      location: [],
+      minPrice: 0,
+      maxPrice: 0,
+    });
+  };
+
+  useEffect(() => {
+    console.log(filter);
+  }, [filter]);
   return (
     <div className="relative">
       <div className={`relative `}>
         <div className={`bg-catalog_bg_image w-full  bg-cover`}>
-          <div className="bg-black bg-opacity-50 h-full w-full px-20 py-40">
+          <div className="bg-black bg-opacity-60 h-full w-full px-20 py-40">
             <div className={`text-6xl font-josefin_sans font-bold`}>
               Discover your Dream <br /> Future Living
             </div>
@@ -31,7 +107,7 @@ export default function Catalog() {
       <div className={`bg-white px-20 py-10 text-[#2F2F2F]`}>
         <div className={`flex items-start justify-center  divide-x-2`}>
           {/* filter */}
-          <div className={`px-8 py-4 divide-y-2 w-1/3 font-lato`}>
+          <div className={`mr-8 py-4 divide-y-2 w-[320px] font-lato`}>
             <div className={`flex items-center gap-6 py-4`}>
               <Image
                 alt={``}
@@ -46,7 +122,7 @@ export default function Catalog() {
               <div className={`flex flex-col gap-3 text-sm`}>
                 <div className={`flex items-center`}>
                   <input
-                    className={`accent-primary`}
+                    className={`accent-primary w-5 h-5`}
                     type="radio"
                     id={`hot_listing`}
                     value={`hot_listing`}
@@ -61,7 +137,7 @@ export default function Catalog() {
                 </div>
                 <div className={`flex items-center`}>
                   <input
-                    className={`accent-primary`}
+                    className={`accent-primary w-5 h-5`}
                     type="radio"
                     id={`available`}
                     value={`available`}
@@ -77,7 +153,7 @@ export default function Catalog() {
                 <div className={`flex items-center`}>
                   {" "}
                   <input
-                    className={`accent-primary`}
+                    className={`accent-primary w-5 h-5`}
                     type="radio"
                     id={`sold`}
                     value={`sold`}
@@ -97,9 +173,29 @@ export default function Catalog() {
               <div
                 className={`flex items-center justify-start gap-2 mb-3 flex-wrap text-sm`}
               >
-                <div className={`px-3 py-2 bg-primary text-white`}>Villa</div>
-                <div className={`px-3 py-2 bg-[#F9F9F9]`}>House</div>
-                <div className={`px-3 py-2 bg-[#F9F9F9]`}>Apartment</div>
+                {propertyType.map((rows, index) => (
+                  <div
+                    onClick={() => {
+                      handlePropertyType(
+                        rows.value,
+                        filter.propertyType.some(
+                          (rows2) => rows2 === rows.value
+                        )
+                          ? "remove"
+                          : "add"
+                      );
+                    }}
+                    className={`px-3 py-2 cursor-pointer ${
+                      filter?.propertyType?.some(
+                        (rows2) => rows2 === rows.value
+                      )
+                        ? "bg-primary text-white"
+                        : "bg-[#F9F9F9] text-black"
+                    }`}
+                  >
+                    {rows.name}
+                  </div>
+                ))}
               </div>
               <button className={`w-fit hover:underline mb-3 text-xs`}>
                 Lainnya
@@ -108,15 +204,25 @@ export default function Catalog() {
             <div>
               <div className={`my-3 font-semibold`}>Location</div>
               <div className={`flex gap-3 max-w-full flex-wrap mb-3 text-sm`}>
-                <div className={`px-3 py-2 bg-primary text-white`}>Villa</div>
-                <div className={`px-3 py-2 bg-[#F9F9F9]`}>House</div>
-                <div className={`px-3 py-2 bg-[#F9F9F9]`}>Apartment</div>
-                <div className={`px-3 py-2 bg-[#F9F9F9]`}>House</div>
-                <div className={`px-3 py-2 bg-[#F9F9F9]`}>Apartment</div>
-                <div className={`px-3 py-2 bg-[#F9F9F9]`}>House</div>
-                <div className={`px-3 py-2 bg-[#F9F9F9]`}>Apartment</div>
-                <div className={`px-3 py-2 bg-[#F9F9F9]`}>House</div>
-                <div className={`px-3 py-2 bg-[#F9F9F9]`}>Apartment</div>
+                {location.map((rows, index) => (
+                  <div
+                    onClick={() => {
+                      handleLocation(
+                        rows.value,
+                        filter.location.some((rows2) => rows2 === rows.value)
+                          ? "remove"
+                          : "add"
+                      );
+                    }}
+                    className={`px-3 py-2 cursor-pointer  ${
+                      filter.location.some((rows2) => rows2 === rows.value)
+                        ? "bg-primary text-white"
+                        : "bg-[#F9F9F9] text-black"
+                    }`}
+                  >
+                    {rows.name}
+                  </div>
+                ))}
               </div>
               <button className={`w-fit hover:underline mb-3 text-xs`}>
                 Lainnya
@@ -127,6 +233,10 @@ export default function Catalog() {
               <div className={`flex items-center gap-1 mb-3`}>
                 <div>Rp</div>
                 <input
+                  onChange={(e) => {
+                    setFilter({ ...filter, minPrice: Number(e.target.value) });
+                  }}
+                  value={filter.minPrice}
                   placeholder={"0"}
                   type="text"
                   className={`w-full p-2 bg-[#F9F9F9] `}
@@ -137,6 +247,10 @@ export default function Catalog() {
                 <div className={`h-[1px] w-10 bg-black`} />
                 <div>Rp</div>
                 <input
+                  onChange={(e) => {
+                    setFilter({ ...filter, maxPrice: Number(e.target.value) });
+                  }}
+                  value={filter.maxPrice}
                   placeholder={"0"}
                   type="text"
                   className={`w-full p-2 bg-[#F9F9F9]`}
@@ -148,7 +262,7 @@ export default function Catalog() {
             </div>
             <div>
               <div className={`my-3 font-semibold`}>Surface Area</div>
-              <div className={`flex items-center gap-1`}>
+              <div className={`flex items-center gap-1 mb-3 text-sm`}>
                 <select className={`w-full bg-[#F9F9F9] p-2 text-[#787878]`}>
                   <option>Min Area</option>
                 </select>
@@ -160,7 +274,7 @@ export default function Catalog() {
             </div>
             <div>
               <div className={`my-3 font-semibold`}>Room Area</div>
-              <div className={`flex flex-col gap-1`}>
+              <div className={`flex flex-col gap-1 mb-3`}>
                 <select className={`w-full bg-[#F9F9F9] p-2 text-[#787878]`}>
                   <option>Amount of Bedroom</option>
                 </select>
@@ -169,14 +283,15 @@ export default function Catalog() {
                 </select>
               </div>
             </div>
-            <div>
+            <div className={`flex flex-col`}>
               <div className={`my-3 font-semibold`}>Other Facilities</div>
               <div className={`flex flex-col gap-4`}>
                 <div className={`flex items-center gap-2`}>
                   <input
-                    className="accent-primary rounded-lg w-6 h-6"
+                    className="accent-primary rounded-[4px] w-6 h-6 "
                     type="checkbox"
-                  />{" "}
+                  />
+
                   <label>Security 24 hours</label>
                 </div>
                 <div className={`flex items-center gap-2`}>
@@ -184,17 +299,25 @@ export default function Catalog() {
                     className="accent-primary rounded-lg w-6 h-6"
                     type="checkbox"
                   />{" "}
-                  <label>Security 24 hours</label>
+                  <label>CCTV</label>
                 </div>
               </div>
-              <div className={`flex items-center gap-2 mt-2 w-full`}>
+              <div
+                className={`flex flex-shrink-1 items-center gap-2 mt-2 w-full`}
+              >
                 <button
-                  className={`text-primary w-full py-4 px-11 border border-opacity-10 border-black active:bg-black active:bg-opacity-5`}
+                  onClick={() => {
+                    resetFilter();
+                  }}
+                  className={` text-primary flex justify-center flex-grow py-4 border border-opacity-10 border-black active:bg-black active:bg-opacity-5`}
                 >
                   Reset
                 </button>
                 <button
-                  className={`bg-primary w-full text-white py-4 px-11 active:bg-opacity-80`}
+                  onClick={() => {
+                    console.log(filter);
+                  }}
+                  className={`bg-primary flex justify-center flex-grow  text-white py-4  active:bg-opacity-80`}
                 >
                   Apply Filter
                 </button>
@@ -203,19 +326,31 @@ export default function Catalog() {
           </div>
 
           {/* catalog */}
-          <div className={`px-8 flex flex-col gap-3 divide-y-2 w-2/3`}>
+          <div className={`px-8 flex flex-col gap-3 divide-y-2 w-full`}>
             {/* search bar */}
-            <div className={`flex divide-x-2 items-center`}>
-              <div className={`w-full`}>
+            <div className={`flex divide-x-2 items-center `}>
+              <div className={`w-full pr-3`}>
                 <input
+                  onChange={(e) => {
+                    setFilter({ ...filter, keyword: e.target.value });
+                  }}
+                  value={filter.keyword}
                   className={`w-full px-2 py-4`}
                   type={`text`}
                   placeholder={"Search For Icon"}
                 />
               </div>
               <div>
-                <select>
-                  <option>Hello</option>
+                <select
+                  onChange={(e) => {
+                    setFilter({ ...filter, sort: e.target.value });
+                  }}
+                >
+                  <option selected value="">
+                    Sort By
+                  </option>
+                  <option value="asc">Asc</option>
+                  <option value="desc">Desc</option>
                 </select>
               </div>
             </div>
