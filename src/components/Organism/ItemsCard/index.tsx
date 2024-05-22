@@ -49,8 +49,11 @@ export default function ItemsCard({
           />
         </div>
         <button
-          className={`bg-primary text-white p-3 w-fit h-fit absolute top-0 flex items-center justify-center my-auto mx-auto transition-all duration-300 ${
-            hovered ? "block" : "hidden"
+          onClick={() => {
+            alert("clicked detail");
+          }}
+          className={`bg-primary text-white p-3 w-fit h-fit absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center my-auto mx-auto transition-all duration-300 ${
+            hovered ? "opacity-100" : "opacity-0"
           }`}
         >
           See Details
