@@ -2,11 +2,12 @@
 
 import LanguageToggle from "@/components/Molecules/LanguageToggle";
 import { toTitleCase } from "@/utils/general";
-import { HambergerMenu } from "iconsax-react";
+import { CloseCircle, HambergerMenu } from "iconsax-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import NavbarMobile from "../NavbarMobile";
 
 export const navigation = [
   {
@@ -39,6 +40,7 @@ export const navigation = [
 export default function Navbar() {
   const t = useTranslations("navbar");
   const [navbarBackground, setNavbarBackground] = useState<boolean>(false);
+  const [isNavbarMobile, setIsNavbarMobile] = useState<boolean>(false);
   const [lastScrollY, setLastScrollY] = useState<number>(0);
   const [show, setShow] = useState<boolean>(true);
 
@@ -76,9 +78,10 @@ export default function Navbar() {
       onClick={(e) => {
         e.stopPropagation();
       }}
-      className={`fixed top-0 py-5 px-8 md:px-20 md:py-8 flex items-center justify-between w-full z-50 transition-all duration-300 ${
-        navbarBackground && "bg-black bg-opacity-80 backdrop-blur-sm"
-      }`}
+      className={`fixed top-0 h-fit py-5 px-8 md:px-20 md:py-8 flex items-center justify-between w-full z-50 transition-all duration-300 ${
+        (navbarBackground || isNavbarMobile) &&
+        "bg-black bg-opacity-80 backdrop-blur-sm"
+      } `}
     >
       <Link href={`/`} className={`flex items-center gap-2 md:gap-4`}>
         <Image
@@ -110,8 +113,60 @@ export default function Navbar() {
         ))}
       </div>
       <div className="flex md:hidden">
-        <HambergerMenu />
+        <HambergerMenu
+          className={`z-50 transition-all duration-1000 ${
+            isNavbarMobile ? "hidden" : "flex"
+          }`}
+          onClick={() => {
+            setIsNavbarMobile(true);
+          }}
+        />
+        <CloseCircle
+          className={`z-50 transition-all duration-1000 ${
+            isNavbarMobile ? "flex" : "hidden"
+          }`}
+          onClick={() => {
+            setIsNavbarMobile(false);
+          }}
+        />
       </div>
+      <div
+        onClick={() => {
+          setIsNavbarMobile(false);
+        }}
+        className={`fixed inset-0 bg-inherit  h-screen justify-center  p-6 transition-all duration-700 ${
+          isNavbarMobile
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 -translate-y-full"
+        } `}
+      >
+        <div
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+          className={`mt-[75px] flex flex-col gap-4`}
+        >
+          {navigation.map((rows, index) => (
+            <>
+              {rows.url.length > 0 && (
+                <Link
+                  className={`hover:text-primary active:text-primary`}
+                  href={rows.url}
+                  key={index}
+                >
+                  {t(rows.name)}
+                </Link>
+              )}
+            </>
+          ))}
+        </div>
+      </div>
+      {/* <NavbarMobile
+        isOpen={isNavbarMobile}
+        onClose={() => {
+          setIsNavbarMobile(false);
+        }}
+      /> */}
     </div>
   );
 }
