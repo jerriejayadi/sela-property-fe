@@ -65,10 +65,32 @@ export default function ItemsCard({
         <div className={`text-black flex flex-col gap-4`}>
           <div className={`text-sm md:text-2xl font-josefin_sans`}>
             <div className={`font-bold`}>IDR {price}</div>
-            <div className={`font-normal text-xs`}>{propertyName}</div>
+            <div className={`font-normal `}>{propertyName}</div>
           </div>
           <div className={`font-light text-xs`}>
             Landsize {landSize} sqm, Buildsize {buildSize} sqm
+          </div>
+          <div className={`flex`}>
+            <div className={`flex items-center `}>
+              <Image
+                className={`w-3 h-3 md:w-6 md:h-6`}
+                alt={``}
+                src={`/icons/mdi_bedroom.svg`}
+                width={24}
+                height={24}
+              />
+              <div>{bedRoom}</div>
+            </div>
+            <div className={`flex items-center `}>
+              <Image
+                className={`w-3 h-3 md:w-6 md:h-6`}
+                alt={``}
+                src={`/icons/cbi_roomsbathroom.png`}
+                width={24}
+                height={24}
+              />
+              <div>{bathRoom}</div>
+            </div>
           </div>
           <div className="flex items-center">
             <Image
@@ -82,30 +104,6 @@ export default function ItemsCard({
           </div>
         </div>
         {/* right desc */}
-        <div
-          className={`text-black text-xs md:text-xl font-light flex md:flex-col`}
-        >
-          <div className={`flex items-center `}>
-            <Image
-              className={`w-3 h-3 md:w-6 md:h-6`}
-              alt={``}
-              src={`/icons/mdi_bedroom.svg`}
-              width={24}
-              height={24}
-            />
-            <div>{bedRoom}</div>
-          </div>
-          <div className={`flex items-center `}>
-            <Image
-              className={`w-3 h-3 md:w-6 md:h-6`}
-              alt={``}
-              src={`/icons/cbi_roomsbathroom.png`}
-              width={24}
-              height={24}
-            />
-            <div>{bathRoom}</div>
-          </div>
-        </div>
       </div>
     </div>
   );
