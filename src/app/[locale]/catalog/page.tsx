@@ -175,6 +175,7 @@ export default function Catalog() {
               >
                 {propertyType.map((rows, index) => (
                   <div
+                    key={index}
                     onClick={() => {
                       handlePropertyType(
                         rows.value,
@@ -206,6 +207,7 @@ export default function Catalog() {
               <div className={`flex gap-3 max-w-full flex-wrap mb-3 text-sm`}>
                 {location.map((rows, index) => (
                   <div
+                    key={index}
                     onClick={() => {
                       handleLocation(
                         rows.value,
