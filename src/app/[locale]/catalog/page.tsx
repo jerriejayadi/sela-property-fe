@@ -1,8 +1,12 @@
 "use client";
 
+import Increment from "@/components/Molecules/Increment";
+import FilterModal from "@/components/Organism/FilterModal";
 import ItemsCard from "@/components/Organism/ItemsCard";
+import SortModal from "@/components/Organism/SortModal";
+import { useDebounce } from "@/utils/general";
 import { mockUpList } from "@/utils/mockUpData";
-import { Check } from "iconsax-react";
+import { AddCircle, Check, Filter, MinusCirlce, Sort } from "iconsax-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
@@ -11,20 +15,34 @@ export interface FilterProps {
   sort: string;
   availability: string;
   propertyType: string[];
-  location: string[];
+  location: string;
   minPrice: number;
   maxPrice: number;
+  minArea: number;
+  maxArea: number;
+  bedRoom: number;
+  bathRoom: number;
+  facilities: string[];
 }
 
 export default function Catalog() {
+  const [sortModal, setSortModal] = useState<boolean>(false);
+  const [filterModal, setFilterModal] = useState<boolean>(false);
+  const [searched, setSearched] = useState<boolean>(false);
+
   const [filter, setFilter] = useState<FilterProps>({
     keyword: "",
     sort: "",
     availability: "",
     propertyType: [],
-    location: [],
+    location: "",
     minPrice: 0,
     maxPrice: 0,
+    minArea: 0,
+    maxArea: 0,
+    bedRoom: 0,
+    bathRoom: 0,
+    facilities: [],
   });
 
   const propertyType = [
@@ -68,46 +86,73 @@ export default function Catalog() {
     setFilter({ ...filter, propertyType: propertyTypeTemp });
   };
 
-  const handleLocation = (value: string, action: string) => {
-    let locationTemp = filter.location;
-    if (action === "add") {
-      locationTemp.push(value);
-    } else {
-      locationTemp.splice(locationTemp.indexOf(value), 1);
-    }
-    setFilter({ ...filter, location: locationTemp });
-  };
+  // const handleLocation = (value: string, action: string) => {
+  //   let locationTemp = filter.location;
+  //   if (action === "add") {
+  //     locationTemp.push(value);
+  //   } else {
+  //     locationTemp.splice(locationTemp.indexOf(value), 1);
+  //   }
+  //   setFilter({ ...filter, location: locationTemp });
+  // };
 
+  const onIncrementChange = (
+    key: "bedRoom" | "bathRoom",
+    behavior: "add" | "subtract"
+  ) => {
+    const filterTemp = { ...filter };
+    if (behavior === "add") {
+      filterTemp[key] = filterTemp[key] + 1;
+    } else {
+      if (filterTemp[key] !== 0) {
+        filterTemp[key] = filterTemp[key] - 1;
+      } else {
+        filterTemp[key] = 0;
+      }
+    }
+    setFilter(filterTemp);
+  };
   const resetFilter = () => {
     setFilter({
       keyword: "",
       sort: "",
       availability: "",
       propertyType: [],
-      location: [],
+      location: "",
       minPrice: 0,
       maxPrice: 0,
+      minArea: 0,
+      maxArea: 0,
+      bedRoom: 0,
+      bathRoom: 0,
+      facilities:[],
     });
   };
+
+  const search = useDebounce(filter.location, 1000);
 
   useEffect(() => {
     console.log(filter);
   }, [filter]);
+
+  useEffect(() => {}, [search]);
   return (
     <div className="relative">
       <div className={`relative `}>
         <div className={`bg-catalog_bg_image w-full  bg-cover`}>
-          <div className="bg-black bg-opacity-60 h-full w-full px-20 py-40">
+          <div className="bg-black bg-opacity-60 h-full w-full px-8 md:px-20 py-40">
             <div className={`text-6xl font-josefin_sans font-bold`}>
               Discover your Dream <br /> Future Living
             </div>
           </div>
         </div>
       </div>
-      <div className={`bg-white px-20 py-10 text-[#2F2F2F]`}>
-        <div className={`flex items-start justify-center  divide-x-2`}>
+      <div className={`bg-white px-4 lg:px-20 py-10 text-[#2F2F2F]`}>
+        <div className={`flex items-start justify-center  md:divide-x-2`}>
           {/* filter */}
-          <div className={`mr-8 py-4 divide-y-2 w-[320px] font-lato`}>
+          <div
+            className={`mr-8 py-4 divide-y-2 md:w-[320px] font-lato md:block hidden`}
+          >
             <div className={`flex items-center gap-6 py-4`}>
               <Image
                 alt={``}
@@ -205,7 +250,55 @@ export default function Catalog() {
             <div>
               <div className={`my-3 font-semibold`}>Location</div>
               <div className={`flex gap-3 max-w-full flex-wrap mb-3 text-sm`}>
-                {location.map((rows, index) => (
+                <div className={`relative flex w-full`}>
+                  <input
+                    value={filter.location}
+                    onKeyDown={() => {
+                      setSearched(false);
+                    }}
+                    onChange={(e) => {
+                      setSearched(true);
+                      setFilter({ ...filter, location: e.target.value });
+                    }}
+                    placeholder={`Location`}
+                    type={`text`}
+                    className={`w-full border border-gray-500 rounded-lg px-3 py-3`}
+                  />
+                  <div
+                    className={`absolute  flex-col gap-3 top-10 py-3 px-5 bg-white border border-gray-500 shadow-sm w-full max-h-[100px] overflow-auto ${
+                      searched ? "flex" : "hidden"
+                    }`}
+                  >
+                    <div
+                      onClick={() => {
+                        setFilter({ ...filter, location: "Gianyar" });
+                        setSearched(false);
+                      }}
+                      className={`w-full`}
+                    >
+                      Gianyar
+                    </div>
+                    <div
+                      onClick={() => {
+                        setFilter({ ...filter, location: "Canggu" });
+                        setSearched(false);
+                      }}
+                      className={`w-full`}
+                    >
+                      Canggu
+                    </div>
+                    <div
+                      onClick={() => {
+                        setFilter({ ...filter, location: "Kuta" });
+                        setSearched(false);
+                      }}
+                      className={`w-full`}
+                    >
+                      Kuta
+                    </div>
+                  </div>
+                </div>
+                {/* {location.map((rows, index) => (
                   <div
                     key={index}
                     onClick={() => {
@@ -224,11 +317,11 @@ export default function Catalog() {
                   >
                     {rows.name}
                   </div>
-                ))}
+                ))} */}
               </div>
-              <button className={`w-fit hover:underline mb-3 text-xs`}>
+              {/* <button className={`w-fit hover:underline mb-3 text-xs`}>
                 Lainnya
-              </button>
+              </button> */}
             </div>
             <div>
               <div className={`my-3 font-semibold`}>Price</div>
@@ -276,13 +369,49 @@ export default function Catalog() {
             </div>
             <div>
               <div className={`my-3 font-semibold`}>Room Area</div>
-              <div className={`flex flex-col gap-1 mb-3`}>
-                <select className={`w-full bg-[#F9F9F9] p-2 text-[#787878]`}>
-                  <option>Amount of Bedroom</option>
-                </select>
-                <select className={`w-full bg-[#F9F9F9] p-2 text-[#787878]`}>
-                  <option>Amount of Bathroom</option>
-                </select>
+              <div className={`flex flex-col gap-4 mb-4`}>
+                <div className="flex items-center justify-between">
+                  <div className={`flex items-center`}>
+                    <Image
+                      className={`w-3 h-3 md:w-6 md:h-6`}
+                      alt={``}
+                      src={`/icons/mdi_bedroom.svg`}
+                      width={24}
+                      height={24}
+                    />
+                    Bed Room
+                  </div>
+                  <Increment
+                    value={filter.bedRoom}
+                    onSubtract={() => {
+                      onIncrementChange("bedRoom", "subtract");
+                    }}
+                    onAdd={() => {
+                      onIncrementChange("bedRoom", "add");
+                    }}
+                  />
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className={`flex items-center`}>
+                    <Image
+                      className={`w-3 h-3 md:w-6 md:h-6`}
+                      alt={``}
+                      src={`/icons/cbi_roomsbathroom.png`}
+                      width={24}
+                      height={24}
+                    />
+                    Bath Room
+                  </div>
+                  <Increment
+                    value={filter.bathRoom}
+                    onSubtract={() => {
+                      onIncrementChange("bathRoom", "subtract");
+                    }}
+                    onAdd={() => {
+                      onIncrementChange("bathRoom", "add");
+                    }}
+                  />
+                </div>
               </div>
             </div>
             <div className={`flex flex-col`}>
@@ -328,7 +457,7 @@ export default function Catalog() {
           </div>
 
           {/* catalog */}
-          <div className={`px-8 flex flex-col gap-3 divide-y-2 w-full`}>
+          <div className={`md:px-8 flex flex-col gap-3 divide-y-2 w-full`}>
             {/* search bar */}
             <div className={`flex divide-x-2 items-center `}>
               <div className={`w-full pr-3`}>
@@ -337,13 +466,14 @@ export default function Catalog() {
                     setFilter({ ...filter, keyword: e.target.value });
                   }}
                   value={filter.keyword}
-                  className={`w-full px-2 py-4`}
+                  className={`w-full px-3  md:py-4 py-3 border-2 border-gray-400 rounded-lg`}
                   type={`text`}
                   placeholder={"Search For Icon"}
                 />
               </div>
-              <div>
-                <select
+              <div className={`ml-3 flex items-center gap-3`}>
+                {/* <select
+                  className={`hidden md:block`}
                   onChange={(e) => {
                     setFilter({ ...filter, sort: e.target.value });
                   }}
@@ -353,12 +483,42 @@ export default function Catalog() {
                   </option>
                   <option value="asc">Asc</option>
                   <option value="desc">Desc</option>
-                </select>
+                </select> */}
+                <div className={`flex items-center gap-3 ml-3`}>
+                  <button
+                    onClick={() => {
+                      setFilterModal(true);
+                    }}
+                    className={`outline outline-1 outline-gray-400 rounded-full px-2 py-1 md:hidden hover:outline-primary hover:bg-primary hover:text-white active:outline-primary active:bg-primary active:text-white`}
+                  >
+                    <Filter className={`w-5 h-5`} />
+                  </button>
+                  <button
+                    onClick={() => {
+                      setSortModal(true);
+                    }}
+                    className={`outline outline-1 outline-gray-400 rounded-full px-2 py-1 hover:outline-primary hover:bg-primary hover:text-white active:outline-primary active:bg-primary active:text-white`}
+                  >
+                    <Sort className={`w-5 h-5`} />
+                  </button>
+                  <SortModal
+                    open={sortModal}
+                    onClose={function (): void {
+                      setSortModal(false);
+                    }}
+                    onSubmit={function (_args: string): void {
+                      setFilter({ ...filter, sort: _args });
+                      setSortModal(false);
+                    }}
+                  />
+                </div>
               </div>
             </div>
 
             {/* Item List */}
-            <div className={`grid grid-cols-3 gap-8 pt-10`}>
+            <div
+              className={`grid grid-cols-2 lg:grid-cols-3 gap-2 md:gap-8 pt-10`}
+            >
               {mockUpList.map((rows, index) => (
                 <ItemsCard
                   key={index}
@@ -375,6 +535,15 @@ export default function Catalog() {
           </div>
         </div>
       </div>
+      <FilterModal
+        open={filterModal}
+        onClose={function (): void {
+          setFilterModal(false);
+        }}
+        onSubmit={function (_args: string): void {
+          setFilterModal(false);
+        }}
+      />
     </div>
   );
 }
