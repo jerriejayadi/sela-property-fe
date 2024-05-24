@@ -19,17 +19,17 @@ export const navigation = [
   {
     name: "hot_listing",
     title: "Hot Listing",
-    url: "/catalog",
+    url: "/hot_listing",
   },
   {
     name: "about_us",
     title: "About Us",
-    url: "/catalog",
+    url: "/about_us",
   },
   {
     name: "faq",
     title: "F.A.Q",
-    url: "/catalog",
+    url: "/faq",
   },
   {
     name: "contact",
@@ -84,7 +84,7 @@ export default function Navbar() {
         "bg-black bg-opacity-80 backdrop-blur-sm"
       } `}
     >
-      <Link href={`/`} className={`flex items-center gap-2 md:gap-4`}>
+      <Link href={`/`} className={`flex items-center gap-2 md:gap-4 z-50`}>
         <Image
           className={`w-8 h-8 md:w-12 md:h-12`}
           src={"/images/sela-logo.svg"}
@@ -97,7 +97,7 @@ export default function Navbar() {
           {"Sela Property".toUpperCase()}
         </div>
       </Link>
-      <div className={`items-center gap-16 hidden md:flex`}>
+      <div className={`items-center md:gap-10 lg:gap-16 hidden md:flex`}>
         {navigation?.map((rows, index) => (
           <div key={index}>
             {rows.url.length === 0 ? (
