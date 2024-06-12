@@ -2,7 +2,7 @@ export const mockUpList = [
   {
     images: [`/images/bg-landing-page.png`, `/images/background-image.jpg`],
     price: 3000000,
-    propertyName: "Luxury Villa Ubud",
+    propertyName: "Luxury Villa Ubud Sangat Indah dan rupawan sekali wawwwwwwww",
     landSize: 300,
     buildSize: 400,
     location: "Ubud, Bali",

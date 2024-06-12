@@ -25,3 +25,14 @@ export const useDebounce = (value: any, delay = 500) => {
 
   return debouncedValue;
 };
+
+export const currencyFormat = (value: string) => {
+  if (value) {
+    return value
+      .replace(/^0+/, "")
+      .replace(/(?!\.)\D/g, "")
+      .replace(/(?<=\..*)\./g, "")
+      .replace(/(?<=\.\d\d).*/g, "")
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
+};

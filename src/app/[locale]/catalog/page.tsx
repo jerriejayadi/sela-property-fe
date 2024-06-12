@@ -8,6 +8,7 @@ import { useDebounce } from "@/utils/general";
 import { mockUpList } from "@/utils/mockUpData";
 import { AddCircle, Check, Filter, MinusCirlce, Sort } from "iconsax-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export interface FilterProps {
@@ -26,6 +27,8 @@ export interface FilterProps {
 }
 
 export default function Catalog() {
+  const router = useRouter();
+
   const [sortModal, setSortModal] = useState<boolean>(false);
   const [filterModal, setFilterModal] = useState<boolean>(false);
   const [searched, setSearched] = useState<boolean>(false);
@@ -125,7 +128,7 @@ export default function Catalog() {
       maxArea: 0,
       bedRoom: 0,
       bathRoom: 0,
-      facilities:[],
+      facilities: [],
     });
   };
 
@@ -140,9 +143,11 @@ export default function Catalog() {
     <div className="relative">
       <div className={`relative `}>
         <div className={`bg-catalog_bg_image w-full  bg-cover`}>
-          <div className="bg-black bg-opacity-60 h-full w-full px-8 md:px-20 py-40">
-            <div className={`text-6xl font-josefin_sans font-bold`}>
-              Discover your Dream <br /> Future Living
+          <div className="bg-black bg-opacity-60 h-full w-full px-8 py-20 md:px-20 md:py-40">
+            <div
+              className={`text-2xl md:text-6xl font-montserrat font-bold tracking-widest`}
+            >
+              DISCOVER YOUR DREAM <br /> FUTURE LIVING
             </div>
           </div>
         </div>
@@ -466,7 +471,7 @@ export default function Catalog() {
                     setFilter({ ...filter, keyword: e.target.value });
                   }}
                   value={filter.keyword}
-                  className={`w-full px-3  md:py-4 py-3 border-2 border-gray-400 rounded-lg`}
+                  className={`w-full px-3 text-sm  md:py-4 py-2 border-2 border-gray-400 rounded-lg`}
                   type={`text`}
                   placeholder={"Search For Icon"}
                 />
@@ -517,7 +522,7 @@ export default function Catalog() {
 
             {/* Item List */}
             <div
-              className={`grid grid-cols-2 lg:grid-cols-3 gap-2 md:gap-8 pt-10`}
+              className={`grid grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-2 md:gap-8 md:pt-10`}
             >
               {mockUpList.map((rows, index) => (
                 <ItemsCard
@@ -529,6 +534,9 @@ export default function Catalog() {
                   location={rows.location}
                   bathRoom={rows.bathRoom}
                   bedRoom={rows.bedRoom}
+                  onClick={() => {
+                    router.push(`/property/detail/0x`);
+                  }}
                 />
               ))}
             </div>

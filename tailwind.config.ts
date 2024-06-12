@@ -19,6 +19,7 @@ const config: Config = {
         audrey: ["var(--font-audrey)"],
         josefin_sans: ["var(--font-josefin_sans)"],
         lato: ["var(--font-lato)"],
+        montserrat:["var(--font-montserrat)"]
       },
       colors: {
         primary: "#E05824",

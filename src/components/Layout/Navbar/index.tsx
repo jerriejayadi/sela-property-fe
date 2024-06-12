@@ -22,9 +22,9 @@ export const navigation = [
     url: "/hot_listing",
   },
   {
-    name: "about_us",
+    name: "about",
     title: "About Us",
-    url: "/about_us",
+    url: "/about",
   },
   {
     name: "faq",

@@ -13,6 +13,7 @@ interface ItemsCardProps {
   location: string;
   bathRoom: number;
   bedRoom: number;
+  onClick?: () => void;
 }
 export default function ItemsCard({
   className,
@@ -23,12 +24,11 @@ export default function ItemsCard({
   location,
   bathRoom,
   bedRoom,
+  onClick,
 }: ItemsCardProps) {
   const [hovered, setHovered] = useState<boolean>(false);
   return (
-    <div
-      className={`flex flex-col border border-[#E9E9E9] shadow-md ${className} rounded-lg`}
-    >
+    <div className={`flex flex-col  ${className} rounded-lg`}>
       {/* Image */}
       <div
         className={`relative cursor-pointer`}
@@ -41,7 +41,7 @@ export default function ItemsCard({
       >
         <div className={`${hovered && "bg-black bg-opacity-80 z-50"}`}>
           <Carousel
-            className={`h-[250px] md:h-[300px] rounded-t-lg`}
+            className={`h-[145px] md:h-[300px] rounded-t-lg`}
             slides={[
               `/images/bg-landing-page.png`,
               `/images/background-image.jpg`,
@@ -49,9 +49,7 @@ export default function ItemsCard({
           />
         </div>
         <button
-          onClick={() => {
-            alert("clicked detail");
-          }}
+          onClick={onClick}
           className={`bg-primary text-white p-3 w-fit h-fit absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center my-auto mx-auto transition-all duration-300 ${
             hovered ? "opacity-100" : "opacity-0"
           }`}
@@ -60,47 +58,56 @@ export default function ItemsCard({
         </button>
       </div>
       {/* description */}
-      <div className={`flex flex-col md:flex-row justify-between p-3`}>
+      <div className={`flex flex-col md:flex-row justify-between p-2`}>
         {/* left desc */}
-        <div className={`text-black flex flex-col gap-4`}>
+        <div
+          className={`text-black flex flex-col justify-between  gap-1 md:gap-4`}
+        >
           <div className={`text-sm md:text-2xl font-josefin_sans`}>
-            <div className={`font-bold`}>IDR {price}</div>
-            <div className={`font-normal `}>{propertyName}</div>
+            <div className={`font-bold text-sm md:text-2xl`}>IDR {price}</div>
+            <div
+              className={`font-normal line-clamp-2 text-xs md:text-2xl h-[32px] md:h-[64px]`}
+            >
+              {propertyName}
+            </div>
           </div>
-          <div className={`font-light text-xs`}>
-            Landsize {landSize} sqm, Buildsize {buildSize} sqm
-          </div>
-          <div className={`flex`}>
-            <div className={`flex items-center `}>
+          <div className={`flex flex-col gap-1 md:gap-4`}>
+            <div className={`font-light text-[10px] md:text-base`}>
+              Landsize {landSize} sqm, Buildsize {buildSize} sqm
+            </div>
+
+            <div className={`flex`}>
+              <div className={`flex items-center `}>
+                <Image
+                  className={`w-4 h-4 md:w-6 md:h-6 shrink-0 object-cover`}
+                  alt={``}
+                  src={`/icons/mdi_bedroom.svg`}
+                  width={24}
+                  height={24}
+                />
+                <div className={`text-xs md:text-base`}>{bedRoom}</div>
+              </div>
+              <div className={`flex items-center `}>
+                <Image
+                  className={`w-4 h-4 md:w-6 md:h-6 shrink-0 object-cover`}
+                  alt={``}
+                  src={`/icons/cbi_roomsbathroom.png`}
+                  width={24}
+                  height={24}
+                />
+                <div className={`text-xs md:text-base`}>{bathRoom}</div>
+              </div>
+            </div>
+            <div className="flex items-center">
               <Image
                 className={`w-3 h-3 md:w-6 md:h-6`}
                 alt={``}
-                src={`/icons/mdi_bedroom.svg`}
+                src={`/icons/mdi_location.svg`}
                 width={24}
                 height={24}
               />
-              <div>{bedRoom}</div>
+              <div className={`font-light text-xs md:text-xl `}>{location}</div>
             </div>
-            <div className={`flex items-center `}>
-              <Image
-                className={`w-3 h-3 md:w-6 md:h-6`}
-                alt={``}
-                src={`/icons/cbi_roomsbathroom.png`}
-                width={24}
-                height={24}
-              />
-              <div>{bathRoom}</div>
-            </div>
-          </div>
-          <div className="flex items-center">
-            <Image
-              className={`w-3 h-3 md:w-6 md:h-6`}
-              alt={``}
-              src={`/icons/mdi_location.svg`}
-              width={24}
-              height={24}
-            />
-            <div className={`font-light text-xs md:text-xl`}>{location}</div>
           </div>
         </div>
         {/* right desc */}
