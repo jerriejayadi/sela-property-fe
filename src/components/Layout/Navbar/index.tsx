@@ -158,6 +158,7 @@ export default function Navbar() {
             <>
               {rows.url.length > 0 && (
                 <Link
+                  onClick={()=>{setIsNavbarMobile(false)}}
                   className={`hover:text-primary active:text-primary`}
                   href={rows.url}
                   key={index}

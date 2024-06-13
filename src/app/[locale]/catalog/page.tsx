@@ -152,7 +152,7 @@ export default function Catalog() {
           </div>
         </div>
       </div>
-      <div className={`bg-white px-4 lg:px-20 py-10 text-[#2F2F2F]`}>
+      <div className={`bg-white p-5  lg:px-20 lg:py-10 text-[#2F2F2F]`}>
         <div className={`flex items-start justify-center  md:divide-x-2`}>
           {/* filter */}
           <div
@@ -462,7 +462,7 @@ export default function Catalog() {
           </div>
 
           {/* catalog */}
-          <div className={`md:px-8 flex flex-col gap-3 divide-y-2 w-full`}>
+          <div className={`md:px-8 flex flex-col gap-5 divide-y-2 w-full`}>
             {/* search bar */}
             <div className={`flex divide-x-2 items-center `}>
               <div className={`w-full pr-3`}>

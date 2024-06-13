@@ -5,7 +5,7 @@ export default function Newsletter() {
   return (
     <div className={`bg-[url('/images/newsletter-bg.jpeg')]  `}>
       <div
-        className={`bg-black bg-opacity-50 px-8 md:px-20 py-14 flex flex-col md:flex-row md:items-end justify-between`}
+        className={`bg-black bg-opacity-50 px-5 md:px-20 py-14 flex flex-col md:flex-row md:items-end justify-between`}
       >
         <div className={`md:w-[40%]`}>
           <div className={`text-2xl md:text-4xl font-bold`}>
@@ -23,7 +23,7 @@ export default function Newsletter() {
           </div>
           <WhatsappCTA />
           <div>
-            or Contact | Whatsapp 081242424543 | Email dandyhosea4@gmail.com
+            or Email dandyhosea4@gmail.com
           </div>
         </div>
       </div>

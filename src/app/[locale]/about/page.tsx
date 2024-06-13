@@ -18,7 +18,7 @@ export default function AboutUs() {
       <div className={` text-black`}>
         {/* section 1 */}
         <div
-          className={`bg-white flex md:flex-row flex-col-reverse items-center gap-10 p-6 md:p-20`}
+          className={`bg-white flex md:flex-row flex-col-reverse items-center gap-10 p-5 md:p-20`}
         >
           {/* text */}
           <div className={`md:w-[55%]`}>
@@ -54,7 +54,7 @@ export default function AboutUs() {
         </div>
 
         {/* section 2 */}
-        <div className={`bg-[#F3F3F3] px-4 py-5 md:p-20`}>
+        <div className={`bg-[#F3F3F3] p-5 md:p-20`}>
           {/* title */}
           <div>
             <div
@@ -136,7 +136,7 @@ export default function AboutUs() {
         </div>
 
         {/* section 3 */}
-        <div className={`px-4 py-5 md:p-20 bg-white `}>
+        <div className={`p-5 md:p-20 bg-white `}>
           <div
             className={`text-2xl md:text-[40px] font-montserrat font-semibold`}
           >
