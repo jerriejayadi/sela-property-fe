@@ -1,7 +1,8 @@
 {
   "navbar": {
+    "home": "Home",
     "catalog": "Catalog",
-    "hot_listing":"Hot Listing",
+    "hot_listing": "Hot Listing",
     "about": "About Us",
     "faq": "F.A.Q"
   },

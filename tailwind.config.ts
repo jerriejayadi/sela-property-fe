@@ -8,6 +8,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      screens: {
+        xs: "375px",
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
@@ -19,7 +22,7 @@ const config: Config = {
         audrey: ["var(--font-audrey)"],
         josefin_sans: ["var(--font-josefin_sans)"],
         lato: ["var(--font-lato)"],
-        montserrat:["var(--font-montserrat)"]
+        montserrat: ["var(--font-montserrat)"],
       },
       colors: {
         primary: "#E05824",

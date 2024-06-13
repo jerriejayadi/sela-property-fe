@@ -12,25 +12,30 @@ import { usePathname } from "next/navigation";
 
 export const navigation = [
   {
+    name: "home",
+    title: "Home",
+    url: "/",
+  },
+  {
     name: "catalog",
     title: "Catalog",
     url: "/catalog",
   },
-  {
-    name: "hot_listing",
-    title: "Hot Listing",
-    url: "/hot_listing",
-  },
+  // {
+  //   name: "hot_listing",
+  //   title: "Hot Listing",
+  //   url: "/hot_listing",
+  // },
   {
     name: "about",
     title: "About Us",
     url: "/about",
   },
-  {
-    name: "faq",
-    title: "F.A.Q",
-    url: "/faq",
-  },
+  // {
+  //   name: "faq",
+  //   title: "F.A.Q",
+  //   url: "/faq",
+  // },
   {
     name: "contact",
     title: <LanguageToggle />,
@@ -82,9 +87,9 @@ export default function Navbar() {
       className={`fixed top-0 h-fit py-5 px-8 md:px-20 md:py-8 flex items-center justify-between w-full z-50 transition-all duration-300 ${
         (navbarBackground || isNavbarMobile) &&
         "bg-black bg-opacity-80 backdrop-blur-sm"
-      } `}
+      } z-50 `}
     >
-      <Link href={`/`} className={`flex items-center gap-2 md:gap-4 z-50`}>
+      <Link href={`/`} className={`flex items-center gap-2 md:gap-4 `}>
         <Image
           className={`w-8 h-8 md:w-12 md:h-12`}
           src={"/images/sela-logo.svg"}
@@ -139,10 +144,8 @@ export default function Navbar() {
         onClick={() => {
           setIsNavbarMobile(false);
         }}
-        className={`fixed inset-0 bg-inherit  h-screen justify-center  p-6 transition-all duration-700 ${
-          isNavbarMobile
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 -translate-y-full"
+        className={`fixed inset-0 bg-inherit  h-screen justify-center  p-6 transition-all duration-700 z-40 ${
+          isNavbarMobile ? " translate-y-0" : " -translate-y-full"
         } `}
       >
         <div

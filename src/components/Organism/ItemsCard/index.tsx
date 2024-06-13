@@ -28,7 +28,7 @@ export default function ItemsCard({
 }: ItemsCardProps) {
   const [hovered, setHovered] = useState<boolean>(false);
   return (
-    <div className={`flex flex-col  ${className} rounded-lg`}>
+    <div className={`flex flex-col  ${className} rounded-lg shadow-md`}>
       {/* Image */}
       <div
         className={`relative cursor-pointer`}

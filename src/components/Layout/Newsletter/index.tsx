@@ -1,3 +1,6 @@
+"use client";
+import WhatsappCTA from "@/components/Organism/WhatsappCTA";
+
 export default function Newsletter() {
   return (
     <div className={`bg-[url('/images/newsletter-bg.jpeg')]  `}>
@@ -18,14 +21,7 @@ export default function Newsletter() {
           <div className={` text-2xl md:text-3xl font-bold`}>
             Connect With Us
           </div>
-          <div className={`flex`}>
-            <input
-              placeholder={`Email Address`}
-              className={`w-full md:p-6 px-3 py-2 text-sm text-black`}
-              type={`email`}
-            />
-            <button className={`bg-primary text-white px-3 md:px-6 md:py-5 text-sm active:bg-opacity-80 `}>Send</button>
-          </div>
+          <WhatsappCTA />
           <div>
             or Contact | Whatsapp 081242424543 | Email dandyhosea4@gmail.com
           </div>

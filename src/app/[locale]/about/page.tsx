@@ -54,7 +54,7 @@ export default function AboutUs() {
         </div>
 
         {/* section 2 */}
-        <div className={`bg-[#F3F3F3] p-6 md:p-20`}>
+        <div className={`bg-[#F3F3F3] px-4 py-5 md:p-20`}>
           {/* title */}
           <div>
             <div
@@ -136,14 +136,14 @@ export default function AboutUs() {
         </div>
 
         {/* section 3 */}
-        <div className={`p-6 md:p-20 bg-white `}>
+        <div className={`px-4 py-5 md:p-20 bg-white `}>
           <div
             className={`text-2xl md:text-[40px] font-montserrat font-semibold`}
           >
             Your Dream House Will Come True
           </div>
           <div
-            className={`font-lato font-light text-secondary text-base md:text-xl leading-7 md:leading-9 mt-10`}
+            className={`font-lato font-light text-secondary text-base md:text-xl leading-7 md:leading-9 mt-3 md:mt-10`}
           >
             Lorem ipsum dolor sit amet consectetur. Aliquet gravida aliquam quis
             tincidunt. Hac tellus justo eu tempor. Placerat ullamcorper libero

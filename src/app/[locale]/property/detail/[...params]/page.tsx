@@ -1,10 +1,11 @@
 "use client";
 
 import {
-  ArrowDown2,
+  ArrowCircleLeft,
+  ArrowCircleLeft2,
+  ArrowCircleRight,
+  ArrowCircleRight2,
   ArrowRight2,
-  ArrowUp2,
-  Check,
   Location,
   TickCircle,
   Whatsapp,
@@ -18,6 +19,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import WhatsappCTA from "@/components/Organism/WhatsappCTA";
 import SuggestedProperty from "@/components/Layout/Suggested";
+import PropertyDetailCard from "@/components/Organism/PropertyDetailCard";
 
 const ImageList = [
   {
@@ -79,6 +81,11 @@ export default function PropertyDetail({
     });
   };
 
+  const handleCTA = () => {
+    window.open(`https://wa.me/+6281234567890`, "_blank");
+    router.push(`/thankyou`);
+  };
+
   useEffect(() => {
     fetchPropertyDetail();
   }, []);
@@ -87,65 +94,95 @@ export default function PropertyDetail({
       {/*Photo */}
       <div className={`relative`}>
         <div
-          className={`relative flex flex-col md:flex-row items-start md:items-end md:justify-between p-5 md:px-20 md:py-16 h-64 md:h-screen object-cover bg-cover transition-all duration-500`}
-          style={{ backgroundImage: `url(${selectedImage})` }}
+          className={`relative bg-gradient-to-b from-transparent to-black flex flex-col md:flex-row items-start md:items-end md:justify-between p-5 md:px-20 md:py-16 h-[529px] md:h-screen object-cover bg-cover transition-all duration-500`}
+          style={{ backgroundImage: `url(${ImageList[current].url})` }}
         >
+          <div className={`absolute top-0 h-[529px] bg-black z-50`} />
           {/* property detail */}
-          <div className={`flex flex-col justify-end h-full `}>
+          <div className={`flex flex-col justify-end h-full w-full `}>
             <div
-              className={`bg-primary text-white p-[2px] md:p-2 w-fit text-[5px] md:text-sm`}
+              className={`bg-primary text-white rounded-md p-2 w-fit text-xs md:text-sm`}
             >
               Best Deal
             </div>
             <div
-              className={`font-josefin_sans font-bold text-sm md:text-4xl mt-1 md:mt-7`}
+              className={`font-montserrat font-bold text-xl md:text-4xl mt-1 md:mt-7`}
             >
               IDR {currencyFormat(data?.price.toString() as string)}
             </div>
-            <div className={`font-josefin_sans text-2xl md:text-6xl md:mt-2`}>
+            <div
+              className={`font-montserrat font-semibold text-4xl md:text-6xl md:mt-2`}
+            >
               {data?.title}
             </div>
-            <div className={`flex items-center md:mt-2`}>
-              <Location className={`w-1 h-1 md:w-6 md:h-6`} variant={`Bold`} />
-              <div
-                className={`font-josefin_sans font-light text-[8px] md:text-xl`}
-              >
-                Ubud, Bali
+            <div className={`flex items-center justify-between`}>
+              <div className={`flex items-center md:mt-2`}>
+                <Location
+                  className={`w-4 h-4 shrink-0 flex md:w-6 md:h-6`}
+                  variant={`Bold`}
+                />
+                <div className={`font-lato font-light text-sm md:text-xl`}>
+                  Ubud, Bali
+                </div>
               </div>
-            </div>
-          </div>
-          {/* image list */}
 
-          <div
-            className={`gap-2 md:justify-center  md:overflow-auto mt-3 md:mt-0`}
-          >
-            <div
-              style={{
-                transform: `translateY(-${current * 100}%)`,
-              }}
-              className={`flex shrink-0 md:justify-end md:flex-col md:items-center md:h-[448px] gap-2`}
-            >
-              {data?.images.slice(0, 3).map((rows, index) => (
-                <div
-                  key={index}
+              <div className={`absolute my-auto h-full left-4`}>
+                <button
                   onClick={() => {
-                    setSelectedImage(rows.url);
+                    previousSlide();
                   }}
                 >
-                  <Image
-                    className={`w-16 h-10 md:w-60 md:h-36  ${
-                      selectedImage === rows.url && "border-2 border-orange-300"
-                    }`}
-                    alt={``}
-                    loader={({ src }) => {
-                      return src;
-                    }}
-                    src={rows.url}
-                    width={1920}
-                    height={1080}
+                  <ArrowCircleLeft
+                    variant={`Bold`}
+                    className={`active:opacity-80 hover:opacity-80 flex shrink-0 w-10 h-10`}
                   />
-                </div>
-              ))}
+                </button>
+              </div>
+              <div className={`absolute my-auto h-full right-4`}>
+                <button
+                  onClick={() => {
+                    nextSlide();
+                  }}
+                >
+                  <ArrowCircleRight
+                    variant={`Bold`}
+                    className={`active:opacity-80 hover:opacity-80 flex shrink-0 w-10 h-10`}
+                  />
+                </button>
+              </div>
+            </div>
+            <div className={`flex justify-between w-full `}>
+              <div className={`flex gap-2 mt-4 justify-center `}>
+                {ImageList.map((rows, index) => (
+                  <div
+                    onClick={() => {
+                      setCurrent(index);
+                    }}
+                    key={index}
+                    className={`h-3 ${
+                      current === index
+                        ? "w-12 rounded-lg opacity-100"
+                        : "w-3 rounded-[100%] opacity-50"
+                    } bg-white  transition-all duration-500 cursor-pointer `}
+                  />
+                ))}
+              </div>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => {
+                    previousSlide();
+                  }}
+                >
+                  <ArrowCircleLeft2 className={`flex shrink-0 w-10 h-10`} />
+                </button>
+                <button
+                  onClick={() => {
+                    nextSlide();
+                  }}
+                >
+                  <ArrowCircleRight2 className={`flex shrink-0 w-10 h-10`} />
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -153,128 +190,96 @@ export default function PropertyDetail({
 
       {/* CTA */}
       <div
-        className={`w-full flex items-center bg-[#FFFFFF] text-black h-full drop-shadow-md  `}
+        className={`w-full fixed bottom-0 md:static flex items-center justify-between bg-[#FFFFFF] text-black  drop-shadow-md z-50 `}
       >
-        <div className={`w-[70%] text-2xl font-bold font-lato  pl-20 h-full `}>
+        <div
+          className={`md:w-[70%] text-xs md:text-2xl font-bold font-lato pl-2  md:pl-20 h-full `}
+        >
           Get the Help you Need, Contact Us!
         </div>
-        <div className="w-[30%] bg-primary ">
-          <WhatsappCTA />
+        <div className="md:w-[30%] bg-primary ">
+          <div
+            onClick={() => {
+              handleCTA();
+            }}
+            className={`w-full  bg-primary hover:bg-opacity-80 hover:cursor-pointer text-white  flex items-center justify-between transition-all duration-150 `}
+          >
+            <div
+              className={`flex items-center text-xs md:text-xl gap-5 pl-2 md:pl-10 `}
+            >
+              <Whatsapp
+                className={`w-5 h-5 md:w-10 md:h-10`}
+                variant={`Bold`}
+              />
+              <span className={`text-xs  md:block`}>Chat 081234567890</span>
+            </div>
+
+            <div className={`h-full px-4 py-6 md:p-8 text-white`}>
+              <ArrowRight2 className={`w-3 h-3 md:w-5 md:h-5 font-bold`} />
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Content */}
-      <div
-        className={`px-4 md:px-20 md:py-10 flex flex-col gap-12 bg-[#FCFCFC] `}
-      >
+      <div className={`px-4 md:px-20 md:py-10 flex flex-col bg-[#FCFCFC] `}>
         {/*  */}
         <div
-          className={`flex items-center lg:justify-between divide-x flex-wrap`}
+          className={`grid grid-cols-2 xs:grid-cols-3 mt-5 md:flex items-center lg:justify-between md:divide-x `}
         >
-          <div className={`flex items-center gap-1 pr-12`}>
-            <div className={`p-2`}>
-              <Image
-                alt={``}
-                src={`/icons/buildsize.png`}
-                width={29}
-                height={29}
-              />
-            </div>
-            <div className={`text-black tracking-widest`}>
-              <div className={`text-2xl font-bold text-black `}>
-                {data?.buildingSize}
-                <span className={`font-light `}>
-                  {data?.buildingSizeMeasurement}
-                </span>
-              </div>
-              <div className={`text-[10px]`}>Buildsize</div>
-            </div>
-          </div>
-          <div className={`flex items-center gap-1 px-12`}>
-            <div className={`p-2`}>
-              <Image
-                alt={``}
-                src={`/icons/landsize.png`}
-                width={29}
-                height={29}
-              />
-            </div>
-            <div className={`text-black tracking-widest`}>
-              <div className={`text-2xl font-bold text-black `}>
-                {data?.landSize}
-                <span className={`font-light `}>
-                  {data?.landSizeMeasurement}
-                </span>
-              </div>
-              <div className={`text-[10px]`}>Landsize</div>
-            </div>
-          </div>
-          <div className={`flex items-center gap-1 px-12  `}>
-            <div className={`p-2`}>
-              <Image
-                alt={``}
-                src={`/icons/bedroom.png`}
-                width={29}
-                height={29}
-              />
-            </div>
-            <div className={`text-black tracking-widest`}>
-              <div className={`text-2xl font-bold text-black `}>
-                {data?.bedRoomsAmount}
-              </div>
-              <div className={`text-[10px]`}>Bedroom</div>
-            </div>
-          </div>
-          <div className={`flex items-center gap-1 px-12`}>
-            <div className={`p-2`}>
-              <Image
-                alt={``}
-                src={`/icons/buildsize.png`}
-                width={29}
-                height={29}
-              />
-            </div>
-            <div className={`text-black tracking-widest`}>
-              <div className={`text-2xl font-bold text-black `}>
-                {data?.bathRoomsAmount}
-              </div>
-              <div className={`text-[10px]`}>Bathroom</div>
-            </div>
-          </div>
-          <div className={`flex items-center gap-1 px-12`}>
-            <div className={`p-2`}>
-              <Image
-                alt={``}
-                src={`/icons/cbi_roomsbathroom.png`}
-                width={29}
-                height={29}
-              />
-            </div>
-            <div className={`text-black tracking-widest`}>
-              <div className={`text-2xl font-bold text-black `}>
-                {data?.carParkAmount}
-              </div>
-              <div className={`text-[10px]`}>Carpark</div>
-            </div>
-          </div>
+          <PropertyDetailCard
+            props={"Buildsize"}
+            iconURL={"/icons/buildsize.png"}
+            value={data?.buildingSize ?? 0}
+            unitOfMeasurement={data?.buildingSizeMeasurement}
+          />
+          <PropertyDetailCard
+            className={`md:pl-12`}
+            props={"Landsize"}
+            iconURL={"/icons/landsize.png"}
+            value={data?.landSize ?? 0}
+            unitOfMeasurement={data?.landSizeMeasurement}
+          />
+          <PropertyDetailCard
+            className={`md:pl-12`}
+            props={"Bedroom"}
+            iconURL={"/icons/bedroom.png"}
+            value={data?.bedRoomsAmount ?? 0}
+          />
+          <PropertyDetailCard
+            className={`md:pl-12`}
+            props={"Bathroom"}
+            iconURL={"/icons/bathroom.png"}
+            value={data?.bathRoomsAmount ?? 0}
+          />
+          <PropertyDetailCard
+            className={`md:pl-12`}
+            props={"Carpark"}
+            iconURL={"/icons/carpark.png"}
+            value={data?.carParkAmount ?? 0}
+          />
         </div>
 
         {/* About Us */}
-        <div>
-          <div className={` md:text-2xl font-josefin_sans text-black`}>
+        <div className={`mt-2 md:mt-10`}>
+          <div
+            className={` md:text-2xl font-montserrat font-semibold text-black`}
+          >
             Description
           </div>
-          <div className="text-[10px] md:text-base mt-6 text-secondary">
+          <div className="font-lato font-light text-sm md:text-base mt-3 md:mt-6 text-secondary leading-6">
             {data?.description}
           </div>
         </div>
 
         {/* Key Features */}
-        <div>
-          <div className={`md:text-2xl font-josefin_sans text-black`}>
+        <div className={`mt-5 md:mt-10`}>
+          <div
+            className={`md:text-2xl font-montserrat font-semibold text-black`}
+          >
             Key Features
           </div>
-          <div className="text-[10px] md:text-base mt-6 text-secondary">
+          <div className="font-lato font-light text-sm leading-7 md:text-base mt-3 md:mt-6 text-secondary">
             Lorem ipsum dolor sit amet consectetur. Varius sagittis integer est
             leo. Arcu id orci condimentum malesuada iaculis a eget. Et nisi
             rhoncus fermentum nulla cras id adipiscing auctor senectus. Eget
@@ -282,66 +287,66 @@ export default function PropertyDetail({
             morbi lectus pharetra eleifend.
           </div>
           <div
-            className={`grid md:grid-cols-2 text-[10px] md:text-base mt-5 gap-y-3 `}
+            className={`font-lato font-light grid md:grid-cols-2 text-sm md:text-base mt-5 gap-y-3 `}
           >
-            <div className={`flex items-center gap-5`}>
-              <TickCircle className="text-green-500 w-5 h-5 md:w-9 md:h-9" />
+            <div className={`flex items-center gap-2 md:gap-5`}>
+              <TickCircle className="text-green-500 w-5 h-5 md:w-9 md:h-9 flex shrink-0" />
               <div className={`text-black`}>
                 Lorem ipsum dolor sit amet consectetur. Varius sagittis integer
                 est leo.{" "}
               </div>
             </div>
-            <div className={`flex items-center gap-5`}>
-              <TickCircle className="text-green-500 w-5 h-5 md:w-9 md:h-9" />
+            <div className={`flex items-center gap-2 md:gap-5`}>
+              <TickCircle className="text-green-500 w-5 h-5 md:w-9 md:h-9 flex shrink-0" />
               <div className={`text-black`}>
                 Lorem ipsum dolor sit amet consectetur. Varius sagittis integer
                 est leo.{" "}
               </div>
             </div>
-            <div className={`flex items-center gap-5`}>
-              <TickCircle className="text-green-500 w-5 h-5 md:w-9 md:h-9" />
+            <div className={`flex items-center gap-2 md:gap-5`}>
+              <TickCircle className="text-green-500 w-5 h-5 md:w-9 md:h-9 flex shrink-0" />
               <div className={`text-black`}>
                 Lorem ipsum dolor sit amet consectetur. Varius sagittis integer
                 est leo.{" "}
               </div>
             </div>
-            <div className={`flex items-center gap-5`}>
-              <TickCircle className="text-green-500 w-5 h-5 md:w-9 md:h-9" />
+            <div className={`flex items-center gap-2 md:gap-5`}>
+              <TickCircle className="text-green-500 w-5 h-5 md:w-9 md:h-9 flex shrink-0" />
               <div className={`text-black`}>
                 Lorem ipsum dolor sit amet consectetur. Varius sagittis integer
                 est leo.{" "}
               </div>
             </div>
-            <div className={`flex items-center gap-5`}>
-              <TickCircle className="text-green-500 w-5 h-5 md:w-9 md:h-9" />
+            <div className={`flex items-center gap-2 md:gap-5`}>
+              <TickCircle className="text-green-500 w-5 h-5 md:w-9 md:h-9 flex shrink-0" />
               <div className={`text-black`}>
                 Lorem ipsum dolor sit amet consectetur. Varius sagittis integer
                 est leo.{" "}
               </div>
             </div>
-            <div className={`flex items-center gap-5`}>
-              <TickCircle className="text-green-500 w-5 h-5 md:w-9 md:h-9" />
+            <div className={`flex items-center gap-2 md:gap-5`}>
+              <TickCircle className="text-green-500 w-5 h-5 md:w-9 md:h-9 flex shrink-0" />
               <div className={`text-black`}>
                 Lorem ipsum dolor sit amet consectetur. Varius sagittis integer
                 est leo.{" "}
               </div>
             </div>
-            <div className={`flex items-center gap-5`}>
-              <TickCircle className="text-green-500 w-5 h-5 md:w-9 md:h-9" />
+            <div className={`flex items-center gap-2 md:gap-5`}>
+              <TickCircle className="text-green-500 w-5 h-5 md:w-9 md:h-9 flex shrink-0" />
               <div className={`text-black`}>
                 Lorem ipsum dolor sit amet consectetur. Varius sagittis integer
                 est leo.{" "}
               </div>
             </div>
-            <div className={`flex items-center gap-5`}>
-              <TickCircle className="text-green-500 w-5 h-5 md:w-9 md:h-9" />
+            <div className={`flex items-center gap-2 md:gap-5`}>
+              <TickCircle className="text-green-500 w-5 h-5 md:w-9 md:h-9 flex shrink-0" />
               <div className={`text-black`}>
                 Lorem ipsum dolor sit amet consectetur. Varius sagittis integer
                 est leo.{" "}
               </div>
             </div>
-            <div className={`flex items-center gap-5`}>
-              <TickCircle className="text-green-500 w-5 h-5 md:w-9 md:h-9" />
+            <div className={`flex items-center gap-2 md:gap-5`}>
+              <TickCircle className="text-green-500 w-5 h-5 md:w-9 md:h-9 flex shrink-0" />
               <div className={`text-black`}>
                 Lorem ipsum dolor sit amet consectetur. Varius sagittis integer
                 est leo.{" "}
@@ -352,20 +357,22 @@ export default function PropertyDetail({
 
         {/* Property Gallery */}
         <div
-          className={`text-black relative ${
+          className={`mt-5 md:mt-10 text-black relative ${
             seeMorePhotos ? "h-full" : "h-[1000px] overflow-hidden "
           }`}
         >
           {!seeMorePhotos && (
             <div
-              className={`absolute w-full top-0 bg-gradient-to-b from-transparent from-60% h-[1000px] to-white z-50`}
+              className={`absolute w-full top-0 bg-gradient-to-b from-transparent from-60% h-[1000px] to-white z-30`}
             />
           )}
 
-          <div className={`md:text-2xl font-josefin_sans text-black`}>
+          <div
+            className={`py- md:text-2xl font-montserrat font-semibold text-black`}
+          >
             Property Gallery
           </div>
-          <div className={`grid grid-cols-2`}>
+          <div className={`grid md:grid-cols-2 gap-4 mt-4`}>
             {ImageList.map((rows, index) => (
               <div
                 key={index}
@@ -374,7 +381,7 @@ export default function PropertyDetail({
                 }}
               >
                 <Image
-                  className={`w-[622px] h-[427px] ${
+                  className={`md:w-[622px] md:h-[427px] ${
                     selectedImage === rows.url && "border-2 border-orange-300"
                   }`}
                   alt={``}
@@ -401,7 +408,7 @@ export default function PropertyDetail({
         )}
 
         {/* Suggested */}
-        <SuggestedProperty />
+        <SuggestedProperty className={`pt-4 md:pt-10 py-11`} />
       </div>
     </div>
   );
