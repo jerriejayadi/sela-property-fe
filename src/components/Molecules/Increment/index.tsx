@@ -1,7 +1,7 @@
 import { MinusCirlce, AddCircle } from "iconsax-react";
 
 interface IncrementProps {
-  value: number;
+  value: string | number;
   onSubtract: () => void;
   onAdd: () => void;
 }

@@ -3,12 +3,13 @@ import { useState } from "react";
 import Image from "next/image";
 import { FilterProps } from "@/app/[locale]/catalog/page";
 import Increment from "@/components/Molecules/Increment";
+import { currencyFormat } from "@/utils/general";
 
 interface SortModalProps {
   value?: string;
   open: boolean;
   onClose: () => void;
-  onSubmit: (_args: string) => void;
+  onSubmit: (_args: FilterProps) => void;
 }
 
 export default function FilterModal({
@@ -26,12 +27,12 @@ export default function FilterModal({
     availability: "",
     propertyType: [],
     location: "",
-    minPrice: 0,
-    maxPrice: 0,
-    minArea: 0,
-    maxArea: 0,
-    bedRoom: 0,
-    bathRoom: 0,
+    minPrice: "0",
+    maxPrice: "0",
+    minArea: "0",
+    maxArea: "0",
+    bedRoom: "0",
+    bathRoom: "0",
     facilities: [],
   });
   const propertyType = [
@@ -91,10 +92,10 @@ export default function FilterModal({
   ) => {
     const filterTemp = { ...filter };
     if (behavior === "add") {
-      filterTemp[key] = filterTemp[key] + 1;
+      filterTemp[key] = (Number(filterTemp[key]) + 1).toString();
     } else {
       if (filterTemp[key] !== 0) {
-        filterTemp[key] = filterTemp[key] - 1;
+        filterTemp[key] = (Number(filterTemp[key]) - 1).toString();
       } else {
         filterTemp[key] = 0;
       }
@@ -108,12 +109,12 @@ export default function FilterModal({
       availability: "",
       propertyType: [],
       location: "",
-      minPrice: 0,
-      maxPrice: 0,
-      minArea: 0,
-      maxArea: 0,
-      bedRoom: 0,
-      bathRoom: 0,
+      minPrice: "0",
+      maxPrice: "0",
+      minArea: "0",
+      maxArea: "0",
+      bedRoom: "0",
+      bathRoom: "0",
       facilities: [],
     });
   };
@@ -273,7 +274,10 @@ export default function FilterModal({
               <div>Rp</div>
               <input
                 onChange={(e) => {
-                  setFilter({ ...filter, minPrice: Number(e.target.value) });
+                  setFilter({
+                    ...filter,
+                    minPrice: currencyFormat(e.target.value),
+                  });
                 }}
                 value={filter.minPrice}
                 placeholder={"0"}
@@ -287,7 +291,10 @@ export default function FilterModal({
               <div>Rp</div>
               <input
                 onChange={(e) => {
-                  setFilter({ ...filter, maxPrice: Number(e.target.value) });
+                  setFilter({
+                    ...filter,
+                    maxPrice: currencyFormat(e.target.value),
+                  });
                 }}
                 value={filter.maxPrice}
                 placeholder={"0"}
@@ -302,13 +309,24 @@ export default function FilterModal({
           <div>
             <div className={`my-3 font-semibold`}>Surface Area</div>
             <div className={`flex items-center gap-1 mb-3 text-sm`}>
-              <select className={`w-full bg-[#F9F9F9] p-2 text-[#787878]`}>
+              <input
+                placeholder={`Min Area`}
+                className={`w-full bg-[#F9F9F9] p-2 placeholder:text-[#787878]`}
+              />
+              {/* <select className={`w-full bg-[#F9F9F9] p-2 text-[#787878]`}>
                 <option>Min Area</option>
-              </select>
+              </select> */}
               <div className={`h-[1px] w-10 bg-black `} />
-              <select className={`w-full bg-[#F9F9F9] p-2 text-[#787878]`}>
+              <input
+                onChange={(e) => {
+                  setFilter({ ...filter, maxArea: e.target.value });
+                }}
+                placeholder={`Max Area`}
+                className={`w-full bg-[#F9F9F9] p-2 placeholder:text-[#787878]`}
+              />
+              {/* <select className={`w-full bg-[#F9F9F9] p-2 text-[#787878]`}>
                 <option>Max Area</option>
-              </select>
+              </select> */}
             </div>
           </div>
           <div>
@@ -382,7 +400,7 @@ export default function FilterModal({
             >
               <button
                 onClick={() => {
-                  onClose();
+                  onSubmit(filter);
                 }}
                 className={`bg-primary flex justify-center flex-grow  text-white py-4  active:bg-opacity-80`}
               >

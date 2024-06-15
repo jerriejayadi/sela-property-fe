@@ -4,7 +4,7 @@ import Increment from "@/components/Molecules/Increment";
 import FilterModal from "@/components/Organism/FilterModal";
 import ItemsCard from "@/components/Organism/ItemsCard";
 import SortModal from "@/components/Organism/SortModal";
-import { useDebounce } from "@/utils/general";
+import { currencyFormat, useDebounce } from "@/utils/general";
 import { mockUpList } from "@/utils/mockUpData";
 import { AddCircle, Check, Filter, MinusCirlce, Sort } from "iconsax-react";
 import Image from "next/image";
@@ -17,12 +17,12 @@ export interface FilterProps {
   availability: string;
   propertyType: string[];
   location: string;
-  minPrice: number;
-  maxPrice: number;
-  minArea: number;
-  maxArea: number;
-  bedRoom: number;
-  bathRoom: number;
+  minPrice: string | number;
+  maxPrice: string | number;
+  minArea: string | number;
+  maxArea: string | number;
+  bedRoom: string | number;
+  bathRoom: string | number;
   facilities: string[];
 }
 
@@ -39,12 +39,12 @@ export default function Catalog() {
     availability: "",
     propertyType: [],
     location: "",
-    minPrice: 0,
-    maxPrice: 0,
-    minArea: 0,
-    maxArea: 0,
-    bedRoom: 0,
-    bathRoom: 0,
+    minPrice: "0",
+    maxPrice: "0",
+    minArea: "0",
+    maxArea: "0",
+    bedRoom: "0",
+    bathRoom: "0",
     facilities: [],
   });
 
@@ -105,12 +105,12 @@ export default function Catalog() {
   ) => {
     const filterTemp = { ...filter };
     if (behavior === "add") {
-      filterTemp[key] = filterTemp[key] + 1;
+      filterTemp[key] = (Number(filterTemp[key]) + 1).toString();
     } else {
       if (filterTemp[key] !== 0) {
-        filterTemp[key] = filterTemp[key] - 1;
+        filterTemp[key] = (Number(filterTemp[key]) - 1).toString();
       } else {
-        filterTemp[key] = 0;
+        filterTemp[key] = "0";
       }
     }
     setFilter(filterTemp);
@@ -334,7 +334,10 @@ export default function Catalog() {
                 <div>Rp</div>
                 <input
                   onChange={(e) => {
-                    setFilter({ ...filter, minPrice: Number(e.target.value) });
+                    setFilter({
+                      ...filter,
+                      minPrice: currencyFormat(e.target.value),
+                    });
                   }}
                   value={filter.minPrice}
                   placeholder={"0"}
@@ -348,7 +351,10 @@ export default function Catalog() {
                 <div>Rp</div>
                 <input
                   onChange={(e) => {
-                    setFilter({ ...filter, maxPrice: Number(e.target.value) });
+                    setFilter({
+                      ...filter,
+                      maxPrice: currencyFormat(e.target.value),
+                    });
                   }}
                   value={filter.maxPrice}
                   placeholder={"0"}
@@ -387,7 +393,7 @@ export default function Catalog() {
                     Bed Room
                   </div>
                   <Increment
-                    value={filter.bedRoom}
+                    value={filter.bedRoom as number}
                     onSubtract={() => {
                       onIncrementChange("bedRoom", "subtract");
                     }}
@@ -408,7 +414,7 @@ export default function Catalog() {
                     Bath Room
                   </div>
                   <Increment
-                    value={filter.bathRoom}
+                    value={filter.bathRoom as number}
                     onSubtract={() => {
                       onIncrementChange("bathRoom", "subtract");
                     }}
@@ -462,7 +468,7 @@ export default function Catalog() {
           </div>
 
           {/* catalog */}
-          <div className={`md:px-8 flex flex-col gap-5 divide-y-2 w-full`}>
+          <div className={`md:px-8 flex flex-col gap-3 md:gap-5 divide-y-2 w-full`}>
             {/* search bar */}
             <div className={`flex divide-x-2 items-center `}>
               <div className={`w-full pr-3`}>
@@ -522,7 +528,7 @@ export default function Catalog() {
 
             {/* Item List */}
             <div
-              className={`grid grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-2 md:gap-8 md:pt-10`}
+              className={`grid grid-cols-2 pt-4 lg:grid-cols-3 gap-x-4 gap-y-2 md:gap-8 md:pt-10`}
             >
               {mockUpList.map((rows, index) => (
                 <ItemsCard
@@ -548,8 +554,9 @@ export default function Catalog() {
         onClose={function (): void {
           setFilterModal(false);
         }}
-        onSubmit={function (_args: string): void {
+        onSubmit={function (_args: FilterProps): void {
           setFilterModal(false);
+          setFilter(_args);
         }}
       />
     </div>

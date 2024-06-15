@@ -1,10 +1,16 @@
+"use client";
+
 import ItemsCard from "@/components/Organism/ItemsCard";
 import Image from "next/image";
 import { mockUpList } from "@/utils/mockUpData";
+import { useRouter } from "next/navigation";
 
 export default function HotListing() {
+  const router = useRouter();
   return (
-    <div className={`flex flex-col w-full items-center px-3 py-12 md:px-20 md:py-20 bg-[#F3F3F3] `}>
+    <div
+      className={`flex flex-col w-full items-center px-3 py-12 md:px-20 md:py-20 bg-[#F3F3F3] `}
+    >
       {/* title */}
       <div className={`px-6`}>
         <div
@@ -12,7 +18,9 @@ export default function HotListing() {
         >
           Hot Listing
         </div>
-        <div className={`font-light mt-4 text-secondary text-center text-xl font-lato `}>
+        <div
+          className={`font-light mt-4 text-secondary text-center text-xl font-lato `}
+        >
           Lorem ipsum dolor sit amet consectetur. Lacus aliquet viverra lectus
         </div>
       </div>
@@ -29,11 +37,18 @@ export default function HotListing() {
             location={rows.location}
             bathRoom={rows.bathRoom}
             bedRoom={rows.bedRoom}
+            onClick={() => {
+              router.push(`/property/detail/0x`);
+            }}
           />
         ))}
       </div>
       <div className={`mt-10`}>
-        <button className={`w-full  text-primary hover:underline active:underline px-3 py-2 md:p-4 font-lato active:bg-opacity-50 `}>See More Listing</button>
+        <button
+          className={`w-full  text-primary hover:underline active:underline px-3 py-2 md:p-4 font-lato active:bg-opacity-50 `}
+        >
+          See More Listing
+        </button>
       </div>
     </div>
   );
