@@ -5,6 +5,7 @@ import {
   ArrowCircleLeft2,
   ArrowCircleRight,
   ArrowCircleRight2,
+  ArrowLeft2,
   ArrowRight2,
   Location,
   TickCircle,
@@ -97,6 +98,28 @@ export default function PropertyDetail({
           className={`relative bg-gradient-to-b from-transparent to-black flex flex-col md:flex-row items-start md:items-end md:justify-between p-5 md:px-20 md:py-16 h-[529px] md:h-screen object-cover bg-cover transition-all duration-500`}
           style={{ backgroundImage: `url(${ImageList[current].url})` }}
         >
+          <div className={`absolute top-0 bottom-0 h-fit my-auto  left-4`}>
+            <button
+              onClick={() => {
+                previousSlide();
+              }}
+            >
+              <ArrowLeft2
+                className={` active:opacity-80 flex shrink-0 w-10 h-10 p-2 shadow-2xl rounded-[100%] bg-white bg-opacity-50 text-white `}
+              />
+            </button>
+          </div>
+          <div className={`absolute my-auto h-fit top-0 bottom-0 right-4`}>
+            <button
+              onClick={() => {
+                nextSlide();
+              }}
+            >
+              <ArrowRight2
+                className={`active:opacity-80 flex shrink-0 w-10 h-10 p-2 shadow-2xl rounded-[100%] bg-white bg-opacity-50 text-white`}
+              />
+            </button>
+          </div>
           <div className={`absolute top-0 h-[529px] bg-black z-50`} />
           {/* property detail */}
           <div className={`flex flex-col justify-end h-full w-full `}>
@@ -125,33 +148,8 @@ export default function PropertyDetail({
                   Ubud, Bali
                 </div>
               </div>
-
-              <div className={`absolute my-auto h-full left-4`}>
-                <button
-                  onClick={() => {
-                    previousSlide();
-                  }}
-                >
-                  <ArrowCircleLeft
-                    variant={`Bold`}
-                    className={`active:opacity-80 hover:opacity-80 flex shrink-0 w-10 h-10`}
-                  />
-                </button>
-              </div>
-              <div className={`absolute my-auto h-full right-4`}>
-                <button
-                  onClick={() => {
-                    nextSlide();
-                  }}
-                >
-                  <ArrowCircleRight
-                    variant={`Bold`}
-                    className={`active:opacity-80 hover:opacity-80 flex shrink-0 w-10 h-10`}
-                  />
-                </button>
-              </div>
             </div>
-            <div className={`flex justify-between w-full `}>
+            <div className={`flex justify-center w-full `}>
               <div className={`flex gap-2 mt-4 justify-center `}>
                 {ImageList.map((rows, index) => (
                   <div
@@ -167,7 +165,7 @@ export default function PropertyDetail({
                   />
                 ))}
               </div>
-              <div className="flex gap-2">
+              {/* <div className="flex gap-2">
                 <button
                   onClick={() => {
                     previousSlide();
@@ -182,7 +180,7 @@ export default function PropertyDetail({
                 >
                   <ArrowCircleRight2 className={`flex shrink-0 w-10 h-10`} />
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
