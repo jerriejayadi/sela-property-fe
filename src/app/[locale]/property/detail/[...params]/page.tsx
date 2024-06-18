@@ -131,7 +131,7 @@ export default function PropertyDetail({
             <div
               className={`font-montserrat font-bold text-xl md:text-4xl mt-1 md:mt-7`}
             >
-              IDR {currencyFormat(data?.price.toString() as string)}
+              IDR {currencyFormat((data?.price.toString() as string) ?? "0")}
             </div>
             <div
               className={`font-montserrat font-semibold text-4xl md:text-6xl md:mt-2`}
