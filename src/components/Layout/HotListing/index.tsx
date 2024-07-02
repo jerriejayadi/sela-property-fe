@@ -4,8 +4,10 @@ import ItemsCard from "@/components/Organism/ItemsCard";
 import Image from "next/image";
 import { mockUpList } from "@/utils/mockUpData";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 export default function HotListing() {
+  const t = useTranslations("landing_page");
   const router = useRouter();
   return (
     <div
@@ -14,14 +16,14 @@ export default function HotListing() {
       {/* title */}
       <div className={`px-6`}>
         <div
-          className={`font-josefin_sans font-semibold text-3xl md:text-5xl text-center text-black`}
+          className={`font-montserrat font-semibold text-3xl md:text-5xl text-center text-black tracking-widest`}
         >
-          Hot Listing
+          HOT LISTING
         </div>
         <div
           className={`font-light mt-4 text-secondary text-center text-xl font-lato `}
         >
-          Lorem ipsum dolor sit amet consectetur. Lacus aliquet viverra lectus
+          {t("hot_listing_caption")}
         </div>
       </div>
       {/* items */}

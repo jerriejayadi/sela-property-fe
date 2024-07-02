@@ -7,7 +7,19 @@
     "faq": "F.A.Q"
   },
   "landing_page": {
-    "title": "Cara Terbaik untuk Menemukan Rumah Impian Masa Depan!",
-    "desc": "I'm Jerrie, Software Engineer from Indonesia, specialized in Front-End Development. Love to develop a user-friendly UI/UX"
+    "title": "Temukan Properti Impianmu di Bali",
+    "desc": "Selamat datang di Sela Property, agen properti terkemuka di Bali dengan daftar properti yang eksklusif dan luxury untuk anda. Temukan berbagai pilihan properti seperti hunian tepi pantai yang menakjubkan dan berbagai properti dengan kualitas yang terbaik. Mencari properti impian atau investasi Anda di Bali akan semakin mudah bersama kami.",
+    "about_us": "Berlokasi di Bali, Indonesia, Sela Property selalu memberikan pelayanan yang terbaik dan berintegritas dengan selalu mengutamakan kebutuhan klien kami. Dengan menguasai area Bali, tim agen properti kami berkomitmen untuk memberi Anda pengalaman dengan hasil yang optimal. Kami akan membawa anda terhubung dengan market, pembeli maupun penjual untuk memenuhi kebutuhan Anda.",
+    "hot_listing_caption": "Berikut adalah properti favorit pilihan kami.",
+    "newsletter_heading": "Jual properti anda lebih cepat bersama kami",
+    "newsletter_desc": "Jual propertimu lebih cepat bersama Sela Property, agen properti terpercaya di Bali. Dengan tim marketing, exclusive listing, dan koneksi yang luas kami memastikan penjualan anda lebih efisien. Percayakan properti anda kepada kami, kami akan memberikan pelayanan yang optimal dan profesional."
+  },
+  "about_us": {
+    "1_heading": "Komitmen kami",
+    "1_desc": "Sela Property berkomitmen untuk memberikan pelayanan properti yang paling tepercaya dan personal di Bali. Tim profesional berpengalaman kami memahami pasar lokal secara mendalam dan berdedikasi untuk berfokus pada kebutuhan klien dalam perjalanan untuk menemukan properti impian. Baik jual, beli, atau sewa, kepuasan klien menjadi prioritas dan tujuan utama kami<guidelines>Dengan integritas dan transparansi, kami memastikan pengalaman Anda bersama kami adalah yang terbaik. Dengan Sela Property, properti impian Anda dapat ditemukan mudah, dan kami senang hati untuk menjadikan mimpi anda realita.</guidelines>",
+    "2_heading": "Jangkauan area Bali yang menyeluruh",
+    "2_desc": "Sela Property menjangkau daerah secara menyeluruh di pulai Bali. Dengan koneksi yang luas dan keahlian kami, kami memiliki listing yang bervariasi baik itu berlokasi di pantai yang ramai di Seminyak atau tempat peristirahatan yang tenang di Ubud, kami akan menemukan pembeli yang tertarik, memaksimalkan peluang Anda untuk penjualan yang sukses. Percayakan kepada kami untuk membantu Anda mencapai tujuan properti Anda.",
+    "3_heading": "Pengalaman kami ",
+    "3_desc": "Tim berpengalaman kami berkomitmen untuk menemani klien melalui setiap langkah perjalanan properti anda, kami telah menangani ratusan klien baik secara lokal maupun internasional, dan membantu setiap kilien menemukan properti yang tepat dengan mudah dan efisien."
   }
 }

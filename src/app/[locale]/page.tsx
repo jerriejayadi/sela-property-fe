@@ -27,9 +27,9 @@ export default function Home() {
       <section className={`w-full`}>
         <HotListing />
       </section>
-      <section className={`w-full`}>
+      {/* <section className={`w-full`}>
         <ContactUs />
-      </section>
+      </section> */}
       <section className={`w-full`}>
         <Newsletter />
       </section>

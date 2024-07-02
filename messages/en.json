@@ -7,7 +7,19 @@
     "faq": "F.A.Q"
   },
   "landing_page": {
-    "title": "The Best Way to Find Your Perfect Home for Future!",
-    "desc": "I'm Jerrie, Software Engineer from Indonesia, specialized in Front-End Development. Love to develop a user-friendly UI/UX"
+    "title": "Discover your dream property in Bali!",
+    "desc": "Welcome to Sela Property, Bali’s premier real estate agent with exclusive and luxury listings. Explore our curated selection of stunning beachfront villas, outstanding design, and well-developed estates. Finding your dream home or investment in Bali has never been easier.",
+    "about_us": "Based in Bali, Indonesia, Sela Property is here to offer you valuable and honest service, most importantly we know how to put our clients' needs first. With expert local knowledge, our team of dedicated real estate agent commited to provide you a distinct advantage and best result. We will connect you with the marketplace, the buyers, sellers and neighbourhoods to achieve your final goals.",
+    "hot_listing_caption": "A selection of our favorite properties",
+    "newsletter_heading": "Sell your property faster with us",
+    "newsletter_desc": "Sell your property faster with Sela Property, Bali’s trusted real estate agent. Our expertise in marketing, exclusive listings, and extensive network ensures your property reaches the right buyers quickly and efficiently. Let us help you achieve a successful sale with our personalized and professional service."
+  },
+  "about_us": {
+    "1_heading": "Our commitment",
+    "1_desc": "Sela Property is committed to offer you the most trusted and personalized real estate services in Bali. Our team of experienced professionals understands the local market intricately and is dedicated to provide intentional, client-focused support throughout your property journey. Whether you're buying, selling, or renting, we approach every transaction with meticulous care and a deep commitment to your satisfaction.<guidelines>Through transparency and integrity, ensuring that your experience with us is smooth, informed, and rewarding. With Sela Property, your dream property in paradise is within reach, and we are here to make it a reality.</guidelines>",
+    "2_heading": "Bali-wide outreach",
+    "2_desc": "At Sela Property, our reach extends across the entirety of Bali. With our extensive network and local expertise, we ensure that our listing location may vary from all corners of the island. Whether it's a bustling beachfront in Seminyak or a serene retreat in Ubud, we connect your property with interested buyers, maximizing your chances of a successful sale. Trust us to help you reach your property goals and visions.",
+    "3_heading": "Our experience",
+    "3_desc": "Our experienced team is dedicated to guide all clients through every step of the real estate journey, we have manage hundreds of clients whether locally or internationally, and help them find the right property with ease and efficiency."
   }
 }

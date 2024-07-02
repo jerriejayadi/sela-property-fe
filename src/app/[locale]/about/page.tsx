@@ -1,7 +1,9 @@
 import Newsletter from "@/components/Layout/Newsletter";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 
 export default function AboutUs() {
+  const t = useTranslations("about_us");
   return (
     <main className={`bg-white `}>
       {/* header */}
@@ -25,21 +27,20 @@ export default function AboutUs() {
             <div
               className={`text-2xl md:text-5xl font-semibold font-montserrat`}
             >
-              Our Dream is to Help You Find Your Perfect Home for Future!
+              {t("1_heading")}
             </div>
             <div
               className={`font-lato text-base md:text-xl font-light text-secondary mt-10 leading-7 md:leading-9`}
             >
-              Lorem ipsum dolor sit amet consectetur. Aliquet gravida aliquam
-              quis tincidunt. Hac tellus justo eu tempor. Placerat ullamcorper
-              libero habitant eu diam congue ullamcorper. Adipiscing sagittis
-              facilisi gravida vitae diam faucibus pharetra nisl vitae. Tortor
-              platea eleifend in faucibus nec ac. Tellus feugiat vitae donec
-              turpis pretium sollicitudin ullamcorper facilisis. Praesent
-              ullamcorper id consectetur pellentesque sed vitae. Vitae etiam
-              pretium elit sodales lorem in arcu amet. Odio nibh nisi fames
-              aliquam vel aliquam malesuada non. Amet tortor aliquet augue est
-              malesuada quisque. Nullam pretium eget morbi tempor praesent.{" "}
+              {t.rich("1_desc", {
+                guidelines: (chunks) => (
+                  <>
+                    <br />
+                    <br />
+                    {chunks}
+                  </>
+                ),
+              })}
             </div>
           </div>
           {/* image */}
@@ -60,15 +61,12 @@ export default function AboutUs() {
             <div
               className={`text-2xl md:text-[40px] font-montserrat font-semibold`}
             >
-              Our Company Becomes Bigger
+              {t("2_heading")}
             </div>
             <div
               className={`text-secondary font-lato font-light mt-10 text-base md:text-xl leading-7 md:leading-9`}
             >
-              Lorem ipsum dolor sit amet consectetur. Aliquet gravida aliquam
-              quis tincidunt. Hac tellus justo eu tempor. Placerat ullamcorper
-              libero habitant eu diam congue ullamcorper. Adipiscing sagittis
-              facilisi gravida vitae diam faucibus pharetra nisl vitae.{" "}
+              {t("2_desc")}
             </div>
           </div>
           {/* content */}
@@ -90,46 +88,42 @@ export default function AboutUs() {
                 libero habitant eu diam congue ullamcorper.{" "}
               </div>
               <div
-                className={`mt-10 grid grid-cols-2  md:grid-cols-2 md:w-1/2 gap-x-12 gap-y-6 md:gap-12`}
+                className={`mt-10 grid grid-cols-2  md:grid-cols-2 gap-x-12 gap-y-6 md:gap-12`}
               >
-                <div className={`font-josefin_sans font-semibold`}>
+                <div className={`font-josefin_sans`}>
                   <div className={`text-primary text-4xl md:text-5xl`}>
-                    120+
+                    100+
                   </div>
                   <div
                     className={`text-[#2D2D2D] text-xl md:text-2xl font-lato font-light mt-3`}
                   >
-                    Properties
+                    Sold Properties
                   </div>
                 </div>
-                <div className={`font-josefin_sans font-semibold`}>
-                  <div className={`text-primary text-4xl md:text-5xl`}>
-                    120+
-                  </div>
+                <div className={`font-josefin_sans`}>
+                  <div className={`text-primary text-4xl md:text-5xl`}>10+</div>
                   <div
                     className={`text-[#2D2D2D] text-xl md:text-2xl font-lato font-light mt-3`}
                   >
-                    Properties
+                    Areas in Bali
                   </div>
                 </div>
-                <div className={`font-josefin_sans font-semibold`}>
-                  <div className={`text-primary text-4xl md:text-5xl`}>50+</div>
+                <div className={`font-josefin_sans`}>
+                  <div className={`text-primary text-4xl md:text-5xl`}>5+</div>
                   <div
                     className={`text-[#2D2D2D] text-xl md:text-2xl font-lato font-light mt-3`}
                   >
-                    Agents
+                    Years of experience
                   </div>
                 </div>
-                <div className={`font-josefin_sans font-semibold`}>
-                  <div className={`text-primary text-4xl md:text-5xl`}>
-                    120+
-                  </div>
-                  <div
-                    className={`text-[#2D2D2D] text-xl md:text-2xl font-lato font-light mt-3`}
-                  >
-                    Properties
-                  </div>
-                </div>
+                {/* <div className={`font-josefin_sans`}>
+          <div className={`text-primary text-4xl md:text-5xl`}>120+</div>
+          <div
+            className={`text-[#2D2D2D] text-xl md:text-2xl font-lato font-light mt-3`}
+          >
+            Properties
+          </div>
+        </div> */}
               </div>
             </div>
           </div>
@@ -140,15 +134,12 @@ export default function AboutUs() {
           <div
             className={`text-2xl md:text-[40px] font-montserrat font-semibold`}
           >
-            Your Dream House Will Come True
+            {t("3_heading")}
           </div>
           <div
             className={`font-lato font-light text-secondary text-base md:text-xl leading-7 md:leading-9 mt-3 md:mt-10`}
           >
-            Lorem ipsum dolor sit amet consectetur. Aliquet gravida aliquam quis
-            tincidunt. Hac tellus justo eu tempor. Placerat ullamcorper libero
-            habitant eu diam congue ullamcorper. Adipiscing sagittis facilisi
-            gravida vitae diam faucibus pharetra nisl vitae.
+            {t("3_desc")}
           </div>
           <div className={`flex gap-4 mt-4 w-full overflow-auto`}>
             <div className={`shrink-0`}>

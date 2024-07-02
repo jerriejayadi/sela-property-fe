@@ -1,7 +1,9 @@
 "use client";
 import WhatsappCTA from "@/components/Organism/WhatsappCTA";
+import { useTranslations } from "next-intl";
 
 export default function Newsletter() {
+  const t = useTranslations("landing_page");
   return (
     <div className={`bg-[url('/images/newsletter-bg.jpeg')]  `}>
       <div
@@ -9,12 +11,10 @@ export default function Newsletter() {
       >
         <div className={`md:w-[40%]`}>
           <div className={`text-2xl md:text-4xl font-bold`}>
-            Discover your Opportunity, for Future Living
+            {t("newsletter_heading")}
           </div>
           <div className={`md:text-xl font-light mt-4 md:mt-12`}>
-            It’s our privilege to work with out beloved clients. To get the
-            credence and sell your property is a big decision, so it’s important
-            to work with agents you can trust to get the job done perfectly!
+            {t("newsletter_desc")}
           </div>
         </div>
         <div className={`md:w-[50%] flex flex-col gap-4 mt-4 md:mt-0`}>
@@ -22,9 +22,7 @@ export default function Newsletter() {
             Connect With Us
           </div>
           <WhatsappCTA />
-          <div>
-            or Email dandyhosea4@gmail.com
-          </div>
+          <div>or Email dandyhosea4@gmail.com</div>
         </div>
       </div>
     </div>
