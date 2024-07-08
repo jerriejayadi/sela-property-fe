@@ -21,5 +21,12 @@
     "2_desc": "At Sela Property, our reach extends across the entirety of Bali. With our extensive network and local expertise, we ensure that our listing location may vary from all corners of the island. Whether it's a bustling beachfront in Seminyak or a serene retreat in Ubud, we connect your property with interested buyers, maximizing your chances of a successful sale. Trust us to help you reach your property goals and visions.",
     "3_heading": "Our experience",
     "3_desc": "Our experienced team is dedicated to guide all clients through every step of the real estate journey, we have manage hundreds of clients whether locally or internationally, and help them find the right property with ease and efficiency."
+  },
+  "catalog": {
+    "heading": "Discover your dream future living"
+  },
+  "thank_you": {
+    "heading": "Thank you for trusting us",
+    "desc": "It’s our privilege to work with our beloved clients. Please let us know if we can do anything else for you!"
   }
 }

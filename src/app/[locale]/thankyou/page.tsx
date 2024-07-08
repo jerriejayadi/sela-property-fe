@@ -1,9 +1,11 @@
 "use client";
 import SuggestedProperty from "@/components/Layout/Suggested";
 import WhatsappCTA from "@/components/Organism/WhatsappCTA";
+import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 
 export default function ThankYou() {
+  const t = useTranslations("thank_you");
   // useEffect(() => {
   //   window.open(
   //     "https://wa.me/+6281234567890",
@@ -18,13 +20,12 @@ export default function ThankYou() {
           <div
             className={`text-2xl md:text-6xl font-montserrat font-bold tracking-widest`}
           >
-            {"Thank you for trusting us".toUpperCase()}
+            {t("heading").toUpperCase()}
           </div>
           <div
             className={`mt-4 md:mt-8 font-lato font-light md:text-2xl md:px-24 leading-7 md:leading-10`}
           >
-            It’s our privilege to work with our beloved clients. Please let us
-            know if we can do anything else for you!
+            {t("desc")}
           </div>
           <div className={`mt-5 md:mt-40`}>
             <div className={`text-xl md:text-[32px] font-lato font-bold`}>

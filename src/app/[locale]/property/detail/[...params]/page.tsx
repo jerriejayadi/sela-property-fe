@@ -93,7 +93,7 @@ export default function PropertyDetail({
   return (
     <div>
       {/*Photo */}
-      <div className={`relative`}>
+      <div className={`relative z-40`}>
         <div
           className={`relative bg-gradient-to-b from-transparent to-black flex flex-col md:flex-row items-start md:items-end md:justify-between p-5 md:px-20 md:py-16 h-[529px] md:h-screen object-cover bg-cover transition-all duration-500`}
           style={{ backgroundImage: `url(${ImageList[current].url})` }}
@@ -181,39 +181,6 @@ export default function PropertyDetail({
                   <ArrowCircleRight2 className={`flex shrink-0 w-10 h-10`} />
                 </button>
               </div> */}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* CTA */}
-      <div
-        className={`w-full fixed bottom-0 md:static flex items-center justify-between bg-[#FFFFFF] text-black  drop-shadow-md z-50 `}
-      >
-        <div
-          className={`md:w-[70%] text-xs md:text-2xl font-bold font-lato pl-2  md:pl-20 h-full `}
-        >
-          Get the Help you Need, Contact Us!
-        </div>
-        <div className="md:w-[30%] bg-primary ">
-          <div
-            onClick={() => {
-              handleCTA();
-            }}
-            className={`w-full  bg-primary hover:bg-opacity-80 hover:cursor-pointer text-white  flex items-center justify-between transition-all duration-150 `}
-          >
-            <div
-              className={`flex items-center text-xs md:text-xl gap-5 pl-2 md:pl-10 `}
-            >
-              <Whatsapp
-                className={`w-5 h-5 md:w-10 md:h-10`}
-                variant={`Bold`}
-              />
-              <span className={`text-xs  md:block`}>Chat 081234567890</span>
-            </div>
-
-            <div className={`h-full px-4 py-6 md:p-8 text-white`}>
-              <ArrowRight2 className={`w-3 h-3 md:w-5 md:h-5 font-bold`} />
             </div>
           </div>
         </div>
@@ -407,6 +374,38 @@ export default function PropertyDetail({
 
         {/* Suggested */}
         <SuggestedProperty className={`pt-4 md:pt-10 py-11`} />
+      </div>
+      {/* CTA */}
+      <div
+        className={`w-full  sticky bottom-0  flex items-center justify-between bg-[#FFFFFF] text-black  drop-shadow-md z-30 `}
+      >
+        <div
+          className={`md:w-[70%] text-xs md:text-2xl font-bold font-lato pl-2  md:pl-20 h-full `}
+        >
+          Get the Help you Need, Contact Us!
+        </div>
+        <div className="md:w-[30%] bg-primary ">
+          <div
+            onClick={() => {
+              handleCTA();
+            }}
+            className={`w-full  bg-primary hover:bg-opacity-80 hover:cursor-pointer text-white  flex items-center justify-between transition-all duration-150 `}
+          >
+            <div
+              className={`flex items-center text-xs md:text-xl gap-5 pl-2 md:pl-10 `}
+            >
+              <Whatsapp
+                className={`w-5 h-5 md:w-10 md:h-10`}
+                variant={`Bold`}
+              />
+              <span className={`text-xs  md:block`}>Chat 081234567890</span>
+            </div>
+
+            <div className={`h-full px-4 py-6 md:p-8 text-white`}>
+              <ArrowRight2 className={`w-3 h-3 md:w-5 md:h-5 font-bold`} />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

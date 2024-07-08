@@ -146,7 +146,7 @@ export default function AboutUs() {
               <Image
                 className={`w-60 h-72 object-cover`}
                 alt={``}
-                src={`/images/about-carousel-1.jpeg`}
+                src={`/images/image-8-sela.jpeg`}
                 width={590}
                 height={382}
               />
@@ -155,7 +155,7 @@ export default function AboutUs() {
               <Image
                 className={`w-60 h-72 object-cover`}
                 alt={``}
-                src={`/images/about-carousel-2.jpeg`}
+                src={`/images/image-9-sela.jpeg`}
                 width={590}
                 height={393}
               />
@@ -164,7 +164,7 @@ export default function AboutUs() {
               <Image
                 className={`w-60 h-72 object-cover`}
                 alt={``}
-                src={`/images/about-carousel-3.jpeg`}
+                src={`/images/image-10-sela.jpeg`}
                 width={442}
                 height={590}
               />
@@ -173,7 +173,7 @@ export default function AboutUs() {
               <Image
                 className={`w-[520px] h-72 object-cover`}
                 alt={``}
-                src={`/images/about-carousel-4.jpeg`}
+                src={`/images/image-11-sela.jpeg`}
                 width={1040}
                 height={693}
               />

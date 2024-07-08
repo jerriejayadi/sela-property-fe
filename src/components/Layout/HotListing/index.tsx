@@ -5,6 +5,7 @@ import Image from "next/image";
 import { mockUpList } from "@/utils/mockUpData";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import Link from "next/link";
 
 export default function HotListing() {
   const t = useTranslations("landing_page");
@@ -46,11 +47,12 @@ export default function HotListing() {
         ))}
       </div>
       <div className={`mt-10`}>
-        <button
+        <Link
+          href={`/catalog`}
           className={`w-full  text-primary hover:underline active:underline px-3 py-2 md:p-4 font-lato active:bg-opacity-50 `}
         >
           See More Listing
-        </button>
+        </Link>
       </div>
     </div>
   );

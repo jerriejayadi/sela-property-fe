@@ -7,6 +7,7 @@ import SortModal from "@/components/Organism/SortModal";
 import { currencyFormat, useDebounce } from "@/utils/general";
 import { mockUpList } from "@/utils/mockUpData";
 import { AddCircle, Check, Filter, MinusCirlce, Sort } from "iconsax-react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -27,6 +28,7 @@ export interface FilterProps {
 }
 
 export default function Catalog() {
+  const t = useTranslations("catalog");
   const router = useRouter();
 
   const [sortModal, setSortModal] = useState<boolean>(false);
@@ -145,9 +147,9 @@ export default function Catalog() {
         <div className={`bg-catalog_bg_image w-full  bg-cover`}>
           <div className="bg-black bg-opacity-60 h-full w-full px-8 py-20 md:px-20 md:py-40">
             <div
-              className={`text-2xl md:text-6xl font-montserrat font-bold tracking-widest`}
+              className={`text-2xl md:text-6xl font-montserrat font-bold tracking-widest w-full md:w-[70%]`}
             >
-              DISCOVER YOUR DREAM <br /> FUTURE LIVING
+              {t("heading").toUpperCase()}
             </div>
           </div>
         </div>
@@ -468,7 +470,9 @@ export default function Catalog() {
           </div>
 
           {/* catalog */}
-          <div className={`md:px-8 flex flex-col gap-3 md:gap-5 divide-y-2 w-full`}>
+          <div
+            className={`md:px-8 flex flex-col gap-3 md:gap-5 divide-y-2 w-full`}
+          >
             {/* search bar */}
             <div className={`flex divide-x-2 items-center `}>
               <div className={`w-full pr-3`}>

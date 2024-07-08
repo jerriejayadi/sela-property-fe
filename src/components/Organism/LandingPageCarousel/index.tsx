@@ -34,14 +34,17 @@ export default function Carousel({ slides, className }: CarouselProps) {
   }, [current]);
   return (
     <div
-      style={{ backgroundImage: `url(${slides[current]})` }}
-      className={` bg-cover  h-screen overflow-hidden relative ${className}  max-h-[800px] w-screen duration-500`}
+      style={{
+        backgroundImage: `url(${slides[current]})`,
+        backgroundSize: "1920px 1080px",
+      }}
+      className={` h-screen overflow-hidden relative ${className}  max-h-[800px] w-screen transition-all duration-500`}
     >
-      <div className={`bg-black h-screen opacity-20`}>
+      <div className={`bg-black h-screen opacity-50`}>
         <div
-          className={`flex w-screen transition ease-out duration-500 translate-X-[-${100}%]  `}
+          className={`flex w-screen transition-opacity ease-out duration-500 translate-Y-[-${100}%]  `}
           style={{
-            transform: `translateX(-${current * 100}%)`,
+            transform: `translateY(-${current * 100}%)`,
           }}
         >
           {/* {slides?.map((rows, index) => (
