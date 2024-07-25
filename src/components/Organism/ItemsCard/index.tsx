@@ -71,27 +71,27 @@ export default function ItemsCard({
               {propertyName}
             </div>
           </div>
-          <div className={`flex flex-col gap-1 md:gap-4`}>
+          <div className={`flex flex-col gap-2 md:gap-4`}>
             <div className={`font-light text-[10px] md:text-base`}>
               Landsize {landSize} sqm, Buildsize {buildSize} sqm
             </div>
 
-            <div className={`flex`}>
-              <div className={`flex items-center `}>
+            <div className={`flex gap-2 md:gap-3`}>
+              <div className={`flex items-center gap-1 `}>
                 <Image
                   className={`w-4 h-4 md:w-6 md:h-6 shrink-0 object-cover`}
                   alt={``}
-                  src={`/icons/mdi_bedroom.svg`}
+                  src={`/icons/bedroom.png`}
                   width={24}
                   height={24}
                 />
                 <div className={`text-xs md:text-base`}>{bedRoom}</div>
               </div>
-              <div className={`flex items-center `}>
+              <div className={`flex items-center gap-1  `}>
                 <Image
                   className={`w-4 h-4 md:w-6 md:h-6 shrink-0 object-cover`}
                   alt={``}
-                  src={`/icons/cbi_roomsbathroom.png`}
+                  src={`/icons/bathroom.png`}
                   width={24}
                   height={24}
                 />
@@ -102,7 +102,7 @@ export default function ItemsCard({
               <Image
                 className={`w-3 h-3 md:w-6 md:h-6`}
                 alt={``}
-                src={`/icons/mdi_location.svg`}
+                src={`/icons/location.png`}
                 width={24}
                 height={24}
               />

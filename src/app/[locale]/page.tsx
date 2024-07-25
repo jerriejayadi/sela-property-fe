@@ -17,7 +17,7 @@ export default function Home() {
       </section>
       <section className={`w-full`}>
         <Image
-          className={`w-full object-cover`}
+          className={`w-full object-cover min-h-[250px]`}
           alt={``}
           src={`/images/fullwidthimage.png`}
           width={1920}
