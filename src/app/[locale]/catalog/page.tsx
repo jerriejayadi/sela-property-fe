@@ -4,8 +4,10 @@ import Increment from "@/components/Molecules/Increment";
 import FilterModal from "@/components/Organism/FilterModal";
 import ItemsCard from "@/components/Organism/ItemsCard";
 import SortModal from "@/components/Organism/SortModal";
+import { getPropertyList } from "@/service/property";
 import { currencyFormat, useDebounce } from "@/utils/general";
 import { mockUpList } from "@/utils/mockUpData";
+import { useRequest } from "ahooks";
 import { AddCircle, Check, Filter, MinusCirlce, Sort } from "iconsax-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
@@ -136,11 +138,15 @@ export default function Catalog() {
 
   const search = useDebounce(filter.location, 1000);
 
+  const { run, data } = useRequest(getPropertyList);
+
   useEffect(() => {
     console.log(filter);
   }, [filter]);
 
-  useEffect(() => {}, [search]);
+  useEffect(() => {
+    run({});
+  }, []);
   return (
     <div className="relative">
       <div className={`relative `}>
@@ -534,18 +540,19 @@ export default function Catalog() {
             <div
               className={`grid grid-cols-2 pt-4 lg:grid-cols-3 gap-x-4 gap-y-2 md:gap-8 md:pt-10`}
             >
-              {mockUpList.map((rows, index) => (
+              {data?.result.items.map((rows, index) => (
                 <ItemsCard
                   key={index}
+                  images={rows.images.slice(0, 3).map((images) => images.url)}
                   price={rows.price}
-                  propertyName={rows.propertyName}
+                  propertyName={rows.title}
                   landSize={rows.landSize}
-                  buildSize={rows.buildSize}
-                  location={rows.location}
-                  bathRoom={rows.bathRoom}
-                  bedRoom={rows.bedRoom}
+                  buildSize={rows.buildingSize}
+                  location={rows.address.regency + ", " + rows.address.province}
+                  bathRoom={rows.bathRoomsAmount}
+                  bedRoom={rows.bedRoomsAmount}
                   onClick={() => {
-                    router.push(`/property/detail/0x`);
+                    router.push(`/property/detail/${rows.id}`);
                   }}
                 />
               ))}

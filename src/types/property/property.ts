@@ -3,28 +3,42 @@ export interface IParamsPropertyDetail {
 }
 
 export interface PropertyDetailProps {
+  status: boolean;
+  statusCode: number;
+  result: Result;
+}
+
+export interface Result {
   id: string;
   title: string;
-  description: string;
-  price: number;
+  descriptionId: string;
+  keyFeatureId: string;
+  descriptionEn: string;
+  keyFeatureEn: string;
+  price: string;
   status: string;
-  tag: string;
-  availability: string;
+  availability: boolean;
+  published: boolean;
   propertyType: string;
-  landSize: number;
+  sellingType: string;
+  landSize: string;
   landSizeMeasurement: string;
-  buildingSize: number;
+  buildingSize: string;
   buildingSizeMeasurement: string;
   bedRoomsAmount: number;
   bathRoomsAmount: number;
-  carParkAmount: number;
   garageAmount: number;
+  carParkAmount: number;
   floorAmount: number;
   buildingOrientation: string;
   electricity: number;
   furnished: boolean;
+  googleDriveUrl: string;
+  addressId: string;
+  agentId: string;
   address: Address;
-  facilities: Facility[];
+  tags: any[];
+  facilities: any[];
   images: Image[];
 }
 
@@ -35,15 +49,13 @@ export interface Address {
   province: string;
   detail: string;
   locationMaps: string;
-}
-
-export interface Facility {
-  id: string;
-  name: string;
+  status: string;
 }
 
 export interface Image {
   id: string;
+  documentId: string;
   type: string;
   url: string;
+  status: string;
 }

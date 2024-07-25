@@ -2,20 +2,22 @@
 import Image from "next/image";
 import Carousel from "../Carousel";
 import { useState } from "react";
+import { currencyFormat } from "@/utils/general";
 
 interface ItemsCardProps {
   images?: string[];
   className?: string;
-  price: number;
+  price: number | string;
   propertyName: string;
-  landSize: number;
-  buildSize: number;
+  landSize: number | string;
+  buildSize: number | string;
   location: string;
   bathRoom: number;
   bedRoom: number;
   onClick?: () => void;
 }
 export default function ItemsCard({
+  images,
   className,
   price,
   propertyName,
@@ -42,10 +44,7 @@ export default function ItemsCard({
         <div className={`${hovered && "bg-black bg-opacity-80 z-50"}`}>
           <Carousel
             className={`h-[145px] md:h-[300px] rounded-t-lg`}
-            slides={[
-              `/images/bg-landing-page.png`,
-              `/images/background-image.jpg`,
-            ]}
+            slides={images??[]}
           />
         </div>
         <button
@@ -64,7 +63,9 @@ export default function ItemsCard({
           className={`text-black flex flex-col justify-between  gap-1 md:gap-4`}
         >
           <div className={`text-sm md:text-2xl font-josefin_sans`}>
-            <div className={`font-bold text-sm md:text-2xl`}>IDR {price}</div>
+            <div className={`font-bold text-sm md:text-2xl`}>
+              IDR {currencyFormat(price)}
+            </div>
             <div
               className={`font-normal line-clamp-2 text-xs md:text-2xl h-[32px] md:h-[64px]`}
             >
@@ -72,7 +73,7 @@ export default function ItemsCard({
             </div>
           </div>
           <div className={`flex flex-col gap-2 md:gap-4`}>
-            <div className={`font-light text-[10px] md:text-base`}>
+            <div className={`font-light text-[10px] md:text-lg`}>
               Landsize {landSize} sqm, Buildsize {buildSize} sqm
             </div>
 
@@ -98,7 +99,7 @@ export default function ItemsCard({
                 <div className={`text-xs md:text-base`}>{bathRoom}</div>
               </div>
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center gap-2">
               <Image
                 className={`w-3 h-3 md:w-6 md:h-6`}
                 alt={``}

@@ -11,12 +11,12 @@ export default function AboutUs() {
         <div
           className={`font-montserrat text-black md:text-5xl text-3xl font-semibold tracking-widest `}
         >
-          ABOUT US
+          {t("about_us_heading")}
         </div>
         <div
           className={`text-black md:text-xl font-light leading-7 md:leading-9`}
         >
-          {t("about_us")}
+          {t("about_us_caption")}
         </div>
       </div>
       <div
@@ -27,7 +27,7 @@ export default function AboutUs() {
           <div
             className={`text-[#2D2D2D] text-xl md:text-2xl font-lato font-light mt-3`}
           >
-            Sold Properties
+            {t("about_us_sold_properties")}
           </div>
         </div>
         <div className={`font-josefin_sans`}>
@@ -35,7 +35,7 @@ export default function AboutUs() {
           <div
             className={`text-[#2D2D2D] text-xl md:text-2xl font-lato font-light mt-3`}
           >
-            Areas in Bali
+            {t("about_us_areas")}
           </div>
         </div>
         <div className={`font-josefin_sans`}>
@@ -43,7 +43,7 @@ export default function AboutUs() {
           <div
             className={`text-[#2D2D2D] text-xl md:text-2xl font-lato font-light mt-3`}
           >
-            Years of experience
+            {t("about_us_years")}
           </div>
         </div>
         {/* <div className={`font-josefin_sans`}>

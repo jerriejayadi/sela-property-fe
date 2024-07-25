@@ -9,7 +9,11 @@
   "landing_page": {
     "title": "Discover your dream property in Bali!",
     "desc": "Welcome to Sela Property, Bali’s premier real estate agent with exclusive and luxury listings. Explore our curated selection of stunning beachfront villas, outstanding design, and well-developed estates. Finding your dream home or investment in Bali has never been easier.",
-    "about_us": "Based in Bali, Indonesia, Sela Property is here to offer you valuable and honest service, most importantly we know how to put our clients' needs first. With expert local knowledge, our team of dedicated real estate agent commited to provide you a distinct advantage and best result. We will connect you with the marketplace, the buyers, sellers and neighbourhoods to achieve your final goals.",
+    "about_us_heading": "ABOUT US",
+    "about_us_caption": "Based in Bali, Indonesia, Sela Property is here to offer you valuable and honest service, most importantly we know how to put our clients' needs first. With expert local knowledge, our team of dedicated real estate agent commited to provide you a distinct advantage and best result. We will connect you with the marketplace, the buyers, sellers and neighbourhoods to achieve your final goals.",
+    "about_us_sold_properties":"Sold Properties",
+    "about_us_areas":"Areas in Bali",
+    "about_us_years":"Years of Experience",
     "hot_listing_caption": "A selection of our favorite properties",
     "newsletter_heading": "Sell your property faster with us",
     "newsletter_desc": "Sell your property faster with Sela Property, Bali’s trusted real estate agent. Our expertise in marketing, exclusive listings, and extensive network ensures your property reaches the right buyers quickly and efficiently. Let us help you achieve a successful sale with our personalized and professional service."
@@ -28,5 +32,9 @@
   "thank_you": {
     "heading": "Thank you for trusting us",
     "desc": "It’s our privilege to work with our beloved clients. Please let us know if we can do anything else for you!"
+  },
+  "suggested":{
+    "heading":"Suggested",
+    "caption":"Our suggested property"
   }
 }
