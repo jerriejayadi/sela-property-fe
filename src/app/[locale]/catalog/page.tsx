@@ -27,6 +27,8 @@ export interface FilterProps {
   bedRoom: string | number;
   bathRoom: string | number;
   facilities: string[];
+  limit: number;
+  page: number;
 }
 
 export default function Catalog() {
@@ -36,6 +38,18 @@ export default function Catalog() {
   const [sortModal, setSortModal] = useState<boolean>(false);
   const [filterModal, setFilterModal] = useState<boolean>(false);
   const [searched, setSearched] = useState<boolean>(false);
+
+  // filter state
+  const [keyword, setKeyword] = useState<string>(""),
+    [availability, setAvailability] = useState<boolean>(true),
+    [propertyType, setPropertyType] = useState<string>(),
+    [location, setLocation] = useState<string>(""),
+    [minPrice, setMinPrice] = useState<string>(""),
+    [maxPrice, setMaxPrice] = useState<string>(""),
+    [address, setAddress] = useState<string>(""),
+    [tags, setTags] = useState<string[]>(),
+    [bathRoom, setBathroom] = useState<number>(0),
+    [bedRoom, setBedRoom] = useState<number>(0);
 
   const [filter, setFilter] = useState<FilterProps>({
     keyword: "",
@@ -50,24 +64,11 @@ export default function Catalog() {
     bedRoom: "0",
     bathRoom: "0",
     facilities: [],
+    limit: 100,
+    page: 1,
   });
 
-  const propertyType = [
-    {
-      name: "Villa",
-      value: "villa",
-    },
-    {
-      name: "House",
-      value: "house",
-    },
-    {
-      name: "Apartment",
-      value: "apartment",
-    },
-  ];
-
-  const location = [
+  const propertyTypeList = [
     {
       name: "Villa",
       value: "villa",
@@ -119,6 +120,26 @@ export default function Catalog() {
     }
     setFilter(filterTemp);
   };
+
+  const handleSubmitFilter = () => {
+    setFilter({
+      keyword: keyword,
+      sort: "",
+      availability: availability ? availability.toString() : "",
+      propertyType: [],
+      location: location,
+      minPrice: Number(minPrice.replaceAll(",", "")),
+      maxPrice: Number(maxPrice.replaceAll(",", "")),
+      minArea: 0,
+      maxArea: 0,
+      bedRoom: Number(bedRoom),
+      bathRoom: Number(bathRoom),
+      facilities: [],
+      limit: 100,
+      page: 1,
+    });
+  };
+
   const resetFilter = () => {
     setFilter({
       keyword: "",
@@ -133,6 +154,8 @@ export default function Catalog() {
       bedRoom: 0,
       bathRoom: 0,
       facilities: [],
+      limit: 100,
+      page: 1,
     });
   };
 
@@ -141,7 +164,7 @@ export default function Catalog() {
   const { run, data } = useRequest(getPropertyList);
 
   useEffect(() => {
-    console.log(filter);
+    run(filter);
   }, [filter]);
 
   useEffect(() => {
@@ -178,7 +201,7 @@ export default function Catalog() {
             <div className={`py-3`}>
               <div className={`py-3 font-semibold`}>Availability</div>
               <div className={`flex flex-col gap-3 text-sm`}>
-                <div className={`flex items-center`}>
+                {/* <div className={`flex items-center`}>
                   <input
                     className={`accent-primary w-5 h-5`}
                     type="radio"
@@ -192,16 +215,16 @@ export default function Catalog() {
                   <label className={`ml-2`} htmlFor={`hot_listing`}>
                     Hot Listing
                   </label>
-                </div>
+                </div> */}
                 <div className={`flex items-center`}>
                   <input
                     className={`accent-primary w-5 h-5`}
                     type="radio"
                     id={`available`}
                     value={`available`}
-                    checked={filter.availability === "available"}
+                    checked={availability}
                     onChange={() => {
-                      setFilter({ ...filter, availability: "available" });
+                      setAvailability(true);
                     }}
                   />
                   <label className={`ml-2`} htmlFor={`available`}>
@@ -214,10 +237,9 @@ export default function Catalog() {
                     className={`accent-primary w-5 h-5`}
                     type="radio"
                     id={`sold`}
-                    value={`sold`}
-                    checked={filter.availability === "sold"}
+                    checked={!availability}
                     onChange={() => {
-                      setFilter({ ...filter, availability: "sold" });
+                      setAvailability(false);
                     }}
                   />
                   <label className={`ml-2`} htmlFor={`sold`}>
@@ -231,7 +253,7 @@ export default function Catalog() {
               <div
                 className={`flex items-center justify-start gap-2 mb-3 flex-wrap text-sm`}
               >
-                {propertyType.map((rows, index) => (
+                {propertyTypeList.map((rows, index) => (
                   <div
                     key={index}
                     onClick={() => {
@@ -265,13 +287,10 @@ export default function Catalog() {
               <div className={`flex gap-3 max-w-full flex-wrap mb-3 text-sm`}>
                 <div className={`relative flex w-full`}>
                   <input
-                    value={filter.location}
-                    onKeyDown={() => {
-                      setSearched(false);
-                    }}
+                    value={location}
                     onChange={(e) => {
+                      setLocation(e.target.value);
                       setSearched(true);
-                      setFilter({ ...filter, location: e.target.value });
                     }}
                     placeholder={`Location`}
                     type={`text`}
@@ -284,7 +303,7 @@ export default function Catalog() {
                   >
                     <div
                       onClick={() => {
-                        setFilter({ ...filter, location: "Gianyar" });
+                        setLocation("Gianyar");
                         setSearched(false);
                       }}
                       className={`w-full`}
@@ -293,7 +312,7 @@ export default function Catalog() {
                     </div>
                     <div
                       onClick={() => {
-                        setFilter({ ...filter, location: "Canggu" });
+                        setLocation("Canggu");
                         setSearched(false);
                       }}
                       className={`w-full`}
@@ -302,7 +321,7 @@ export default function Catalog() {
                     </div>
                     <div
                       onClick={() => {
-                        setFilter({ ...filter, location: "Kuta" });
+                        setLocation("Kuta");
                         setSearched(false);
                       }}
                       className={`w-full`}
@@ -342,12 +361,9 @@ export default function Catalog() {
                 <div>Rp</div>
                 <input
                   onChange={(e) => {
-                    setFilter({
-                      ...filter,
-                      minPrice: currencyFormat(e.target.value),
-                    });
+                    setMinPrice(currencyFormat(e.target.value));
                   }}
-                  value={filter.minPrice}
+                  value={minPrice}
                   placeholder={"0"}
                   type="text"
                   className={`w-full p-2 bg-[#F9F9F9] `}
@@ -359,12 +375,9 @@ export default function Catalog() {
                 <div>Rp</div>
                 <input
                   onChange={(e) => {
-                    setFilter({
-                      ...filter,
-                      maxPrice: currencyFormat(e.target.value),
-                    });
+                    setMaxPrice(currencyFormat(e.target.value));
                   }}
-                  value={filter.maxPrice}
+                  value={maxPrice}
                   placeholder={"0"}
                   type="text"
                   className={`w-full p-2 bg-[#F9F9F9]`}
@@ -401,12 +414,16 @@ export default function Catalog() {
                     Bed Room
                   </div>
                   <Increment
-                    value={filter.bedRoom as number}
+                    value={bedRoom as number}
                     onSubtract={() => {
-                      onIncrementChange("bedRoom", "subtract");
+                      if (bedRoom <= 0) {
+                        setBedRoom(0);
+                      } else {
+                        setBedRoom(bedRoom - 1);
+                      }
                     }}
                     onAdd={() => {
-                      onIncrementChange("bedRoom", "add");
+                      setBedRoom(bedRoom + 1);
                     }}
                   />
                 </div>
@@ -422,12 +439,16 @@ export default function Catalog() {
                     Bath Room
                   </div>
                   <Increment
-                    value={filter.bathRoom as number}
+                    value={bathRoom as number}
                     onSubtract={() => {
-                      onIncrementChange("bathRoom", "subtract");
+                      if (bathRoom <= 0) {
+                        setBathroom(0);
+                      } else {
+                        setBathroom(bathRoom - 1);
+                      }
                     }}
                     onAdd={() => {
-                      onIncrementChange("bathRoom", "add");
+                      setBathroom(bathRoom + 1);
                     }}
                   />
                 </div>
@@ -465,7 +486,7 @@ export default function Catalog() {
                 </button>
                 <button
                   onClick={() => {
-                    console.log(filter);
+                    handleSubmitFilter();
                   }}
                   className={`bg-primary flex justify-center flex-grow  text-white py-4  active:bg-opacity-80`}
                 >
@@ -484,9 +505,14 @@ export default function Catalog() {
               <div className={`w-full pr-3`}>
                 <input
                   onChange={(e) => {
-                    setFilter({ ...filter, keyword: e.target.value });
+                    setKeyword(e.target.value);
                   }}
-                  value={filter.keyword}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      setFilter({ ...filter, keyword: e.currentTarget.value });
+                    }
+                  }}
+                  value={keyword}
                   className={`w-full px-3 text-sm  md:py-4 py-2 border-2 border-gray-400 rounded-lg`}
                   type={`text`}
                   placeholder={"Search For Icon"}

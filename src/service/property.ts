@@ -14,5 +14,5 @@ export const getPropertyDetails = (
 export const getPropertyList = (
   params: IParamsPropertyList
 ): Promise<PropertyListProps> => {
-  return apiClient.get(`/api/guest/property`);
+  return apiClient.get(`/api/guest/property`, { params: params });
 };
