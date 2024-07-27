@@ -3,22 +3,24 @@
 import Increment from "@/components/Molecules/Increment";
 import FilterModal from "@/components/Organism/FilterModal";
 import ItemsCard from "@/components/Organism/ItemsCard";
+import ItemsCardLoading from "@/components/Organism/ItemsCard/loading";
 import SortModal from "@/components/Organism/SortModal";
 import { getPropertyList } from "@/service/property";
+import { PropertyListProps } from "@/types/property/list";
 import { currencyFormat, useDebounce } from "@/utils/general";
 import { mockUpList } from "@/utils/mockUpData";
 import { useRequest } from "ahooks";
 import { AddCircle, Check, Filter, MinusCirlce, Sort } from "iconsax-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export interface FilterProps {
   keyword: string;
   sort: string;
   availability: string;
-  propertyType: string[];
+  propertyType: string;
   location: string;
   minPrice: string | number;
   maxPrice: string | number;
@@ -29,33 +31,37 @@ export interface FilterProps {
   facilities: string[];
   limit: number;
   page: number;
+  sellingType: string;
 }
 
 export default function Catalog() {
   const t = useTranslations("catalog");
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const [sortModal, setSortModal] = useState<boolean>(false);
   const [filterModal, setFilterModal] = useState<boolean>(false);
   const [searched, setSearched] = useState<boolean>(false);
+  const [data, setData] = useState<PropertyListProps>();
 
   // filter state
   const [keyword, setKeyword] = useState<string>(""),
-    [availability, setAvailability] = useState<boolean>(true),
-    [propertyType, setPropertyType] = useState<string>(),
+    [availability, setAvailability] = useState<"true" | "false" | "">(""),
+    [propertyType, setPropertyType] = useState<string>(""),
     [location, setLocation] = useState<string>(""),
     [minPrice, setMinPrice] = useState<string>(""),
     [maxPrice, setMaxPrice] = useState<string>(""),
     [address, setAddress] = useState<string>(""),
     [tags, setTags] = useState<string[]>(),
     [bathRoom, setBathroom] = useState<number>(0),
+    [sellingType, setSellingType] = useState<string>(""),
     [bedRoom, setBedRoom] = useState<number>(0);
 
   const [filter, setFilter] = useState<FilterProps>({
-    keyword: "",
+    keyword: searchParams.get(`keyword`)!,
     sort: "",
     availability: "",
-    propertyType: [],
+    propertyType: "",
     location: "",
     minPrice: "0",
     maxPrice: "0",
@@ -66,33 +72,61 @@ export default function Catalog() {
     facilities: [],
     limit: 100,
     page: 1,
+    sellingType: searchParams.get(`sellingType`)!,
   });
 
-  const propertyTypeList = [
+  enum EPropertyType {
+    VILLA = "VILLA",
+    HOUSE = "HOUSE",
+    APARTMENT = "APARTMENT",
+    LAND = "LAND",
+    HOTEL = "HOTEL",
+  }
+
+  const SellingType = [
     {
-      name: "Villa",
-      value: "villa",
+      name: "BUY",
+      value: "SELL",
     },
     {
-      name: "House",
-      value: "house",
-    },
-    {
-      name: "Apartment",
-      value: "apartment",
+      name: "RENT",
+      value: "RENT",
     },
   ];
 
-  const handlePropertyType = (value: string, action: string) => {
-    let propertyTypeTemp = filter.propertyType;
-    if (action === "add") {
-      propertyTypeTemp.push(value);
-    } else {
-      propertyTypeTemp.splice(propertyTypeTemp.indexOf(value), 1);
-    }
-    console.log(propertyTypeTemp);
-    setFilter({ ...filter, propertyType: propertyTypeTemp });
-  };
+  const PropertyType = [
+    {
+      name: "Apartment",
+      value: EPropertyType.APARTMENT,
+    },
+    {
+      name: "House",
+      value: EPropertyType.HOUSE,
+    },
+    {
+      name: "Hotel",
+      value: EPropertyType.HOTEL,
+    },
+    {
+      name: "Villa",
+      value: EPropertyType.VILLA,
+    },
+    {
+      name: "Land",
+      value: EPropertyType.LAND,
+    },
+  ];
+
+  // const handlePropertyType = (value: string, action: string) => {
+  //   let propertyTypeTemp = filter.propertyType;
+  //   if (action === "add") {
+  //     propertyTypeTemp.push(value);
+  //   } else {
+  //     propertyTypeTemp.splice(propertyTypeTemp.indexOf(value), 1);
+  //   }
+  //   console.log(propertyTypeTemp);
+  //   setFilter({ ...filter, propertyType: propertyTypeTemp });
+  // };
 
   // const handleLocation = (value: string, action: string) => {
   //   let locationTemp = filter.location;
@@ -126,7 +160,7 @@ export default function Catalog() {
       keyword: keyword,
       sort: "",
       availability: availability ? availability.toString() : "",
-      propertyType: [],
+      propertyType: propertyType,
       location: location,
       minPrice: Number(minPrice.replaceAll(",", "")),
       maxPrice: Number(maxPrice.replaceAll(",", "")),
@@ -137,6 +171,7 @@ export default function Catalog() {
       facilities: [],
       limit: 100,
       page: 1,
+      sellingType: sellingType,
     });
   };
 
@@ -145,7 +180,7 @@ export default function Catalog() {
       keyword: "",
       sort: "",
       availability: "",
-      propertyType: [],
+      propertyType: "",
       location: "",
       minPrice: 0,
       maxPrice: 0,
@@ -156,20 +191,41 @@ export default function Catalog() {
       facilities: [],
       limit: 100,
       page: 1,
+      sellingType: "",
     });
+    setKeyword("");
+    setAvailability("");
+    setPropertyType("");
+    setLocation("");
+    setMinPrice("");
+    setMaxPrice("");
+    setAddress("");
+    setTags([]);
+    setBathroom(0);
+    setBedRoom(0);
+    setSellingType("ALL");
   };
 
   const search = useDebounce(filter.location, 1000);
 
-  const { run, data } = useRequest(getPropertyList);
+  const { runAsync, error, loading } = useRequest(getPropertyList);
 
   useEffect(() => {
-    run(filter);
+    runAsync(filter).then((res) => setData(res));
   }, [filter]);
 
   useEffect(() => {
-    run({});
+    if (searchParams.get("keyword")!.length > 0) {
+      setKeyword(searchParams.get("keyword")!);
+    }
+    if (searchParams.get("sellingType")!.length > 0) {
+      setSellingType(searchParams.get("sellingType")!);
+    }
   }, []);
+
+  // useEffect(() => {
+  //   runAsync({}).then((res) => setData(res));
+  // }, []);
   return (
     <div className="relative">
       <div className={`relative `}>
@@ -222,9 +278,24 @@ export default function Catalog() {
                     type="radio"
                     id={`available`}
                     value={`available`}
-                    checked={availability}
+                    checked={availability === ""}
                     onChange={() => {
-                      setAvailability(true);
+                      setAvailability("");
+                    }}
+                  />
+                  <label className={`ml-2`} htmlFor={`available`}>
+                    All
+                  </label>
+                </div>
+                <div className={`flex items-center`}>
+                  <input
+                    className={`accent-primary w-5 h-5`}
+                    type="radio"
+                    id={`available`}
+                    value={`available`}
+                    checked={availability === "true"}
+                    onChange={() => {
+                      setAvailability("true");
                     }}
                   />
                   <label className={`ml-2`} htmlFor={`available`}>
@@ -237,9 +308,9 @@ export default function Catalog() {
                     className={`accent-primary w-5 h-5`}
                     type="radio"
                     id={`sold`}
-                    checked={!availability}
+                    checked={availability === "false"}
                     onChange={() => {
-                      setAvailability(false);
+                      setAvailability("false");
                     }}
                   />
                   <label className={`ml-2`} htmlFor={`sold`}>
@@ -249,11 +320,46 @@ export default function Catalog() {
               </div>
             </div>
             <div className={`mb-2`}>
+              <div className={`font-semibold my-3`}>Selling Type</div>
+              <div
+                className={`flex items-center justify-start gap-2 mb-3 flex-wrap text-sm`}
+              >
+                <div
+                  onClick={() => {
+                    setSellingType("ALL");
+                  }}
+                  className={`px-3 py-2 cursor-pointer ${
+                    sellingType === "ALL"
+                      ? "bg-primary text-white"
+                      : "bg-[#F9F9F9] text-black"
+                  }`}
+                >
+                  ALL
+                </div>
+
+                {SellingType.map((rows, index) => (
+                  <div
+                    key={index}
+                    onClick={() => {
+                      setSellingType(rows.value);
+                    }}
+                    className={`px-3 py-2 cursor-pointer ${
+                      sellingType === rows.value
+                        ? "bg-primary text-white"
+                        : "bg-[#F9F9F9] text-black"
+                    }`}
+                  >
+                    {rows.name}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className={`mb-2`}>
               <div className={`font-semibold my-3`}>Property Type</div>
               <div
                 className={`flex items-center justify-start gap-2 mb-3 flex-wrap text-sm`}
               >
-                {propertyTypeList.map((rows, index) => (
+                {/* {PropertyType.map((rows, index) => (
                   <div
                     key={index}
                     onClick={() => {
@@ -276,11 +382,23 @@ export default function Catalog() {
                   >
                     {rows.name}
                   </div>
+                ))} */}
+                {PropertyType.map((rows, index) => (
+                  <div
+                    key={index}
+                    onClick={() => {
+                      setPropertyType(rows.value);
+                    }}
+                    className={`px-3 py-2 cursor-pointer ${
+                      propertyType === rows.value
+                        ? "bg-primary text-white"
+                        : "bg-[#F9F9F9] text-black"
+                    }`}
+                  >
+                    {rows.name}
+                  </div>
                 ))}
               </div>
-              <button className={`w-fit hover:underline mb-3 text-xs`}>
-                Lainnya
-              </button>
             </div>
             <div>
               <div className={`my-3 font-semibold`}>Location</div>
@@ -386,20 +504,29 @@ export default function Catalog() {
                   <option>Max Price</option>
                 </select> */}
               </div>
-            </div>
-            <div>
-              <div className={`my-3 font-semibold`}>Surface Area</div>
-              <div className={`flex items-center gap-1 mb-3 text-sm`}>
-                <select className={`w-full bg-[#F9F9F9] p-2 text-[#787878]`}>
-                  <option>Min Area</option>
-                </select>
-                <div className={`h-[1px] w-10 bg-black `} />
-                <select className={`w-full bg-[#F9F9F9] p-2 text-[#787878]`}>
-                  <option>Max Area</option>
-                </select>
+              <div
+                className={`flex flex-shrink-1 items-center gap-2 mt-2 w-full`}
+              >
+                <button
+                  onClick={() => {
+                    resetFilter();
+                  }}
+                  className={` text-primary flex justify-center flex-grow py-4 border border-opacity-10 border-black active:bg-black active:bg-opacity-5`}
+                >
+                  Reset
+                </button>
+                <button
+                  onClick={() => {
+                    handleSubmitFilter();
+                  }}
+                  className={`bg-primary flex justify-center flex-grow  text-white py-4  active:bg-opacity-80`}
+                >
+                  Apply Filter
+                </button>
               </div>
             </div>
-            <div>
+
+            {/* <div>
               <div className={`my-3 font-semibold`}>Room Area</div>
               <div className={`flex flex-col gap-4 mb-4`}>
                 <div className="flex items-center justify-between">
@@ -453,9 +580,9 @@ export default function Catalog() {
                   />
                 </div>
               </div>
-            </div>
+            </div> */}
             <div className={`flex flex-col`}>
-              <div className={`my-3 font-semibold`}>Other Facilities</div>
+              {/* <div className={`my-3 font-semibold`}>Other Facilities</div>
               <div className={`flex flex-col gap-4`}>
                 <div className={`flex items-center gap-2`}>
                   <input
@@ -472,27 +599,7 @@ export default function Catalog() {
                   />{" "}
                   <label>CCTV</label>
                 </div>
-              </div>
-              <div
-                className={`flex flex-shrink-1 items-center gap-2 mt-2 w-full`}
-              >
-                <button
-                  onClick={() => {
-                    resetFilter();
-                  }}
-                  className={` text-primary flex justify-center flex-grow py-4 border border-opacity-10 border-black active:bg-black active:bg-opacity-5`}
-                >
-                  Reset
-                </button>
-                <button
-                  onClick={() => {
-                    handleSubmitFilter();
-                  }}
-                  className={`bg-primary flex justify-center flex-grow  text-white py-4  active:bg-opacity-80`}
-                >
-                  Apply Filter
-                </button>
-              </div>
+              </div> */}
             </div>
           </div>
 
@@ -511,6 +618,9 @@ export default function Catalog() {
                     if (e.key === "Enter") {
                       setFilter({ ...filter, keyword: e.currentTarget.value });
                     }
+                  }}
+                  onBlur={(e) => {
+                    setFilter({ ...filter, keyword: e.currentTarget.value });
                   }}
                   value={keyword}
                   className={`w-full px-3 text-sm  md:py-4 py-2 border-2 border-gray-400 rounded-lg`}
@@ -563,26 +673,48 @@ export default function Catalog() {
             </div>
 
             {/* Item List */}
-            <div
-              className={`grid grid-cols-2 pt-4 lg:grid-cols-3 gap-x-4 gap-y-2 md:gap-8 md:pt-10`}
-            >
-              {data?.result.items.map((rows, index) => (
-                <ItemsCard
-                  key={index}
-                  images={rows.images.slice(0, 3).map((images) => images.url)}
-                  price={rows.price}
-                  propertyName={rows.title}
-                  landSize={rows.landSize}
-                  buildSize={rows.buildingSize}
-                  location={rows.address.regency + ", " + rows.address.province}
-                  bathRoom={rows.bathRoomsAmount}
-                  bedRoom={rows.bedRoomsAmount}
-                  onClick={() => {
-                    router.push(`/property/detail/${rows.id}`);
-                  }}
-                />
-              ))}
-            </div>
+
+            {loading ? (
+              <div
+                className={`grid grid-cols-2 pt-4 lg:grid-cols-3 gap-x-4 gap-y-2 md:gap-8 md:pt-10`}
+              >
+                {[0, 1, 2].map((rows, index) => (
+                  <ItemsCardLoading key={index} />
+                ))}{" "}
+              </div>
+            ) : error ? (
+              <div
+                className={`w-full flex flex-col items-center justify-center pt-4 md:pt-10 gap-4`}
+              >
+                <div className={`text-xl md:text-5xl`}>We are sorry :&#40;</div>
+                <div className={`text-sm md:text-xl text-center`}>
+                  The property that you are looking for is not available
+                </div>
+              </div>
+            ) : (
+              <div
+                className={`grid grid-cols-2 pt-4 lg:grid-cols-3 gap-x-4 gap-y-2 md:gap-8 md:pt-10`}
+              >
+                {data?.result.items.map((rows, index) => (
+                  <ItemsCard
+                    key={index}
+                    images={rows.images.slice(0, 3).map((images) => images.url)}
+                    price={rows.price}
+                    propertyName={rows.title}
+                    landSize={rows.landSize}
+                    buildSize={rows.buildingSize}
+                    location={
+                      rows.address.regency + ", " + rows.address.province
+                    }
+                    bathRoom={rows.bathRoomsAmount}
+                    bedRoom={rows.bedRoomsAmount}
+                    onClick={() => {
+                      router.push(`/property/detail/${rows.id}`);
+                    }}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -23,6 +23,7 @@ import SuggestedProperty from "@/components/Layout/Suggested";
 import PropertyDetailCard from "@/components/Organism/PropertyDetailCard";
 import RichTextRender from "@/components/Molecules/RichTextPreview";
 import StackGrid from "react-stack-grid";
+import { useTranslations } from "next-intl";
 
 const ImageList = [
   {
@@ -60,6 +61,7 @@ interface DetailPropertyParams {
 }
 
 export default function PropertyDetail({ params }: DetailPropertyParams) {
+  const t = useTranslations("property_detail");
   const router = useRouter();
   const [selectedImage, setSelectedImage] = useState<string>(ImageList[0].url);
   const [seeMorePhotos, setSeeMorePhotos] = useState<boolean>(false);
@@ -254,36 +256,66 @@ export default function PropertyDetail({ params }: DetailPropertyParams) {
         </div>
 
         {/* About Us */}
-        {propertyDetail?.result.descriptionId && (
-          <div className={`my-2 md:my-10`}>
-            <div
-              className={` md:text-2xl font-montserrat font-semibold text-black`}
-            >
-              Description
-            </div>
-            <div className="font-lato font-light text-sm md:text-base mt-3 md:mt-6 text-secondary leading-10">
-              <RichTextRender
-                value={propertyDetail?.result.descriptionId as any}
-              />
-            </div>
+        <div className={`my-2 md:my-10`}>
+          <div
+            className={` md:text-2xl font-montserrat font-semibold text-black`}
+          >
+            {t("description")}
           </div>
-        )}
+          {propertyDetail?.result.descriptionId &&
+            (propertyDetail?.result.descriptionEn ? (
+              params.locale === "en" ? (
+                <div className="font-lato font-light text-sm md:text-base mt-3 md:mt-6 text-secondary leading-10">
+                  <RichTextRender
+                    value={propertyDetail?.result.descriptionEn as any}
+                  />
+                </div>
+              ) : (
+                <div className="font-lato font-light text-sm md:text-base mt-3 md:mt-6 text-secondary leading-10">
+                  <RichTextRender
+                    value={propertyDetail?.result.descriptionId as any}
+                  />
+                </div>
+              )
+            ) : (
+              <div className="font-lato font-light text-sm md:text-base mt-3 md:mt-6 text-secondary leading-10">
+                <RichTextRender
+                  value={propertyDetail?.result.descriptionId as any}
+                />
+              </div>
+            ))}{" "}
+        </div>
 
         {/* Key Features */}
-        {propertyDetail?.result.keyFeatureId && (
-          <div className={`my-2 md:my-10`}>
-            <div
-              className={` md:text-2xl font-montserrat font-semibold text-black`}
-            >
-              Key Features
-            </div>
-            <div className="font-lato font-light text-sm md:text-base mt-3 md:mt-6 text-secondary leading-6">
-              <RichTextRender
-                value={propertyDetail?.result.keyFeatureId as any}
-              />
-            </div>
+        <div className={`my-2 md:my-10`}>
+          <div
+            className={` md:text-2xl font-montserrat font-semibold text-black`}
+          >
+            {t("key_feature")}
           </div>
-        )}
+          {propertyDetail?.result.keyFeatureId &&
+            (propertyDetail?.result.keyFeatureEn ? (
+              params.locale === "en" ? (
+                <div className="font-lato font-light text-sm md:text-base mt-3 md:mt-6 text-secondary leading-10">
+                  <RichTextRender
+                    value={propertyDetail?.result.keyFeatureEn as any}
+                  />
+                </div>
+              ) : (
+                <div className="font-lato font-light text-sm md:text-base mt-3 md:mt-6 text-secondary leading-10">
+                  <RichTextRender
+                    value={propertyDetail?.result.keyFeatureId as any}
+                  />
+                </div>
+              )
+            ) : (
+              <div className="font-lato font-light text-sm md:text-base mt-3 md:mt-6 text-secondary leading-10">
+                <RichTextRender
+                  value={propertyDetail?.result.keyFeatureId as any}
+                />
+              </div>
+            ))}
+        </div>
         {/* <div className={`mt-5 md:mt-10`}>
           <div
             className={`md:text-2xl font-montserrat font-semibold text-black`}

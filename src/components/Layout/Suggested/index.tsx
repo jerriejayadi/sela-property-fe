@@ -3,6 +3,8 @@ import { getPropertyList } from "@/service/property";
 import { mockUpList } from "@/utils/mockUpData";
 import { useRequest } from "ahooks";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
+
 import { useEffect } from "react";
 
 interface SuggestedPropertyProps {
@@ -12,6 +14,7 @@ interface SuggestedPropertyProps {
 export default function SuggestedProperty({
   className,
 }: SuggestedPropertyProps) {
+  const router = useRouter();
   const t = useTranslations("suggested");
   const { data, run } = useRequest(getPropertyList);
 
@@ -43,6 +46,9 @@ export default function SuggestedProperty({
             location={rows.address.regency + `, ` + rows.address.province}
             bathRoom={rows.bathRoomsAmount}
             bedRoom={rows.bedRoomsAmount}
+            onClick={() => {
+              router.push(`/property/detail/${rows.id}`);
+            }}
           />
         ))}
       </div>

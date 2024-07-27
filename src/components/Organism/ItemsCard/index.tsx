@@ -30,7 +30,9 @@ export default function ItemsCard({
 }: ItemsCardProps) {
   const [hovered, setHovered] = useState<boolean>(false);
   return (
-    <div className={`flex flex-col  ${className} rounded-lg shadow-md`}>
+    <div
+      className={`flex flex-col  ${className} rounded-lg shadow-md max-w-[300px]`}
+    >
       {/* Image */}
       <div
         className={`relative cursor-pointer`}
@@ -44,7 +46,7 @@ export default function ItemsCard({
         <div className={`${hovered && "bg-black bg-opacity-80 z-50"}`}>
           <Carousel
             className={`h-[145px] md:h-[300px] rounded-t-lg`}
-            slides={images??[]}
+            slides={images ?? []}
           />
         </div>
         <button

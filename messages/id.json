@@ -36,5 +36,9 @@
   "suggested": {
     "heading": "Saran kami",
     "caption": "Saran properti kami"
+  },
+  "property_detail": {
+    "description": "Deskripsi",
+    "key_feature": "Fitur utama"
   }
 }
