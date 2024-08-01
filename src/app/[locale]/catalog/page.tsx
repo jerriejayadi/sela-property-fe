@@ -45,7 +45,9 @@ export default function Catalog() {
   const [data, setData] = useState<PropertyListProps>();
 
   // filter state
-  const [keyword, setKeyword] = useState<string>(""),
+  const [keyword, setKeyword] = useState<string>(
+      searchParams.get("keyword") ?? ""
+    ),
     [availability, setAvailability] = useState<"true" | "false" | "">(""),
     [propertyType, setPropertyType] = useState<string>(""),
     [location, setLocation] = useState<string>(""),
@@ -214,14 +216,7 @@ export default function Catalog() {
     runAsync(filter).then((res) => setData(res));
   }, [filter]);
 
-  useEffect(() => {
-    if (searchParams.get("keyword")!.length > 0) {
-      setKeyword(searchParams.get("keyword")!);
-    }
-    if (searchParams.get("sellingType")!.length > 0) {
-      setSellingType(searchParams.get("sellingType")!);
-    }
-  }, []);
+  useEffect(() => {}, []);
 
   // useEffect(() => {
   //   runAsync({}).then((res) => setData(res));
