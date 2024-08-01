@@ -48,7 +48,9 @@ export default function Catalog() {
   const [keyword, setKeyword] = useState<string>(
       searchParams.get("keyword") ?? ""
     ),
-    [availability, setAvailability] = useState<"true" | "false" | "">(""),
+    [availability, setAvailability] = useState<"true" | "false" | "">(
+      (searchParams.get("availability") as "true" | "false" | "") ?? ""
+    ),
     [propertyType, setPropertyType] = useState<string>(""),
     [location, setLocation] = useState<string>(""),
     [minPrice, setMinPrice] = useState<string>(""),

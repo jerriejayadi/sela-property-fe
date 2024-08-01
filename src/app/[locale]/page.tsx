@@ -41,7 +41,7 @@ export default function Home() {
       {/* <section className={`w-full`}>
         <ContactUs />
       </section> */}
-      <section className={`w-full`}>
+      <section id={`sell`} className={`w-full`}>
         <Newsletter />
       </section>
     </main>
