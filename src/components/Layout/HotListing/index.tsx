@@ -6,10 +6,13 @@ import { mockUpList } from "@/utils/mockUpData";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
+import { useRequest } from "ahooks";
+import { getPropertyList } from "@/service/property";
 
 export default function HotListing() {
   const t = useTranslations("landing_page");
   const router = useRouter();
+  const { data, run } = useRequest(getPropertyList);
   return (
     <div
       className={`flex flex-col w-full items-center px-3 py-12 md:px-20 md:py-20 bg-[#F3F3F3] `}
@@ -22,7 +25,7 @@ export default function HotListing() {
           HOT LISTING
         </div>
         <div
-          className={`font-light mt-4 text-secondary text-center text-xl font-lato `}
+          className={`text-black md:text-xl font-light leading-6 md:leading-9 mt-4 text-center `}
         >
           {t("hot_listing_caption")}
         </div>
@@ -30,18 +33,19 @@ export default function HotListing() {
       {/* items */}
       <div className={`grid grid-cols-2 sm:grid-cols-3 mt-10 gap-2 md:gap-7`}>
         {/* items card */}
-        {mockUpList.map((rows, index) => (
+        {data?.result.items.map((rows, index) => (
           <ItemsCard
+            images={rows.images.map((rows) => rows.url)}
             key={index}
             price={rows.price}
-            propertyName={rows.propertyName}
+            propertyName={rows.title}
             landSize={rows.landSize}
-            buildSize={rows.buildSize}
-            location={rows.location}
-            bathRoom={rows.bathRoom}
-            bedRoom={rows.bedRoom}
+            buildSize={rows.buildingSize}
+            location={rows.address.regency + `, ` + rows.address.province}
+            bathRoom={rows.bathRoomsAmount}
+            bedRoom={rows.bedRoomsAmount}
             onClick={() => {
-              router.push(`/property/detail/0x`);
+              router.push(`/property/detail/${rows.id}`);
             }}
           />
         ))}

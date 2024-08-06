@@ -4,9 +4,9 @@ const withNextIntl = createNextIntlPlugin();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode:false,
+  reactStrictMode: false,
   env: {
-    HOST: process.env.LOCAL_HOST,
+    HOST: process.env.HOST,
   },
   async rewrites() {
     return [

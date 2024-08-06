@@ -12,15 +12,18 @@ import {
   Whatsapp,
 } from "iconsax-react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { useRequest } from "ahooks";
-import { getPropertyDetails } from "@/service/property";
+import { getPropertyDetails, getPropertyList } from "@/service/property";
 import { currencyFormat } from "@/utils/general";
-import { useRouter } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import Link from "next/link";
 import WhatsappCTA from "@/components/Organism/WhatsappCTA";
 import SuggestedProperty from "@/components/Layout/Suggested";
 import PropertyDetailCard from "@/components/Organism/PropertyDetailCard";
+import RichTextRender from "@/components/Molecules/RichTextPreview";
+import StackGrid from "react-stack-grid";
+import { useTranslations } from "next-intl";
 
 const ImageList = [
   {
@@ -50,35 +53,43 @@ const ImageList = [
   },
 ];
 
-export default function PropertyDetail({
-  params: { params },
-}: {
+interface DetailPropertyParams {
   params: {
-    params: [id: string];
+    locale: string;
+    params: string[];
   };
-}) {
+}
+
+export default function PropertyDetail({ params }: DetailPropertyParams) {
+  const t = useTranslations("property_detail");
   const router = useRouter();
   const [selectedImage, setSelectedImage] = useState<string>(ImageList[0].url);
   const [seeMorePhotos, setSeeMorePhotos] = useState<boolean>(false);
   let [current, setCurrent] = useState<number>(0);
 
   let previousSlide = () => {
-    if (current === 0) setCurrent(ImageList.length - 1);
+    if (current === 0) setCurrent(0);
     else setCurrent(current - 1);
   };
 
   let nextSlide = () => {
-    if (current === ImageList.length - 1) setCurrent(0);
+    if (current === 2) setCurrent(2);
     else setCurrent(current + 1);
   };
 
-  const { data, error, runAsync, loading } = useRequest(getPropertyDetails, {
+  const {
+    data: propertyDetail,
+    error,
+    runAsync,
+    loading,
+  } = useRequest(getPropertyDetails, {
     manual: true,
   });
+  const { data: propertyList, run } = useRequest(getPropertyList);
 
   const fetchPropertyDetail = () => {
-    runAsync({ id: "0x" }).then((res) => {
-      setSelectedImage(res.images[0].url as string);
+    runAsync({ id: params.params[0] }).then((res) => {
+      setSelectedImage(res.result.images[0].url as string);
     });
   };
 
@@ -87,8 +98,19 @@ export default function PropertyDetail({
     router.push(`/thankyou`);
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     fetchPropertyDetail();
+    run({});
+  }, []);
+
+  useEffect(() => {
+    if (error) {
+      notFound();
+    }
+  }, [error]);
+
+  useEffect(() => {
+    console.log(params);
   }, []);
   return (
     <div>
@@ -96,7 +118,9 @@ export default function PropertyDetail({
       <div className={`relative z-40`}>
         <div
           className={`relative bg-gradient-to-b from-transparent to-black flex flex-col md:flex-row items-start md:items-end md:justify-between p-5 md:px-20 md:py-16 h-[529px] md:h-screen object-cover bg-cover transition-all duration-500`}
-          style={{ backgroundImage: `url(${ImageList[current].url})` }}
+          style={{
+            backgroundImage: `url(${propertyDetail?.result.images[current].url})`,
+          }}
         >
           <div className={`absolute top-0 bottom-0 h-fit my-auto  left-4`}>
             <button
@@ -131,12 +155,15 @@ export default function PropertyDetail({
             <div
               className={`font-montserrat font-bold text-xl md:text-4xl mt-1 md:mt-7`}
             >
-              IDR {currencyFormat((data?.price.toString() as string) ?? "0")}
+              IDR{" "}
+              {currencyFormat(
+                (propertyDetail?.result.price?.toString() as string) ?? "0"
+              )}
             </div>
             <div
               className={`font-montserrat font-semibold text-4xl md:text-6xl md:mt-2`}
             >
-              {data?.title}
+              {propertyDetail?.result.title}
             </div>
             <div className={`flex items-center justify-between`}>
               <div className={`flex items-center md:mt-2`}>
@@ -145,25 +172,28 @@ export default function PropertyDetail({
                   variant={`Bold`}
                 />
                 <div className={`font-lato font-light text-sm md:text-xl`}>
-                  Ubud, Bali
+                  {propertyDetail?.result.address.regency},{" "}
+                  {propertyDetail?.result.address.province}
                 </div>
               </div>
             </div>
             <div className={`flex justify-center w-full `}>
               <div className={`flex gap-2 mt-4 justify-center `}>
-                {ImageList.map((rows, index) => (
-                  <div
-                    onClick={() => {
-                      setCurrent(index);
-                    }}
-                    key={index}
-                    className={`h-3 ${
-                      current === index
-                        ? "w-12 rounded-lg opacity-100"
-                        : "w-3 rounded-[100%] opacity-50"
-                    } bg-white  transition-all duration-500 cursor-pointer `}
-                  />
-                ))}
+                {propertyDetail?.result.images
+                  .slice(0, 3)
+                  .map((rows, index) => (
+                    <div
+                      onClick={() => {
+                        setCurrent(index);
+                      }}
+                      key={index}
+                      className={`h-3 ${
+                        current === index
+                          ? "w-12 rounded-lg opacity-100"
+                          : "w-3 rounded-[100%] opacity-50"
+                      } bg-white  transition-all duration-500 cursor-pointer `}
+                    />
+                  ))}
               </div>
               {/* <div className="flex gap-2">
                 <button
@@ -195,50 +225,98 @@ export default function PropertyDetail({
           <PropertyDetailCard
             props={"Buildsize"}
             iconURL={"/icons/buildsize.png"}
-            value={data?.buildingSize ?? 0}
-            unitOfMeasurement={data?.buildingSizeMeasurement}
+            value={propertyDetail?.result.buildingSize ?? 0}
+            unitOfMeasurement={propertyDetail?.result.buildingSizeMeasurement}
           />
           <PropertyDetailCard
             className={`md:pl-12`}
             props={"Landsize"}
             iconURL={"/icons/landsize.png"}
-            value={data?.landSize ?? 0}
-            unitOfMeasurement={data?.landSizeMeasurement}
+            value={propertyDetail?.result.landSize ?? 0}
+            unitOfMeasurement={propertyDetail?.result.landSizeMeasurement}
           />
           <PropertyDetailCard
             className={`md:pl-12`}
             props={"Bedroom"}
             iconURL={"/icons/bedroom.png"}
-            value={data?.bedRoomsAmount ?? 0}
+            value={propertyDetail?.result.bedRoomsAmount ?? 0}
           />
           <PropertyDetailCard
             className={`md:pl-12`}
             props={"Bathroom"}
             iconURL={"/icons/bathroom.png"}
-            value={data?.bathRoomsAmount ?? 0}
+            value={propertyDetail?.result.bathRoomsAmount ?? 0}
           />
           <PropertyDetailCard
             className={`md:pl-12`}
             props={"Carpark"}
             iconURL={"/icons/carpark.png"}
-            value={data?.carParkAmount ?? 0}
+            value={propertyDetail?.result.carParkAmount ?? 0}
           />
         </div>
 
         {/* About Us */}
-        <div className={`mt-2 md:mt-10`}>
+        <div className={`my-2 md:my-10`}>
           <div
             className={` md:text-2xl font-montserrat font-semibold text-black`}
           >
-            Description
+            {t("description")}
           </div>
-          <div className="font-lato font-light text-sm md:text-base mt-3 md:mt-6 text-secondary leading-6">
-            {data?.description}
-          </div>
+          {propertyDetail?.result.descriptionId &&
+            (propertyDetail?.result.descriptionEn ? (
+              params.locale === "en" ? (
+                <div className="font-lato font-light text-sm md:text-base mt-3 md:mt-6 text-secondary leading-10">
+                  <RichTextRender
+                    value={propertyDetail?.result.descriptionEn as any}
+                  />
+                </div>
+              ) : (
+                <div className="font-lato font-light text-sm md:text-base mt-3 md:mt-6 text-secondary leading-10">
+                  <RichTextRender
+                    value={propertyDetail?.result.descriptionId as any}
+                  />
+                </div>
+              )
+            ) : (
+              <div className="font-lato font-light text-sm md:text-base mt-3 md:mt-6 text-secondary leading-10">
+                <RichTextRender
+                  value={propertyDetail?.result.descriptionId as any}
+                />
+              </div>
+            ))}{" "}
         </div>
 
         {/* Key Features */}
-        <div className={`mt-5 md:mt-10`}>
+        <div className={`my-2 md:my-10`}>
+          <div
+            className={` md:text-2xl font-montserrat font-semibold text-black`}
+          >
+            {t("key_feature")}
+          </div>
+          {propertyDetail?.result.keyFeatureId &&
+            (propertyDetail?.result.keyFeatureEn ? (
+              params.locale === "en" ? (
+                <div className="font-lato font-light text-sm md:text-base mt-3 md:mt-6 text-secondary leading-10">
+                  <RichTextRender
+                    value={propertyDetail?.result.keyFeatureEn as any}
+                  />
+                </div>
+              ) : (
+                <div className="font-lato font-light text-sm md:text-base mt-3 md:mt-6 text-secondary leading-10">
+                  <RichTextRender
+                    value={propertyDetail?.result.keyFeatureId as any}
+                  />
+                </div>
+              )
+            ) : (
+              <div className="font-lato font-light text-sm md:text-base mt-3 md:mt-6 text-secondary leading-10">
+                <RichTextRender
+                  value={propertyDetail?.result.keyFeatureId as any}
+                />
+              </div>
+            ))}
+        </div>
+        {/* <div className={`mt-5 md:mt-10`}>
           <div
             className={`md:text-2xl font-montserrat font-semibold text-black`}
           >
@@ -318,7 +396,7 @@ export default function PropertyDetail({
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Property Gallery */}
         <div
@@ -337,28 +415,36 @@ export default function PropertyDetail({
           >
             Property Gallery
           </div>
-          <div className={`grid md:grid-cols-2 gap-4 mt-4`}>
-            {ImageList.map((rows, index) => (
-              <div
-                key={index}
-                onClick={() => {
-                  setSelectedImage(rows.url);
-                }}
+          <div className={` gap-4 mt-4`}>
+            {!loading && (
+              <StackGrid
+                className="mt-4"
+                columnWidth={"50%"}
+                gutterHeight={10}
+                gutterWidth={10}
+                duration={0}
               >
-                <Image
-                  className={`md:w-[622px] md:h-[427px] ${
-                    selectedImage === rows.url && "border-2 border-orange-300"
-                  }`}
-                  alt={``}
-                  loader={({ src }) => {
-                    return src;
-                  }}
-                  src={rows.url}
-                  width={1920}
-                  height={1080}
-                />
-              </div>
-            ))}
+                {propertyDetail?.result.images.map((rows, index) => (
+                  <div
+                    key={index}
+                    // onClick={() => {
+                    //   setSelectedImage(rows.url);
+                    // }}
+                  >
+                    <Image
+                      className={`object-fill h-fit active:opacity-80 `}
+                      alt={``}
+                      loader={({ src }) => {
+                        return src;
+                      }}
+                      src={rows.url}
+                      width={900}
+                      height={900}
+                    />
+                  </div>
+                ))}
+              </StackGrid>
+            )}
           </div>
         </div>
         {!seeMorePhotos && (
@@ -398,7 +484,7 @@ export default function PropertyDetail({
                 className={`w-5 h-5 md:w-10 md:h-10`}
                 variant={`Bold`}
               />
-              <span className={`text-xs  md:block`}>Chat 081234567890</span>
+              <span className={`md:text-xl md:block`}>Chat 081234567890</span>
             </div>
 
             <div className={`h-full px-4 py-6 md:p-8 text-white`}>

@@ -41,13 +41,14 @@ export default function Carousel({ slides, className }: CarouselProps) {
         {slides?.map((rows, index) => (
           <Image
             key={index}
-            className={`w-full h-full object-cover  `}
+            className={`w-full h-full object-cover `}
             src={rows}
             alt=""
             // layout={`fill`}
             // objectFit={"contain"}
             width={1440}
             height={800}
+            loader={({ src }) => src}
           />
         ))}
       </div>

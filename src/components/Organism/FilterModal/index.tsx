@@ -21,11 +21,23 @@ export default function FilterModal({
   const [selected, setSelected] = useState<string>(value ?? "");
   const [searched, setSearched] = useState<boolean>(false);
 
+  const [keyword, setKeyword] = useState<string>(""),
+    [availability, setAvailability] = useState<"true" | "false" | "">(""),
+    [propertyType, setPropertyType] = useState<string>(""),
+    [location, setLocation] = useState<string>(""),
+    [minPrice, setMinPrice] = useState<string>(""),
+    [maxPrice, setMaxPrice] = useState<string>(""),
+    [address, setAddress] = useState<string>(""),
+    [tags, setTags] = useState<string[]>(),
+    [bathRoom, setBathroom] = useState<number>(0),
+    [sellingType, setSellingType] = useState<string>(""),
+    [bedRoom, setBedRoom] = useState<number>(0);
+
   const [filter, setFilter] = useState<FilterProps>({
     keyword: "",
     sort: "",
     availability: "",
-    propertyType: [],
+    propertyType: "",
     location: "",
     minPrice: "0",
     maxPrice: "0",
@@ -34,47 +46,52 @@ export default function FilterModal({
     bedRoom: "0",
     bathRoom: "0",
     facilities: [],
+    limit: 0,
+    page: 0,
+    sellingType: "",
   });
-  const propertyType = [
+
+  enum EPropertyType {
+    VILLA = "VILLA",
+    HOUSE = "HOUSE",
+    APARTMENT = "APARTMENT",
+    LAND = "LAND",
+    HOTEL = "HOTEL",
+  }
+
+  const PropertyType = [
     {
-      name: "Villa",
-      value: "villa",
+      name: "Apartment",
+      value: EPropertyType.APARTMENT,
     },
     {
       name: "House",
-      value: "house",
+      value: EPropertyType.HOUSE,
     },
     {
-      name: "Apartment",
-      value: "apartment",
+      name: "Hotel",
+      value: EPropertyType.HOTEL,
     },
-  ];
-
-  const location = [
     {
       name: "Villa",
-      value: "villa",
+      value: EPropertyType.VILLA,
     },
     {
-      name: "House",
-      value: "house",
-    },
-    {
-      name: "Apartment",
-      value: "apartment",
+      name: "Land",
+      value: EPropertyType.LAND,
     },
   ];
 
-  const handlePropertyType = (value: string, action: string) => {
-    let propertyTypeTemp = filter.propertyType;
-    if (action === "add") {
-      propertyTypeTemp.push(value);
-    } else {
-      propertyTypeTemp.splice(propertyTypeTemp.indexOf(value), 1);
-    }
-    console.log(propertyTypeTemp);
-    setFilter({ ...filter, propertyType: propertyTypeTemp });
-  };
+  // const handlePropertyType = (value: string, action: string) => {
+  //   let propertyTypeTemp = filter.propertyType;
+  //   if (action === "add") {
+  //     propertyTypeTemp.push(value);
+  //   } else {
+  //     propertyTypeTemp.splice(propertyTypeTemp.indexOf(value), 1);
+  //   }
+  //   console.log(propertyTypeTemp);
+  //   setFilter({ ...filter, propertyType: propertyTypeTemp });
+  // };
 
   // const handleLocation = (value: string, action: string) => {
   //   let locationTemp = filter.location;
@@ -107,7 +124,7 @@ export default function FilterModal({
       keyword: "",
       sort: "",
       availability: "",
-      propertyType: [],
+      propertyType: "",
       location: "",
       minPrice: "0",
       maxPrice: "0",
@@ -116,6 +133,9 @@ export default function FilterModal({
       bedRoom: "0",
       bathRoom: "0",
       facilities: [],
+      limit: 0,
+      page: 0,
+      sellingType: "",
     });
   };
   return (
@@ -205,19 +225,38 @@ export default function FilterModal({
             <div
               className={`flex items-center justify-start gap-2 mb-3 flex-wrap text-sm`}
             >
-              {propertyType.map((rows, index) => (
+              {/* {PropertyType.map((rows, index) => (
+                  <div
+                    key={index}
+                    onClick={() => {
+                      handlePropertyType(
+                        rows.value,
+                        filter.propertyType.some(
+                          (rows2) => rows2 === rows.value
+                        )
+                          ? "remove"
+                          : "add"
+                      );
+                    }}
+                    className={`px-3 py-2 cursor-pointer ${
+                      filter?.propertyType?.some(
+                        (rows2) => rows2 === rows.value
+                      )
+                        ? "bg-primary text-white"
+                        : "bg-[#F9F9F9] text-black"
+                    }`}
+                  >
+                    {rows.name}
+                  </div>
+                ))} */}
+              {PropertyType.map((rows, index) => (
                 <div
                   key={index}
                   onClick={() => {
-                    handlePropertyType(
-                      rows.value,
-                      filter.propertyType.some((rows2) => rows2 === rows.value)
-                        ? "remove"
-                        : "add"
-                    );
+                    setPropertyType(rows.value);
                   }}
                   className={`px-3 py-2 cursor-pointer ${
-                    filter?.propertyType?.some((rows2) => rows2 === rows.value)
+                    propertyType === rows.value
                       ? "bg-primary text-white"
                       : "bg-[#F9F9F9] text-black"
                   }`}
@@ -226,9 +265,6 @@ export default function FilterModal({
                 </div>
               ))}
             </div>
-            <button className={`w-fit hover:underline mb-3 text-xs`}>
-              Lainnya
-            </button>
           </div>
           <div>
             <div className={`my-3 font-semibold`}>Location</div>

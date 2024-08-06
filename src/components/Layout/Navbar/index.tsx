@@ -2,7 +2,12 @@
 
 import LanguageToggle from "@/components/Molecules/LanguageToggle";
 import { toTitleCase } from "@/utils/general";
-import { CloseCircle, HambergerMenu } from "iconsax-react";
+import {
+  ArrowDown2,
+  ArrowUp2,
+  CloseCircle,
+  HambergerMenu,
+} from "iconsax-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
@@ -19,7 +24,24 @@ export const navigation = [
   {
     name: "catalog",
     title: "Catalog",
-    url: "/catalog",
+    url: "",
+    child: [
+      {
+        name: "Catalog",
+        title: "Properties Catalog",
+        url: "/catalog",
+      },
+      {
+        name: "sold_properties",
+        title: "Sold Properties",
+        url: "/catalog?availability=false",
+      },
+      {
+        name: "sell_with_us",
+        title: "Sell With Us",
+        url: "/#sell",
+      },
+    ],
   },
   // {
   //   name: "hot_listing",
@@ -50,6 +72,7 @@ export default function Navbar() {
   const [navbarBackground, setNavbarBackground] = useState<boolean>(false);
   const [isNavbarMobile, setIsNavbarMobile] = useState<boolean>(false);
   const [lastScrollY, setLastScrollY] = useState<number>(0);
+  const [expand, setExpand] = useState<boolean>(false);
   const [show, setShow] = useState<boolean>(true);
 
   const controlNavbar = () => {
@@ -102,11 +125,58 @@ export default function Navbar() {
           {"Sela Property".toUpperCase()}
         </div>
       </Link>
-      <div className={`items-center md:gap-10 lg:gap-16 hidden md:flex`}>
+      <div className={`items-start md:gap-10 lg:gap-16 hidden md:flex`}>
         {navigation?.map((rows, index) => (
           <div key={index}>
             {rows.url.length === 0 ? (
-              rows.title
+              rows.child ? (
+                <div>
+                  <div
+                    onClick={() => {
+                      setExpand(!expand);
+                      if (!navbarBackground) {
+                        setNavbarBackground(true);
+                      }
+                    }}
+                    className={`flex items-center gap-4 relative hover:cursor-pointer hover:text-primary ${
+                      expand && "text-primary"
+                    }`}
+                  >
+                    {rows.title}
+
+                    <ArrowDown2
+                      className={`size-4 transition-transform duration-300 ${
+                        expand ? "rotate-180" : "rotate-0"
+                      }`}
+                    />
+                  </div>
+                  <div
+                    className={`-ml-6 mt-[42px] flex-col gap-4 float-left absolute bg-black bg-opacity-70 p-5 ${
+                      expand ? "flex" : "hidden"
+                    }`}
+                  >
+                    {expand &&
+                      rows.child.map((rows2) => (
+                        <Link
+                          onClick={() => {
+                            setExpand(!expand);
+                          }}
+                          key={rows2.name}
+                          className={`${
+                            paths.some((rows3) => rows3 === rows2.name)
+                              ? "text-primary underline"
+                              : "text-white"
+                          } hover:text-primary active:text-primary`}
+                          href={rows2.url}
+                        >
+                          {rows2.title}
+                        </Link>
+                      ))}
+                  </div>
+                </div>
+              ) : (
+                rows.title
+              )
             ) : (
               <Link
                 className={`${
@@ -156,12 +226,66 @@ export default function Navbar() {
         >
           {navigation.map((rows, index) => (
             <>
-              {rows.url.length > 0 && (
+              {/* {rows.url.length > 0 && (
                 <Link
-                  onClick={()=>{setIsNavbarMobile(false)}}
+                  onClick={() => {
+                    setIsNavbarMobile(false);
+                  }}
                   className={`hover:text-primary active:text-primary`}
                   href={rows.url}
                   key={index}
+                >
+                  {t(rows.name)}
+                </Link>
+              )} */}
+              {rows.url.length === 0 ? (
+                rows.child ? (
+                  <div>
+                    <div
+                      onClick={() => {
+                        setExpand(!expand);
+                        if (!navbarBackground) {
+                          setNavbarBackground(true);
+                        }
+                      }}
+                      className={`flex items-center gap-4 relative`}
+                    >
+                      {rows.title}
+
+                      <ArrowDown2
+                        className={`size-4 transition-all duration-300 ${
+                          expand ? "rotate-180" : "rotate-0"
+                        }`}
+                      />
+                    </div>
+                    <div className={`flex flex-col ml-3 `}>
+                      {expand &&
+                        rows.child.map((rows2) => (
+                          <Link
+                            key={rows2.name}
+                            className={`${
+                              paths.some((rows3) => rows3 === rows2.name)
+                                ? "text-primary underline"
+                                : "text-white"
+                            } hover:text-primary active:text-primary mt-4`}
+                            href={rows2.url}
+                          >
+                            {rows2.title}
+                          </Link>
+                        ))}
+                    </div>
+                  </div>
+                ) : (
+                  rows.title
+                )
+              ) : (
+                <Link
+                  className={`${
+                    paths.some((rows2) => rows2 === rows.name)
+                      ? "text-primary underline"
+                      : "text-white"
+                  } hover:text-primary active:text-primary`}
+                  href={rows.url}
                 >
                   {t(rows.name)}
                 </Link>
