@@ -64,7 +64,7 @@ export default function Catalog() {
   const [filter, setFilter] = useState<FilterProps>({
     keyword: searchParams.get(`keyword`)!,
     sort: "",
-    availability: "",
+    availability: searchParams.get(`availability`)!,
     propertyType: "",
     location: "",
     minPrice: "0",
@@ -323,10 +323,10 @@ export default function Catalog() {
               >
                 <div
                   onClick={() => {
-                    setSellingType("ALL");
+                    setSellingType("");
                   }}
                   className={`px-3 py-2 cursor-pointer ${
-                    sellingType === "ALL"
+                    sellingType === ""
                       ? "bg-primary text-white"
                       : "bg-[#F9F9F9] text-black"
                   }`}
