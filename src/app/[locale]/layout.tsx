@@ -58,7 +58,7 @@ export default function RootLayout({
     <html lang={locale}>
       <NextIntlClientProvider messages={message}>
         <body
-          className={`${inter.className} ${audrey.variable} ${josefin_sans.variable} ${lato.className} ${montserrat.variable}`}
+          className={`${inter.className} ${audrey.variable} ${josefin_sans.variable} ${lato.className} ${montserrat.variable} max-w-[1920px] mx-auto`}
         >
           <Navbar />
           {children}

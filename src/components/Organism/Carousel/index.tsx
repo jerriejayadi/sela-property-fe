@@ -31,29 +31,30 @@ export default function Carousel({ slides, className }: CarouselProps) {
   //   }, [current, slides.length]);
 
   return (
-    <div className={`overflow-hidden relative ${className} duration-500`}>
+    <div
+      className={`overflow-hidden relative ${className} duration-500 w-full`}
+    >
       <div
-        className={`flex h-full transition ease-out duration-500 translate-X-[-${100}%]  `}
+        className={`flex h-full transition ease-out duration-500 translate-X-[-${100}%] `}
         style={{
           transform: `translateX(-${current * 100}%)`,
         }}
       >
         {slides?.map((rows, index) => (
-          <Image
-            key={index}
-            className={`w-full h-full object-cover `}
-            src={rows}
-            alt=""
-            // layout={`fill`}
-            // objectFit={"contain"}
-            width={1440}
-            height={800}
-            loader={({ src }) => src}
-          />
+          <div className="w-full flex-shrink-0 object-cover" key={index}>
+            <Image
+              className={`w-screen h-full object-cover `}
+              src={rows}
+              alt=""
+              width={1440}
+              height={800}
+              loader={({ src }) => src}
+            />
+          </div>
         ))}
       </div>
       <div
-        className={`absolute bottom-3 mx-auto md:flex items-center justify-center w-full hidden`}
+        className={`absolute bottom-3 mx-auto md:flex items-center justify-center w-full hidden z-50`}
       >
         {slides.map((rows, index) => (
           <div

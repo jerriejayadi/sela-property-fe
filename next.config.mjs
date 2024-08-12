@@ -12,11 +12,11 @@ const nextConfig = {
     return [
       {
         source: "/apis/:path*",
-        destination: this.env.HOST + ":path*", // Proxy to Backend External
+        destination: process.env.HOST + ":path*", // Proxy to Backend External
       },
       {
         source: "/api/:path*",
-        destination: this.env.HOST + ":path*", // Proxy to Main path
+        destination: process.env.HOST + ":path*", // Proxy to Main path
       },
     ];
   },

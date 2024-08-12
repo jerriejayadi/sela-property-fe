@@ -24,6 +24,7 @@ import PropertyDetailCard from "@/components/Organism/PropertyDetailCard";
 import RichTextRender from "@/components/Molecules/RichTextPreview";
 import StackGrid from "react-stack-grid";
 import { useTranslations } from "next-intl";
+import PictureGrid from "@/components/Organism/PictureGrid";
 
 const ImageList = [
   {
@@ -68,13 +69,14 @@ export default function PropertyDetail({ params }: DetailPropertyParams) {
   let [current, setCurrent] = useState<number>(0);
 
   let previousSlide = () => {
-    if (current === 0) setCurrent(0);
+    if (current === 0)
+      setCurrent(propertyDetail?.result.images.slice(0, 3).length! - 1);
     else setCurrent(current - 1);
   };
 
   let nextSlide = () => {
-    if (current === propertyDetail?.result.images.slice(0, 2).length! - 1)
-      setCurrent(propertyDetail?.result.images.slice(0, 2).length! - 1);
+    if (current === propertyDetail?.result.images.slice(0, 3).length! - 1)
+      setCurrent(0);
     else setCurrent(current + 1);
   };
 
@@ -420,34 +422,37 @@ export default function PropertyDetail({ params }: DetailPropertyParams) {
           >
             Property Gallery
           </div>
-          <div className={` gap-4 mt-4`}>
+          <div className={`shrink gap-4 mt-4 overflow-hidden`}>
             {!loading && (
-              <StackGrid
-                className="mt-4 "
-                columnWidth={"50%"}
-                gutterHeight={10}
-                gutterWidth={10}
-              >
-                {propertyDetail?.result.images.map((rows, index) => (
-                  <div
-                    key={index}
-                    // onClick={() => {
-                    //   setSelectedImage(rows.url);
-                    // }}
-                  >
-                    <Image
-                      className={`object-fill h-fit active:opacity-80 `}
-                      alt={``}
-                      loader={({ src }) => {
-                        return src;
-                      }}
-                      src={rows.url}
-                      width={900}
-                      height={900}
-                    />
-                  </div>
-                ))}
-              </StackGrid>
+              // <StackGrid
+              //   className="mt-4 "
+              //   columnWidth={"50%"}
+              //   gutterHeight={10}
+              //   gutterWidth={10}
+              // >
+              //   {propertyDetail?.result.images.map((rows, index) => (
+              //     <div
+              //       key={index}
+              //       // onClick={() => {
+              //       //   setSelectedImage(rows.url);
+              //       // }}
+              //     >
+              //       <Image
+              //         className={`object-fill h-fit active:opacity-80 `}
+              //         alt={``}
+              //         loader={({ src }) => {
+              //           return src;
+              //         }}
+              //         src={rows.url}
+              //         width={900}
+              //         height={900}
+              //       />
+              //     </div>
+              //   ))}
+              // </StackGrid>
+              <PictureGrid
+                images={propertyDetail?.result.images.map((rows) => rows.url) ?? []}
+              />
             )}
           </div>
         </div>

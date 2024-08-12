@@ -107,7 +107,7 @@ export default function Navbar() {
       onClick={(e) => {
         e.stopPropagation();
       }}
-      className={`fixed top-0 h-fit py-5 px-8 md:px-20 md:py-8 flex items-center justify-between w-full z-50 transition-all duration-300 ${
+      className={`fixed max-w-[1920px] top-0 h-fit py-5 px-8 md:px-20 md:py-8 flex items-center justify-between w-full z-50 transition-all duration-300 ${
         (navbarBackground || isNavbarMobile) &&
         "bg-black bg-opacity-80 backdrop-blur-sm"
       } z-50 `}

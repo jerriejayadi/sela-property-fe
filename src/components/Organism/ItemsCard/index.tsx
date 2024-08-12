@@ -34,29 +34,36 @@ export default function ItemsCard({
       className={`flex flex-col  ${className} rounded-lg shadow-md max-w-[300px]`}
     >
       {/* Image */}
-      <div
-        className={`relative cursor-pointer`}
-        onMouseEnter={() => {
-          setHovered(true);
-        }}
-        onMouseLeave={() => {
-          setHovered(false);
-        }}
-      >
-        <div className={`${hovered && "bg-black bg-opacity-80 z-50"}`}>
-          <Carousel
-            className={`h-[145px] md:h-[300px] rounded-t-lg`}
-            slides={images ?? []}
-          />
-        </div>
-        <button
+      <div className={`relative cursor-pointer`}>
+        {" "}
+        <div
+          className={`z-40 ${
+            hovered && ` w-full h-full bg-black bg-opacity-50`
+          } absolute top-0 transition-all duration-500 rounded-t-lg `}
+        />
+        <Carousel
+          className={`h-[145px] md:h-[300px] rounded-t-lg z-30 `}
+          slides={images ?? []}
+        />
+        <div
           onClick={onClick}
-          className={`bg-primary text-white p-3 w-fit h-fit absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center my-auto mx-auto transition-all duration-300 ${
-            hovered ? "opacity-100" : "opacity-0"
-          }`}
+          onMouseEnter={() => {
+            setHovered(true);
+          }}
+          onMouseLeave={() => {
+            setHovered(false);
+          }}
+          className={`w-full h-[75%] absolute top-0 bottom-0 left-0 right-0  items-center justify-center my-auto mx-auto rounded-lg z-40 `}
         >
-          See Details
-        </button>
+          <button
+            onClick={onClick}
+            className={`bg-primary text-white p-3 w-fit h-fit  transition-all duration-300 ${
+              hovered ? "opacity-100" : "opacity-0"
+            }  z-40 absolute top-0 bottom-0 left-0 right-0  items-center justify-center my-auto mx-auto rounded-lg  `}
+          >
+            See Details
+          </button>
+        </div>
       </div>
       {/* description */}
       <div className={`flex flex-col md:flex-row justify-between p-2`}>
