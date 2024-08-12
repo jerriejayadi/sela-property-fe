@@ -36,7 +36,8 @@ export default function Carousel({ slides, className }: CarouselProps) {
     <div
       style={{
         backgroundImage: `url(${slides[current]})`,
-        backgroundSize: "1920px 1080px",
+        backgroundSize: "cover",
+        
       }}
       className={` h-screen overflow-hidden relative ${className}  max-h-[800px] w-screen transition-all duration-500`}
     >

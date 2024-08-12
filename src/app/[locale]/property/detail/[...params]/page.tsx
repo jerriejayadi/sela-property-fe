@@ -73,7 +73,8 @@ export default function PropertyDetail({ params }: DetailPropertyParams) {
   };
 
   let nextSlide = () => {
-    if (current === 2) setCurrent(2);
+    if (current === propertyDetail?.result.images.slice(0, 2).length! - 1)
+      setCurrent(propertyDetail?.result.images.slice(0, 2).length! - 1);
     else setCurrent(current + 1);
   };
 
@@ -102,6 +103,10 @@ export default function PropertyDetail({ params }: DetailPropertyParams) {
     fetchPropertyDetail();
     run({});
   }, []);
+
+  useEffect(() => {
+    console.log(propertyDetail?.result.images.slice(0, 2));
+  }, [propertyDetail]);
 
   useEffect(() => {
     if (error) {
@@ -401,7 +406,7 @@ export default function PropertyDetail({ params }: DetailPropertyParams) {
         {/* Property Gallery */}
         <div
           className={`mt-5 md:mt-10 text-black relative ${
-            seeMorePhotos ? "h-full" : "h-[1000px] overflow-hidden "
+            seeMorePhotos ? "h-full" : "max-h-[1000px] overflow-hidden "
           }`}
         >
           {!seeMorePhotos && (
@@ -418,11 +423,10 @@ export default function PropertyDetail({ params }: DetailPropertyParams) {
           <div className={` gap-4 mt-4`}>
             {!loading && (
               <StackGrid
-                className="mt-4"
+                className="mt-4 "
                 columnWidth={"50%"}
                 gutterHeight={10}
                 gutterWidth={10}
-                duration={0}
               >
                 {propertyDetail?.result.images.map((rows, index) => (
                   <div
