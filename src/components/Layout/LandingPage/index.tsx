@@ -7,7 +7,7 @@ export default function LandingPage() {
     <div className={``}>
       <div className="relative">
         <Carousel
-          className={`absolute top-0`}
+          className={`absolute top-0 max-w-[1920px]`}
           slides={[`/images/image-1-sela.jpeg`, `/images/image-2-sela.jpeg`]}
         />
         <div className={`absolute top-0 bg-black h-screen`} />
