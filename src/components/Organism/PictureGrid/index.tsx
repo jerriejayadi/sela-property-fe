@@ -39,7 +39,7 @@ const PictureGrid: React.FC<PictureGridProps> = ({ images }) => {
   };
   return (
     <div
-      className="grid grid-cols-2 gap-4"
+      className="grid grid-cols-1 md:grid-cols-2 gap-4"
       style={{
         gridAutoRows: "min-content", // Let rows adjust based on content
         gridAutoFlow: "dense", // Fill gaps with items

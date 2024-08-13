@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Whatsapp, ArrowRight2 } from "iconsax-react";
 import { useRouter } from "next/navigation";
+import { PHONE_NUMBER } from "@/lib/variable";
 
 interface WhatsappCTA {
   onClick?: () => void;
@@ -10,7 +11,7 @@ interface WhatsappCTA {
 export default function WhatsappCTA({ className, onClick }: WhatsappCTA) {
   const router = useRouter();
   const handleClick = () => {
-    window.open("https://wa.me/+6281234567890", "_blank");
+    window.open(`https://wa.me/${PHONE_NUMBER}`, "_blank");
   };
   return (
     <div
@@ -19,9 +20,11 @@ export default function WhatsappCTA({ className, onClick }: WhatsappCTA) {
         className ?? ""
       } w-full bg-primary hover:bg-opacity-80 hover:cursor-pointer text-white  flex items-center justify-between transition-all duration-150 `}
     >
-      <div className={`flex text-start items-center md:text-xl gap-5 pl-4 md:pl-10 `}>
+      <div
+        className={`flex text-start items-center md:text-xl gap-5 pl-4 md:pl-10 `}
+      >
         <Whatsapp className={`w-10 h-10`} variant={`Bold`} />
-        Chat 081234567890
+        Chat {PHONE_NUMBER}
       </div>
 
       <div className={`h-full bg-white ml-5 p-6 md:p-8 text-primary`}>

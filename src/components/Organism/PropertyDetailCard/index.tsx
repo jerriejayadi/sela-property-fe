@@ -17,13 +17,13 @@ export default function PropertyDetailCard({
 }: PropertyDetailCardProps) {
   return (
     <div className={`${className ?? ""} flex items-center gap-1 md:pr-12 `}>
-      <div className={`flex justify-center shrink-0 w-12 h-12 `}>
+      <div className={`flex justify-center shrink-0 w-12 h-12  `}>
         <Image
-          className={`object-contain `}
+          className={`object-contain p-1 `}
           alt={``}
           src={iconURL}
-          width={28}
-          height={28}
+          width={1000}
+          height={1000}
         />
       </div>
       <div className={`text-black tracking-widest`}>

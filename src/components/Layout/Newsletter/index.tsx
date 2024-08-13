@@ -1,5 +1,6 @@
 "use client";
 import WhatsappCTA from "@/components/Organism/WhatsappCTA";
+import { EMAIL } from "@/lib/variable";
 import { useTranslations } from "next-intl";
 
 export default function Newsletter() {
@@ -22,7 +23,7 @@ export default function Newsletter() {
             Connect With Us
           </div>
           <WhatsappCTA />
-          <div>or Email dandyhosea4@gmail.com</div>
+          <div>or Email {EMAIL}</div>
         </div>
       </div>
     </div>

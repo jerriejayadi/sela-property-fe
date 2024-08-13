@@ -27,11 +27,11 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50"
+      className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50 py-10"
       onClick={onClose}
     >
       <div
-        className="relative bg-white max-w-full max-h-full p-4 overflow-auto"
+        className="relative bg-white  max-w-full max-h-full md:h-full  p-4 overflow-hidden "
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
@@ -46,11 +46,10 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
         <Image
           src={imageUrl}
           alt="Preview"
-          layout="responsive"
           width={1200} // Provide a default width
           height={800} // Provide a default height
           objectFit="contain"
-          className="w-full h-auto"
+          className="w-full h-full flex shrink object-contain"
           loader={({ src }) => src}
         />
 
