@@ -25,6 +25,7 @@ import RichTextRender from "@/components/Molecules/RichTextPreview";
 import StackGrid from "react-stack-grid";
 import { useTranslations } from "next-intl";
 import PictureGrid from "@/components/Organism/PictureGrid";
+import { PHONE_NUMBER } from "@/lib/variable";
 
 const ImageList = [
   {
@@ -451,7 +452,9 @@ export default function PropertyDetail({ params }: DetailPropertyParams) {
               //   ))}
               // </StackGrid>
               <PictureGrid
-                images={propertyDetail?.result.images.map((rows) => rows.url) ?? []}
+                images={
+                  propertyDetail?.result.images.map((rows) => rows.url) ?? []
+                }
               />
             )}
           </div>
@@ -493,7 +496,7 @@ export default function PropertyDetail({ params }: DetailPropertyParams) {
                 className={`w-5 h-5 md:w-10 md:h-10`}
                 variant={`Bold`}
               />
-              <span className={`md:text-xl md:block`}>Chat 081234567890</span>
+              <span className={`md:text-xl md:block`}>Chat {PHONE_NUMBER}</span>
             </div>
 
             <div className={`h-full px-4 py-6 md:p-8 text-white`}>
