@@ -37,6 +37,7 @@ export default function SuggestedProperty({
       >
         {data?.result.items.slice(0, 3).map((rows, index) => (
           <ItemsCard
+            currency={rows.currencyId ?? "IDR"}
             images={rows.images.slice(0, 3).map((rows) => rows.url)}
             key={index}
             price={rows.price}

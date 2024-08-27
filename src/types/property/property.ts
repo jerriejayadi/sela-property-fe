@@ -9,6 +9,7 @@ export interface PropertyDetailProps {
 }
 
 export interface Result {
+  currencyId: string;
   id: string;
   title: string;
   descriptionId: string;

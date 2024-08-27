@@ -18,6 +18,7 @@ export interface Item {
   title: string;
   descriptionId: string;
   keyFeatureId: string;
+  currencyId: string;
   descriptionEn: string;
   keyFeatureEn: string;
   price: string;

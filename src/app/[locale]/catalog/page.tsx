@@ -719,6 +719,7 @@ export default function Catalog() {
                   <ItemsCard
                     key={index}
                     images={rows.images.slice(0, 3).map((images) => images.url)}
+                    currency={rows.currencyId}
                     price={rows.price}
                     propertyName={rows.title}
                     landSize={rows.landSize}

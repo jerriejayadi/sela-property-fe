@@ -15,8 +15,10 @@ interface ItemsCardProps {
   bathRoom: number;
   bedRoom: number;
   onClick?: () => void;
+  currency: string;
 }
 export default function ItemsCard({
+  currency,
   images,
   className,
   price,
@@ -73,7 +75,7 @@ export default function ItemsCard({
         >
           <div className={`text-sm md:text-2xl font-josefin_sans`}>
             <div className={`font-bold text-sm md:text-2xl`}>
-              IDR {currencyFormat(price)}
+              {currency} {currencyFormat(price)}
             </div>
             <div
               className={`font-normal line-clamp-2 text-xs md:text-2xl h-[32px] md:h-[64px]`}

@@ -35,6 +35,7 @@ export default function HotListing() {
         {/* items card */}
         {data?.result.items.map((rows, index) => (
           <ItemsCard
+            currency={rows.currencyId ?? "IDR"}
             images={rows.images.map((rows) => rows.url)}
             key={index}
             price={rows.price}
