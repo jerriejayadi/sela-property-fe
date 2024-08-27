@@ -98,7 +98,7 @@ export default function PropertyDetail({ params }: DetailPropertyParams) {
   };
 
   const handleCTA = () => {
-    window.open(`https://wa.me/+6281234567890`, "_blank");
+    window.open(`https://wa.me/${PHONE_NUMBER}`, "_blank");
     router.push(`/thankyou`);
   };
 
@@ -235,6 +235,7 @@ export default function PropertyDetail({ params }: DetailPropertyParams) {
             iconURL={"/icons/buildsize.png"}
             value={propertyDetail?.result.buildingSize ?? 0}
             unitOfMeasurement={propertyDetail?.result.buildingSizeMeasurement}
+            size={`size-10`}
           />
           <PropertyDetailCard
             className={`md:pl-12`}
@@ -242,24 +243,28 @@ export default function PropertyDetail({ params }: DetailPropertyParams) {
             iconURL={"/icons/landsize.png"}
             value={propertyDetail?.result.landSize ?? 0}
             unitOfMeasurement={propertyDetail?.result.landSizeMeasurement}
+            size={`size-7`}
           />
           <PropertyDetailCard
             className={`md:pl-12`}
             props={"Bedroom"}
             iconURL={"/icons/bedroom.png"}
             value={propertyDetail?.result.bedRoomsAmount ?? 0}
+            size={`size-9`}
           />
           <PropertyDetailCard
             className={`md:pl-12`}
             props={"Bathroom"}
             iconURL={"/icons/bathroom.png"}
             value={propertyDetail?.result.bathRoomsAmount ?? 0}
+            size={`size-8`}
           />
           <PropertyDetailCard
             className={`md:pl-12`}
             props={"Carpark"}
             iconURL={"/icons/carpark.png"}
             value={propertyDetail?.result.carParkAmount ?? 0}
+            size={`size-8`}
           />
         </div>
 

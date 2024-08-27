@@ -22,9 +22,9 @@ export interface FilterProps {
   sort: string;
   availability: string;
   propertyType: string;
-  location: string;
-  minPrice: string | number;
-  maxPrice: string | number;
+  address: string;
+  lowerPrice: string | number;
+  higherPrice: string | number;
   minArea: string | number;
   maxArea: string | number;
   bedRoom: string | number;
@@ -54,24 +54,23 @@ export default function Catalog() {
       (searchParams.get("availability") as "true" | "false" | "") ?? ""
     ),
     [propertyType, setPropertyType] = useState<string>(""),
-    [location, setLocation] = useState<string>(""),
-    [minPrice, setMinPrice] = useState<string>(""),
-    [maxPrice, setMaxPrice] = useState<string>(""),
+    [lowerPrice, setLowerPrice] = useState<string>(""),
+    [higherPrice, setHigherPrice] = useState<string>(""),
     [address, setAddress] = useState<string>(""),
     [tags, setTags] = useState<string[]>(),
     [bathRoom, setBathroom] = useState<number>(0),
     [sellingType, setSellingType] = useState<string>(""),
     [bedRoom, setBedRoom] = useState<number>(0),
-    [currency, setCurrency] = useState<string>("");
+    [currency, setCurrency] = useState<string>("IDR");
 
   const [filter, setFilter] = useState<FilterProps>({
     keyword: searchParams.get(`keyword`)!,
     sort: "",
     availability: searchParams.get(`availability`)!,
     propertyType: "",
-    location: "",
-    minPrice: "0",
-    maxPrice: "0",
+    address: "",
+    lowerPrice: "0",
+    higherPrice: "0",
     minArea: "0",
     maxArea: "0",
     bedRoom: "0",
@@ -125,27 +124,6 @@ export default function Catalog() {
     },
   ];
 
-  // const handlePropertyType = (value: string, action: string) => {
-  //   let propertyTypeTemp = filter.propertyType;
-  //   if (action === "add") {
-  //     propertyTypeTemp.push(value);
-  //   } else {
-  //     propertyTypeTemp.splice(propertyTypeTemp.indexOf(value), 1);
-  //   }
-  //   console.log(propertyTypeTemp);
-  //   setFilter({ ...filter, propertyType: propertyTypeTemp });
-  // };
-
-  // const handleLocation = (value: string, action: string) => {
-  //   let locationTemp = filter.location;
-  //   if (action === "add") {
-  //     locationTemp.push(value);
-  //   } else {
-  //     locationTemp.splice(locationTemp.indexOf(value), 1);
-  //   }
-  //   setFilter({ ...filter, location: locationTemp });
-  // };
-
   const onIncrementChange = (
     key: "bedRoom" | "bathRoom",
     behavior: "add" | "subtract"
@@ -169,9 +147,9 @@ export default function Catalog() {
       sort: "",
       availability: availability ? availability.toString() : "",
       propertyType: propertyType,
-      location: location,
-      minPrice: Number(minPrice.replaceAll(",", "")),
-      maxPrice: Number(maxPrice.replaceAll(",", "")),
+      address: address,
+      lowerPrice: Number(lowerPrice.replaceAll(",", "")),
+      higherPrice: Number(higherPrice.replaceAll(",", "")),
       minArea: 0,
       maxArea: 0,
       bedRoom: Number(bedRoom),
@@ -190,9 +168,9 @@ export default function Catalog() {
       sort: "",
       availability: "",
       propertyType: "",
-      location: "",
-      minPrice: 0,
-      maxPrice: 0,
+      address: "",
+      lowerPrice: 0,
+      higherPrice: 0,
       minArea: 0,
       maxArea: 0,
       bedRoom: 0,
@@ -206,9 +184,9 @@ export default function Catalog() {
     setKeyword("");
     setAvailability("");
     setPropertyType("");
-    setLocation("");
-    setMinPrice("");
-    setMaxPrice("");
+
+    setLowerPrice("");
+    setHigherPrice("");
     setAddress("");
     setTags([]);
     setBathroom(0);
@@ -217,7 +195,7 @@ export default function Catalog() {
     setCurrency("");
   };
 
-  const search = useDebounce(filter.location, 1000);
+  const search = useDebounce(filter.address, 1000);
 
   const { runAsync, error, loading } = useRequest(getPropertyList);
   const { run: getCurrency, data: currencyList } = useRequest(getCurrencyList);
@@ -364,30 +342,6 @@ export default function Catalog() {
               <div
                 className={`flex items-center justify-start gap-2 mb-3 flex-wrap text-sm`}
               >
-                {/* {PropertyType.map((rows, index) => (
-                  <div
-                    key={index}
-                    onClick={() => {
-                      handlePropertyType(
-                        rows.value,
-                        filter.propertyType.some(
-                          (rows2) => rows2 === rows.value
-                        )
-                          ? "remove"
-                          : "add"
-                      );
-                    }}
-                    className={`px-3 py-2 cursor-pointer ${
-                      filter?.propertyType?.some(
-                        (rows2) => rows2 === rows.value
-                      )
-                        ? "bg-primary text-white"
-                        : "bg-[#F9F9F9] text-black"
-                    }`}
-                  >
-                    {rows.name}
-                  </div>
-                ))} */}
                 {PropertyType.map((rows, index) => (
                   <div
                     key={index}
@@ -410,23 +364,23 @@ export default function Catalog() {
               <div className={`flex gap-3 max-w-full flex-wrap mb-3 text-sm`}>
                 <div className={`relative flex w-full`}>
                   <input
-                    value={location}
+                    value={address}
                     onChange={(e) => {
-                      setLocation(e.target.value);
+                      setAddress(e.target.value);
                       setSearched(true);
                     }}
                     placeholder={`Location`}
                     type={`text`}
                     className={`w-full border border-gray-500 rounded-lg px-3 py-3`}
                   />
-                  <div
+                  {/* <div
                     className={`absolute  flex-col gap-3 top-10 py-3 px-5 bg-white border border-gray-500 shadow-sm w-full max-h-[100px] overflow-auto ${
                       searched ? "flex" : "hidden"
                     }`}
                   >
                     <div
                       onClick={() => {
-                        setLocation("Gianyar");
+                        setAddress("Gianyar");
                         setSearched(false);
                       }}
                       className={`w-full`}
@@ -435,7 +389,7 @@ export default function Catalog() {
                     </div>
                     <div
                       onClick={() => {
-                        setLocation("Canggu");
+                        setAddress("Canggu");
                         setSearched(false);
                       }}
                       className={`w-full`}
@@ -444,14 +398,14 @@ export default function Catalog() {
                     </div>
                     <div
                       onClick={() => {
-                        setLocation("Kuta");
+                        setAddress("Kuta");
                         setSearched(false);
                       }}
                       className={`w-full`}
                     >
                       Kuta
                     </div>
-                  </div>
+                  </div> */}
                 </div>
                 {/* {location.map((rows, index) => (
                   <div
@@ -497,10 +451,10 @@ export default function Catalog() {
               <div className={`flex flex-col items-start gap-1 mb-3`}>
                 <input
                   onChange={(e) => {
-                    setMinPrice(currencyFormat(e.target.value));
+                    setLowerPrice(currencyFormat(e.target.value));
                   }}
-                  value={minPrice}
-                  placeholder={"Rp MIN"}
+                  value={lowerPrice}
+                  placeholder={`${currency} MIN`}
                   type="text"
                   className={`w-full px-4 py-3  border border-gray-400 bg-white rounded-lg`}
                 />
@@ -512,10 +466,10 @@ export default function Catalog() {
 
                 <input
                   onChange={(e) => {
-                    setMaxPrice(currencyFormat(e.target.value));
+                    setHigherPrice(currencyFormat(e.target.value));
                   }}
-                  value={maxPrice}
-                  placeholder={"Rp MAX"}
+                  value={higherPrice}
+                  placeholder={`${currency} MAX`}
                   type="text"
                   className={`w-full px-4 py-3  border border-gray-400 bg-white rounded-lg mt-2`}
                 />
@@ -740,12 +694,15 @@ export default function Catalog() {
         </div>
       </div>
       <FilterModal
+        filter={filter}
+        setFilter={setFilter}
+        SellingType={SellingType}
+        currencyList={currencyList!}
         open={filterModal}
         onClose={function (): void {
           setFilterModal(false);
         }}
         onSubmit={function (_args: FilterProps): void {
-          setFilterModal(false);
           setFilter(_args);
         }}
       />

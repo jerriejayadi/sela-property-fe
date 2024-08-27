@@ -6,6 +6,7 @@ interface PropertyDetailCardProps {
   iconURL: string;
   value: string | number;
   unitOfMeasurement?: string;
+  size?:string;
 }
 
 export default function PropertyDetailCard({
@@ -14,12 +15,13 @@ export default function PropertyDetailCard({
   iconURL,
   value,
   unitOfMeasurement,
+  size
 }: PropertyDetailCardProps) {
   return (
     <div className={`${className ?? ""} flex items-center gap-1 md:pr-12 `}>
-      <div className={`flex justify-center shrink-0 w-12 h-12  `}>
+      <div className={`flex items-center justify-center shrink-0 size-12  `}>
         <Image
-          className={`object-contain p-1 `}
+          className={`object-cover ${size} `}
           alt={``}
           src={iconURL}
           width={1000}
