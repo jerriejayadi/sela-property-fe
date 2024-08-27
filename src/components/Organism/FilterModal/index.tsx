@@ -34,6 +34,7 @@ export default function FilterModal({
     [bedRoom, setBedRoom] = useState<number>(0);
 
   const [filter, setFilter] = useState<FilterProps>({
+    currency: "",
     keyword: "",
     sort: "",
     availability: "",
@@ -121,6 +122,7 @@ export default function FilterModal({
   };
   const resetFilter = () => {
     setFilter({
+      currency: "",
       keyword: "",
       sort: "",
       availability: "",

@@ -5,6 +5,7 @@ import FilterModal from "@/components/Organism/FilterModal";
 import ItemsCard from "@/components/Organism/ItemsCard";
 import ItemsCardLoading from "@/components/Organism/ItemsCard/loading";
 import SortModal from "@/components/Organism/SortModal";
+import { getCurrencyList } from "@/service/currency";
 import { getPropertyList } from "@/service/property";
 import { PropertyListProps } from "@/types/property/list";
 import { currencyFormat, useDebounce } from "@/utils/general";
@@ -32,6 +33,7 @@ export interface FilterProps {
   limit: number;
   page: number;
   sellingType: string;
+  currency: string;
 }
 
 export default function Catalog() {
@@ -59,7 +61,8 @@ export default function Catalog() {
     [tags, setTags] = useState<string[]>(),
     [bathRoom, setBathroom] = useState<number>(0),
     [sellingType, setSellingType] = useState<string>(""),
-    [bedRoom, setBedRoom] = useState<number>(0);
+    [bedRoom, setBedRoom] = useState<number>(0),
+    [currency, setCurrency] = useState<string>("");
 
   const [filter, setFilter] = useState<FilterProps>({
     keyword: searchParams.get(`keyword`)!,
@@ -77,6 +80,7 @@ export default function Catalog() {
     limit: 100,
     page: 1,
     sellingType: searchParams.get(`sellingType`)!,
+    currency: "IDR",
   });
 
   enum EPropertyType {
@@ -176,6 +180,7 @@ export default function Catalog() {
       limit: 100,
       page: 1,
       sellingType: sellingType,
+      currency: currency,
     });
   };
 
@@ -196,6 +201,7 @@ export default function Catalog() {
       limit: 100,
       page: 1,
       sellingType: "",
+      currency: "",
     });
     setKeyword("");
     setAvailability("");
@@ -207,12 +213,14 @@ export default function Catalog() {
     setTags([]);
     setBathroom(0);
     setBedRoom(0);
-    setSellingType("ALL");
+    setSellingType("");
+    setCurrency("");
   };
 
   const search = useDebounce(filter.location, 1000);
 
   const { runAsync, error, loading } = useRequest(getPropertyList);
+  const { run: getCurrency, data: currencyList } = useRequest(getCurrencyList);
 
   useEffect(() => {
     runAsync(filter).then((res) => setData(res));
@@ -471,32 +479,47 @@ export default function Catalog() {
               </button> */}
             </div>
             <div>
-              <div className={`my-3 font-semibold`}>Price</div>
-              <div className={`flex items-center gap-1 mb-3`}>
-                <div>Rp</div>
+              <div className={`my-3 font-semibold`}>
+                Price{" "}
+                <select
+                  onChange={(e) => {
+                    setCurrency(e.target.value);
+                  }}
+                >
+                  {currencyList?.result.map((rows, index) => (
+                    <option key={`currency-${index}`} value={rows.currencyId}>
+                      {rows.currencyId}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div></div>
+              <div className={`flex flex-col items-start gap-1 mb-3`}>
                 <input
                   onChange={(e) => {
                     setMinPrice(currencyFormat(e.target.value));
                   }}
                   value={minPrice}
-                  placeholder={"0"}
+                  placeholder={"Rp MIN"}
                   type="text"
-                  className={`w-full p-2 bg-[#F9F9F9] `}
+                  className={`w-full px-4 py-3  border border-gray-400 bg-white rounded-lg`}
                 />
+
                 {/* <select className={`w-full bg-[#F9F9F9] p-2 text-[#787878]`}>
                   <option>Min Price</option>
                 </select> */}
-                <div className={`h-[1px] w-10 bg-black`} />
-                <div>Rp</div>
+                {/* <div className={`h-[1px] w-10 bg-black`} /> */}
+
                 <input
                   onChange={(e) => {
                     setMaxPrice(currencyFormat(e.target.value));
                   }}
                   value={maxPrice}
-                  placeholder={"0"}
+                  placeholder={"Rp MAX"}
                   type="text"
-                  className={`w-full p-2 bg-[#F9F9F9]`}
+                  className={`w-full px-4 py-3  border border-gray-400 bg-white rounded-lg mt-2`}
                 />
+
                 {/* <select className={`w-full bg-[#F9F9F9] p-2 text-[#787878]`}>
                   <option>Max Price</option>
                 </select> */}
