@@ -8,11 +8,15 @@ import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRequest } from "ahooks";
 import { getPropertyList } from "@/service/property";
+import { useEffect } from "react";
 
 export default function HotListing() {
   const t = useTranslations("landing_page");
   const router = useRouter();
-  const { data, run } = useRequest(getPropertyList);
+  const { data, run } = useRequest(getPropertyList, { manual: true });
+  useEffect(()=>{
+    run({tags:'hot_listing'})
+  },[])
   return (
     <div
       className={`flex flex-col w-full items-center px-3 py-12 md:px-20 md:py-20 bg-[#F3F3F3] `}
@@ -31,7 +35,7 @@ export default function HotListing() {
         </div>
       </div>
       {/* items */}
-      <div className={`grid grid-cols-2 sm:grid-cols-3 mt-10 gap-2 md:gap-7`}>
+      <div className={`grid grid-cols-2 sm:grid-cols-3 mt-10 gap-2 md:gap-7 mx-auto`}>
         {/* items card */}
         {data?.result.items.map((rows, index) => (
           <ItemsCard

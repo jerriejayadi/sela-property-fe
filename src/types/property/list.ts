@@ -1,5 +1,6 @@
 export interface IParamsPropertyList {
   keyword?: string;
+  tags?: string;
 }
 
 export interface PropertyListProps {
