@@ -6,6 +6,7 @@ import Increment from "@/components/Molecules/Increment";
 import { currencyFormat } from "@/utils/general";
 import { useSearchParams } from "next/navigation";
 import { CurrencyListResponseProps } from "@/types/currency/list";
+import { LOCATION_LIST } from "@/lib/variable";
 
 interface SortModalProps {
   value?: string;
@@ -152,7 +153,7 @@ export default function FilterModal({
     setBedRoom(0);
     setSellingType("");
     setCurrency("");
-    onClose()
+    onClose();
   };
 
   const onIncrementChange = (
@@ -335,16 +336,19 @@ export default function FilterModal({
             <div className={`my-3 font-semibold`}>Location</div>
             <div className={`flex gap-3 max-w-full flex-wrap mb-3 text-sm`}>
               <div className={`relative flex w-full`}>
-                <input
-                  value={address}
+                <select
                   onChange={(e) => {
                     setAddress(e.target.value);
-                    setSearched(true);
                   }}
-                  placeholder={`Location`}
-                  type={`text`}
                   className={`w-full border border-gray-500 rounded-lg px-3 py-3`}
-                />
+                >
+                  <option value={``}>All Location</option>
+                  {LOCATION_LIST.map((rows, index) => (
+                    <option key={index} value={rows}>
+                      {rows}
+                    </option>
+                  ))}
+                </select>
                 {/* <div
                     className={`absolute  flex-col gap-3 top-10 py-3 px-5 bg-white border border-gray-500 shadow-sm w-full max-h-[100px] overflow-auto ${
                       searched ? "flex" : "hidden"
