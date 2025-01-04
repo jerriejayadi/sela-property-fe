@@ -5,6 +5,7 @@ import "./globals.css";
 import Navbar from "@/components/Layout/Navbar";
 import Footer from "@/components/Layout/Footer";
 import { NextIntlClientProvider, useMessages } from "next-intl";
+import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const josefin_sans = Josefin_Sans({
@@ -57,6 +58,27 @@ export default function RootLayout({
   return (
     <html lang={locale}>
       <NextIntlClientProvider messages={message}>
+        <head>
+          <Script
+            id="meta-pixel"
+            strategy="afterInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `
+                        !function(f,b,e,v,n,t,s)
+                        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+                        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+                        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+                        n.queue=[];t=b.createElement(e);t.async=!0;
+                        t.src=v;s=b.getElementsByTagName(e)[0];
+                        s.parentNode.insertBefore(t,s)}(window, document,'script',
+                        'https://connect.facebook.net/en_US/fbevents.js');
+                        fbq('init', '2066573267093769');
+                        fbq('track', 'PageView');
+                    `,
+            }}
+          />
+          {/* Fallback for noscript */}
+        </head>
         <body
           className={`${inter.className} ${audrey.variable} ${josefin_sans.variable} ${lato.className} ${montserrat.variable} max-w-[1920px] mx-auto`}
         >

@@ -77,7 +77,7 @@ export default function Catalog() {
     bedRoom: "0",
     bathRoom: "0",
     facilities: [],
-    limit: 100,
+    limit: 9,
     page: 1,
     sellingType: searchParams.get(`sellingType`)!,
     currency: "IDR",
@@ -156,7 +156,7 @@ export default function Catalog() {
       bedRoom: Number(bedRoom),
       bathRoom: Number(bathRoom),
       facilities: [],
-      limit: 100,
+      limit: 9,
       page: 1,
       sellingType: sellingType,
       currency: currency,
@@ -177,7 +177,7 @@ export default function Catalog() {
       bedRoom: 0,
       bathRoom: 0,
       facilities: [],
-      limit: 100,
+      limit: 9,
       page: 1,
       sellingType: "",
       currency: "",
@@ -205,11 +205,22 @@ export default function Catalog() {
     runAsync(filter).then((res) => setData(res));
   }, [filter]);
 
-  useEffect(() => {}, []);
+  // const handleScroll = () => {
+  //   if (
+  //     window.innerHeight + document.documentElement.scrollTop !==
+  //       document.documentElement.offsetHeight ||
+  //     loading
+  //   ) {
+  //     return;
+  //   }
+  //   setFilter((prev) => ({ ...prev, page: prev.page + 1 })); // Load next page
+  // };
 
   // useEffect(() => {
-  //   runAsync({}).then((res) => setData(res));
-  // }, []);
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => window.removeEventListener("scroll", handleScroll);
+  // }, [loading]);
+
   return (
     <div className="relative">
       <div className={`relative `}>

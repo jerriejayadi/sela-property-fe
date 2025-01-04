@@ -1,3 +1,4 @@
+"use client";
 import AboutUs from "@/components/Layout/AboutUs";
 import ContactUs from "@/components/Layout/ContactUs";
 import HotListing from "@/components/Layout/HotListing";
@@ -8,6 +9,7 @@ import Carousel from "@/components/Organism/LandingPageCarousel";
 import { IMAGE_DIVIDER } from "@/lib/variable";
 import { SearchNormal1 } from "iconsax-react";
 import Image from "next/image";
+import { useEffect } from "react";
 
 export default function Home() {
   return (
@@ -28,11 +30,15 @@ export default function Home() {
       </section>
 
       <section className={`w-full`}>
-        <div className={`grid grid-rows-2 grid-flow-col w-fit h-[250px] md:h-[500px]`}>
+        <div
+          className={`grid grid-rows-2 grid-flow-col w-fit h-[250px] md:h-[500px]`}
+        >
           {IMAGE_DIVIDER.map((rows, index) => (
             <div
               key={index}
-              className={`max-w-[550px] shrink-0 ${index % 3 === 0 && "row-span-2"}`}
+              className={`max-w-[550px] shrink-0 ${
+                index % 3 === 0 && "row-span-2"
+              }`}
             >
               <Image
                 key={index}

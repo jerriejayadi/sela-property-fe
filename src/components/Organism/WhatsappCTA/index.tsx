@@ -11,6 +11,10 @@ interface WhatsappCTA {
 export default function WhatsappCTA({ className, onClick }: WhatsappCTA) {
   const router = useRouter();
   const handleClick = () => {
+    (window as any).fbq("trackCustom", "ButtonClicked", {
+      buttonName: "Subscribe",
+    });
+
     window.open(`https://wa.me/${PHONE_NUMBER}`, "_blank");
   };
   return (
