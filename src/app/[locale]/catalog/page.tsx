@@ -719,7 +719,7 @@ export default function Catalog() {
                 <div className="flex items-center justify-center gap-4 mt-8">
                   <button
                     className="disabled:text-gray-300"
-                    disabled={page === 1}
+                    disabled={page < 1}
                     onClick={() => {
                       setPage(page - 1);
                       setFilter((prev) => ({ ...prev, page: prev.page - 1 }));
@@ -735,20 +735,27 @@ export default function Catalog() {
                       }
                     }}
                     onBlur={(e) => {
-                      setFilter((prev) => ({
-                        ...prev,
-                        page: Number(e.target.value),
-                      }));
+                      if(Number(e.target.value)<1){
+                        setFilter((prev) => ({
+                          ...prev,
+                          page: 1,
+                        }));
+                        setPage(1)
+                      } else {
+                        setFilter((prev) => ({
+                          ...prev,
+                          page: Number(e.target.value),
+                        }));
+                        setPage(Number(e.target.value))
+                      }
                     }}
                     onChange={(e) => {
                       if (
                         Number(e.target.value) > data!.result.meta.totalPages
                       ) {
                         setPage(data!.result.meta.totalPages);
-                      } else if (Number(e.target.value) < 1) {
-                        setPage(1);
                       } else {
-                        setPage(Number(e.target.value));
+                        setPage(Number(e.target.value.replace(/\D/g,'')));
                       }
                     }}
                     className="border border-gray-200 rounded-lg p-2 size-10 flex items-center justify-center"
