@@ -12,7 +12,15 @@ import { PropertyListProps } from "@/types/property/list";
 import { currencyFormat, useDebounce } from "@/utils/general";
 import { mockUpList } from "@/utils/mockUpData";
 import { useRequest } from "ahooks";
-import { AddCircle, Check, Filter, MinusCirlce, Sort } from "iconsax-react";
+import {
+  AddCircle,
+  ArrowLeft2,
+  ArrowRight2,
+  Check,
+  Filter,
+  MinusCirlce,
+  Sort,
+} from "iconsax-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -62,7 +70,8 @@ export default function Catalog() {
     [bathRoom, setBathroom] = useState<number>(0),
     [sellingType, setSellingType] = useState<string>(""),
     [bedRoom, setBedRoom] = useState<number>(0),
-    [currency, setCurrency] = useState<string>("IDR");
+    [currency, setCurrency] = useState<string>("IDR"),
+    [page, setPage] = useState<number>(1);
 
   const [filter, setFilter] = useState<FilterProps>({
     keyword: searchParams.get(`keyword`)!,
@@ -78,7 +87,7 @@ export default function Catalog() {
     bathRoom: "0",
     facilities: [],
     limit: 9,
-    page: 1,
+    page: page,
     sellingType: searchParams.get(`sellingType`)!,
     currency: "IDR",
   });
@@ -681,28 +690,83 @@ export default function Catalog() {
                 </div>
               </div>
             ) : (
-              <div
-                className={`grid grid-cols-2 pt-4 lg:grid-cols-3 gap-x-4 gap-y-2 md:gap-8 md:pt-10`}
-              >
-                {data?.result.items.map((rows, index) => (
-                  <ItemsCard
-                    key={index}
-                    images={rows.images.slice(0, 3).map((images) => images.url)}
-                    currency={rows.currencyId}
-                    price={rows.price}
-                    propertyName={rows.title}
-                    landSize={rows.landSize}
-                    buildSize={rows.buildingSize}
-                    location={
-                      rows.address.regency + ", " + rows.address.province
-                    }
-                    bathRoom={rows.bathRoomsAmount}
-                    bedRoom={rows.bedRoomsAmount}
+              <div>
+                <div
+                  className={`grid grid-cols-2 pt-4 lg:grid-cols-3 gap-x-4 gap-y-2 md:gap-8 md:pt-10`}
+                >
+                  {data?.result.items.map((rows, index) => (
+                    <ItemsCard
+                      key={index}
+                      images={rows.images
+                        .slice(0, 3)
+                        .map((images) => images.url)}
+                      currency={rows.currencyId}
+                      price={rows.price}
+                      propertyName={rows.title}
+                      landSize={rows.landSize}
+                      buildSize={rows.buildingSize}
+                      location={
+                        rows.address.regency + ", " + rows.address.province
+                      }
+                      bathRoom={rows.bathRoomsAmount}
+                      bedRoom={rows.bedRoomsAmount}
+                      onClick={() => {
+                        router.push(`/property/detail/${rows.id}`);
+                      }}
+                    />
+                  ))}
+                </div>
+                <div className="flex items-center justify-center gap-4 mt-8">
+                  <button
+                    className="disabled:text-gray-300"
+                    disabled={page === 1}
                     onClick={() => {
-                      router.push(`/property/detail/${rows.id}`);
+                      setPage(page - 1);
+                      setFilter((prev) => ({ ...prev, page: prev.page - 1 }));
                     }}
+                  >
+                    <ArrowLeft2 />
+                  </button>
+                  <input
+                    value={page}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.currentTarget.blur();
+                      }
+                    }}
+                    onBlur={(e) => {
+                      setFilter((prev) => ({
+                        ...prev,
+                        page: Number(e.target.value),
+                      }));
+                    }}
+                    onChange={(e) => {
+                      if (
+                        Number(e.target.value) > data!.result.meta.totalPages
+                      ) {
+                        setPage(data!.result.meta.totalPages);
+                      } else if (Number(e.target.value) < 1) {
+                        setPage(1);
+                      } else {
+                        setPage(Number(e.target.value));
+                      }
+                    }}
+                    className="border border-gray-200 rounded-lg p-2 size-10 flex items-center justify-center"
+                    placeholder="1"
                   />
-                ))}
+                  <p>of</p>
+                  <p>{data?.result.meta.totalPages}</p>
+                  <button
+                    className="disabled:text-gray-300"
+                    disabled={page === data?.result.meta.totalPages}
+                    onClick={() => {
+                      setPage(page + 1);
+                      setFilter((prev) => ({ ...prev, page: prev.page + 1 }));
+                    }}
+                  >
+                    <ArrowRight2 />
+                  </button>
+                </div>
               </div>
             )}
           </div>
