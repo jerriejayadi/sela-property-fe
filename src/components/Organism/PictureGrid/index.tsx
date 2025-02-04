@@ -55,7 +55,6 @@ const PictureGrid: React.FC<PictureGridProps> = ({ images }) => {
             height={750} // Provide a default height (adjust as needed)
             objectFit="cover"
             className="w-full h-auto" // Ensure image maintains aspect ratio
-            loader={({ src }) => src}
             onClick={() => handleImageClick(src, index)}
           />
         </div>

@@ -48,7 +48,6 @@ export default function Carousel({ slides, className }: CarouselProps) {
               alt=""
               width={1440}
               height={800}
-              loader={({ src }) => src}
             />
           </div>
         ))}

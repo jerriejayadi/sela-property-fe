@@ -50,7 +50,6 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
           height={800} // Provide a default height
           objectFit="contain"
           className="w-full h-full flex shrink object-contain"
-          loader={({ src }) => src}
         />
 
         {/* Image Index */}
