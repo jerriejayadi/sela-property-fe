@@ -55,6 +55,7 @@ export default function RootLayout({
   params: { locale: string };
 }>) {
   const message = useMessages();
+  const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
   return (
     <html lang={locale}>
       <NextIntlClientProvider messages={message}>
@@ -75,6 +76,24 @@ export default function RootLayout({
                         fbq('init', '2066573267093769');
                         fbq('track', 'PageView');
                     `,
+            }}
+          />
+          <Script
+            strategy="afterInteractive"
+            src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+          />
+          <Script
+            id="google-analytics"
+            strategy="afterInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_ID}', {
+              page_path: window.location.pathname,
+            });
+          `,
             }}
           />
           {/* Fallback for noscript */}
