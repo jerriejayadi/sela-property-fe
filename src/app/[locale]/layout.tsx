@@ -60,7 +60,7 @@ export default function RootLayout({
     <html lang={locale}>
       <NextIntlClientProvider messages={message}>
         <head>
-          <Script
+          {/* <Script
             id="meta-pixel"
             strategy="afterInteractive"
             dangerouslySetInnerHTML={{
@@ -77,8 +77,28 @@ export default function RootLayout({
                         fbq('track', 'PageView');
                     `,
             }}
-          />
-          <Script
+          /> */}
+          {GA_ID && (
+            <>
+              <Script
+                async
+                src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+              />
+              <Script
+                id="google-analytics"
+                dangerouslySetInnerHTML={{
+                  __html: `
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+
+                gtag('config', '${GA_ID}');
+                `,
+                }}
+              />
+            </>
+          )}
+          {/* <Script
             strategy="afterInteractive"
             src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
           />
@@ -95,7 +115,7 @@ export default function RootLayout({
             });
           `,
             }}
-          />
+          /> */}
           {/* Fallback for noscript */}
         </head>
         <body
