@@ -26,6 +26,7 @@ import StackGrid from "react-stack-grid";
 import { useTranslations } from "next-intl";
 import PictureGrid from "@/components/Organism/PictureGrid";
 import { PHONE_NUMBER } from "@/lib/variable";
+import { PropertyDetailProps } from "@/types/property/property";
 
 const ImageList = [
   {
@@ -56,13 +57,14 @@ const ImageList = [
 ];
 
 interface DetailPropertyParams {
+  data: PropertyDetailProps;
   params: {
     locale: string;
     params: string[];
   };
 }
 
-export default function PropertyDetail({ params }: DetailPropertyParams) {
+export default function PropertyDetail({ data:propertyDetail, params }: DetailPropertyParams) {
   const t = useTranslations("property_detail");
   const router = useRouter();
   const [selectedImage, setSelectedImage] = useState<string>(ImageList[0].url);
@@ -82,7 +84,7 @@ export default function PropertyDetail({ params }: DetailPropertyParams) {
   };
 
   const {
-    data: propertyDetail,
+    // data: propertyDetail,
     error,
     runAsync,
     loading,
@@ -91,11 +93,6 @@ export default function PropertyDetail({ params }: DetailPropertyParams) {
   });
   const { data: propertyList, run } = useRequest(getPropertyList);
 
-  const fetchPropertyDetail = () => {
-    runAsync({ id: params.params[0] }).then((res) => {
-      setSelectedImage(res.result.images[0].url as string);
-    });
-  };
 
   const handleCTA = () => {
     window.open(`https://wa.me/${PHONE_NUMBER}`, "_blank");
@@ -103,23 +100,10 @@ export default function PropertyDetail({ params }: DetailPropertyParams) {
   };
 
   useLayoutEffect(() => {
-    fetchPropertyDetail();
     run({});
   }, []);
 
-  useEffect(() => {
-    console.log(propertyDetail?.result.images.slice(0, 2));
-  }, [propertyDetail]);
 
-  useEffect(() => {
-    if (error) {
-      notFound();
-    }
-  }, [error]);
-
-  useEffect(() => {
-    console.log(params);
-  }, []);
   return (
     <div>
       {/*Photo */}

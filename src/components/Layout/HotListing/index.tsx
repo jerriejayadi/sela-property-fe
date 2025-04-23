@@ -50,7 +50,7 @@ export default function HotListing() {
             bathRoom={rows.bathRoomsAmount}
             bedRoom={rows.bedRoomsAmount}
             onClick={() => {
-              router.push(`/property/detail/${rows.id}`);
+              router.push(`/${rows.id}`);
             }}
           />
         ))}

@@ -16,7 +16,11 @@ export default function SuggestedProperty({
 }: SuggestedPropertyProps) {
   const router = useRouter();
   const t = useTranslations("suggested");
-  const { data, run } = useRequest(getPropertyList);
+  const { data, runAsync } = useRequest(getPropertyList,{manual:true});
+
+  useEffect(()=>{
+    runAsync().then((res)=>{console.log(res)})
+  },[])
 
   return (
     <div className={`${className ?? ""} #F3F3F3  text-black`}>
@@ -48,7 +52,7 @@ export default function SuggestedProperty({
             bathRoom={rows.bathRoomsAmount}
             bedRoom={rows.bedRoomsAmount}
             onClick={() => {
-              router.push(`/property/detail/${rows.id}`);
+              router.push(`/${rows.id}`);
             }}
           />
         ))}
